@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NasaApp</string>
+    <string name="connection_problem">Connection problem!</string>
+    <string name="information_video">Information video</string>
 </resources>
