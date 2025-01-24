@@ -1,5 +1,6 @@
 package com.example.nasaapp.data.api
 
+import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -14,7 +15,7 @@ object TheArticleDBClient {
     fun getClient(): TheArticleDBInterface{
         val requestInterceptor = Interceptor {
             val url = it.request()
-                .url()
+                .url
                 .newBuilder()
                 .build()
 
