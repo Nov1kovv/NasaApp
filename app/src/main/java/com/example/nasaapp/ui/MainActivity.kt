@@ -1,12 +1,12 @@
-package com.example.nasaapp
+package com.example.nasaapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.nasaapp.R
+import com.example.nasaapp.ui.single_article_details.SingleArticle
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,6 +15,9 @@ class MainActivity : AppCompatActivity() {
         val button = findViewById<Button>(R.id.btn)
         button.setOnClickListener {
             Toast.makeText(this, "fdsdsf", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, SingleArticle::class.java)
+            intent.putExtra("nasa_id", "PIA13517")
+            this.startActivity(intent)
         }
 
     }

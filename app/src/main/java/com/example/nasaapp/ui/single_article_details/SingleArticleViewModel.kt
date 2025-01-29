@@ -1,4 +1,4 @@
-package com.example.nasaapp.single_article_details
+package com.example.nasaapp.ui.single_article_details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

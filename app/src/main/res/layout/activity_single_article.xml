@@ -5,12 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".single_article_details.SingleArticle">
+    tools:context=".ui.single_article_details.SingleArticle">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:orientation="horizontal"
         android:visibility="gone"
         tools:ignore="MissingConstraints">
 
@@ -21,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:visibility="gone">
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/txt_error"
@@ -66,6 +67,5 @@
                     </LinearLayout>
                 </LinearLayout>
             </ScrollView>
-        </ProgressBar>
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>

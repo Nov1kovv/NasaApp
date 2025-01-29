@@ -1,8 +1,7 @@
-package com.example.nasaapp.single_article_details
+package com.example.nasaapp.ui.single_article_details
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -31,12 +30,12 @@ class SingleArticle : AppCompatActivity() {
         binding = ActivitySingleArticleBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val nasaid: String = "123moon"
+        val nasaId: String = intent.getStringExtra("nasa_id").toString()
 
         val apiService : TheArticleDBInterface = TheArticleDBClient.getClient()
         articleRepository = ArticleDetailsRepository(apiService)
 
-        viewModel = getViewModel(nasaid)
+        viewModel = getViewModel(nasaId)
 
         viewModel.articleDetails.observe(this, Observer {
             bindUI(it)
@@ -66,7 +65,7 @@ class SingleArticle : AppCompatActivity() {
     }
 
 
-    private fun getViewModel(nasaid:String):SingleArticleViewModel{
+    private fun getViewModel(nasaid:String): SingleArticleViewModel {
         return ViewModelProviders.of(this, object : ViewModelProvider.Factory{
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
