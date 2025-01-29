@@ -14,7 +14,6 @@ import com.example.nasaapp.data.api.IMAGE_BASE_URL
 import com.example.nasaapp.data.api.TheArticleDBClient
 import com.example.nasaapp.data.api.TheArticleDBInterface
 import com.example.nasaapp.data.repository.NetworkState
-import com.example.nasaapp.data.repository.Status
 import com.example.nasaapp.data.value_object.ArticleDetails
 import com.example.nasaapp.databinding.ActivitySingleArticleBinding
 
@@ -37,21 +36,13 @@ class SingleArticle : AppCompatActivity() {
 
         viewModel = getViewModel(nasaId)
 
-        viewModel.articleDetails.observe(this, Observer {
+        viewModel.articleDetails.observe(this) {
             bindUI(it)
-        })
-        viewModel.networkState.observe(this, Observer{
-            binding.progressBar.isVisible = if (it == NetworkState(Status.RUNNING, "Loading").LOADING) {
-                true
-            } else {
-                false
-            }
-            binding.txtError.isVisible = if (it == NetworkState(Status.FAILED, "Error").ERROR){
-                true
-            } else {
-                false
-            }
-        })
+        }
+        viewModel.networkState.observe(this) {
+            binding.progressBar.isVisible = it == NetworkState.LOADING
+            binding.txtError.isVisible = it == NetworkState.ERROR
+        }
     }
 
     @SuppressLint("SuspiciousIndentation")

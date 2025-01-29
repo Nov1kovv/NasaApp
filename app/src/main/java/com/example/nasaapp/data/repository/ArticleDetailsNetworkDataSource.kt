@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nasaapp.data.api.TheArticleDBInterface
 import com.example.nasaapp.data.value_object.ArticleDetails
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
@@ -19,12 +20,13 @@ class ArticleDetailsNetworkDataSource (private val apiService : TheArticleDBInte
         get() = _downloadedArticleDetailsResponse
 
     fun fetchImageDetails(nasaId: String){
-        _networkState.postValue(NetworkState(Status.RUNNING, "Success").LOADING)
+        _networkState.postValue(NetworkState.LOADING)
 
         try {
         compositeDisposable.add(
             apiService.getNasaId(nasaId)
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {_downloadedArticleDetailsResponse
                      _networkState.postValue(NetworkState(Status.SUCCESS, "Success $it"))
