@@ -8,6 +8,7 @@ import com.example.nasaapp.data.value_object.NasaResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import retrofit2.http.Query
 
 
 class ArticleDetailsNetworkDataSource (private val apiService : TheArticleDBInterface, private val compositeDisposable: CompositeDisposable) {
@@ -24,7 +25,7 @@ class ArticleDetailsNetworkDataSource (private val apiService : TheArticleDBInte
 
         try {
         compositeDisposable.add(
-            apiService.searchImages()
+            apiService.searchImages(query = "moon")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
