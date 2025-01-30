@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.single_article_details.SingleArticle">
+    tools:context=".ui.single_article_details.SingleArticleActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"

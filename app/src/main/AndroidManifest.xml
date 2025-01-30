@@ -16,7 +16,7 @@
         android:theme="@style/Theme.NasaApp" tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="31">
         <activity
-            android:name=".ui.single_article_details.SingleArticle"
+            android:name=".ui.single_article_details.SingleArticleActivity"
             android:exported="false" />
         <activity
             android:name=".ui.MainActivity"

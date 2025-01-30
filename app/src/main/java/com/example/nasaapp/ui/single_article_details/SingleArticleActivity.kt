@@ -2,22 +2,21 @@ package com.example.nasaapp.ui.single_article_details
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.example.nasaapp.R
-import com.example.nasaapp.data.api.IMAGE_BASE_URL
 import com.example.nasaapp.data.api.TheArticleDBClient
 import com.example.nasaapp.data.api.TheArticleDBInterface
 import com.example.nasaapp.data.repository.NetworkState
-import com.example.nasaapp.data.value_object.ArticleDetails
+import com.example.nasaapp.data.value_object.NasaResponse
 import com.example.nasaapp.databinding.ActivitySingleArticleBinding
 
-class SingleArticle : AppCompatActivity() {
+class SingleArticleActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySingleArticleBinding
     private lateinit var viewModel: SingleArticleViewModel
     private lateinit var articleRepository: ArticleDetailsRepository
@@ -36,7 +35,7 @@ class SingleArticle : AppCompatActivity() {
 
         viewModel = getViewModel(nasaId)
 
-        viewModel.articleDetails.observe(this) {
+        viewModel.nasaResponse.observe(this) {
             bindUI(it)
         }
         viewModel.networkState.observe(this) {
@@ -46,9 +45,11 @@ class SingleArticle : AppCompatActivity() {
     }
 
     @SuppressLint("SuspiciousIndentation")
-    fun bindUI(it:ArticleDetails){
-
-    val articlePosterURL = IMAGE_BASE_URL + it.collection.href
+    fun bindUI(it:NasaResponse){
+        Log.d("DEBUG123", "bindUI was called")
+    val articlePosterURL = it.collection.items[1].links[1].href
+        //Log.d("blabla", "URL: $articlePosterURL")
+        Log.d("ArticleDetails", "Article Details: $it")
         Glide.with(this)
             .load(articlePosterURL)
             .into(binding.ivArticlePoster)
