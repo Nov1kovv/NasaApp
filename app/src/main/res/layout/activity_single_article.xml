@@ -45,9 +45,9 @@
                 <ImageView
                     android:id="@+id/iv_article_poster"
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:scaleType="matrix"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/poster_placeholder"/>
 
                     <LinearLayout

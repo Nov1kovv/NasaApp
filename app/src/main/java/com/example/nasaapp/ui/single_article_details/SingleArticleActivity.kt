@@ -1,6 +1,7 @@
 package com.example.nasaapp.ui.single_article_details
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -35,9 +36,14 @@ class SingleArticleActivity : AppCompatActivity() {
     }
 
     private fun bindUI(response: NasaResponse) {
-        val imageUrl = response.collection.items.firstOrNull()?.links?.firstOrNull()?.href
+        val imageUrl = response.collection.items.firstOrNull()?.links?.firstOrNull{ it.rel == "canonical" }?.href
+        Log.d("ImageURL", "URL: $imageUrl")
         imageUrl?.let {
             Glide.with(this).load(it).into(binding.ivArticlePoster)
+//                .load(""https://www.example.com/sample-image.jpg"")
+//                .into(binding.ivArticlePoster)
+
+
         }
     }
     private val compositeDisposable = CompositeDisposable()
