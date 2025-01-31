@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.nasaapp.R
 import com.example.nasaapp.data.api.TheArticleDBClient
+import com.example.nasaapp.ui.search.SearchFragment
 import com.example.nasaapp.ui.single_article_details.DetailsViewModel
 import com.example.nasaapp.ui.single_article_details.DetailsViewModelFactory
 
@@ -28,31 +29,42 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val button = findViewById<Button>(R.id.btn)
-        imageView = findViewById(R.id.iv_article_poster)
+            val button = findViewById<Button>(R.id.btn)
+            val searchButton = findViewById<Button>(R.id.btn_search)
+            imageView = findViewById(R.id.iv_article_poster)
 
-        button.setOnClickListener {
-            Toast.makeText(this, "Fetching Image...", Toast.LENGTH_SHORT).show()
-            viewModel.fetchImageDetails("moon")
+            button.setOnClickListener {
+                Toast.makeText(this, "Fetching Image...", Toast.LENGTH_SHORT).show()
+                viewModel.fetchImageDetails("moon")
+            }
+        searchButton.setOnClickListener {
+            loadSearchFragment() // Загружаем SearchFragment
         }
 
-        observeViewModel()
+            observeViewModel()
+        }
+    private fun loadSearchFragment() {
+        val searchFragment = SearchFragment()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, searchFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
-    private fun observeViewModel() {
-        viewModel.nasaResponse.observe(this) { response ->
-            response?.let {
-                val imageUrl = it.collection.items.firstOrNull()?.links?.firstOrNull()?.href
-                Log.d("MainActivity", "Image URL: $imageUrl")
+        private fun observeViewModel() {
+            viewModel.nasaResponse.observe(this) { response ->
+                response?.let {
+                    val imageUrl = it.collection.items.firstOrNull()?.links?.firstOrNull()?.href
+                    Log.d("MainActivity", "Image URL: $imageUrl")
 
-                if (!imageUrl.isNullOrEmpty()) {
-                    Glide.with(this).load(imageUrl).into(imageView)
-                } else {
-                    Toast.makeText(this, "Image not found!", Toast.LENGTH_SHORT).show()
+                    if (!imageUrl.isNullOrEmpty()) {
+                        Glide.with(this).load(imageUrl).into(imageView)
+                    } else {
+                        Toast.makeText(this, "Image not found!", Toast.LENGTH_SHORT).show()
+                    }
+                } ?: run {
+                    Toast.makeText(this, "Failed to load data!", Toast.LENGTH_SHORT).show()
                 }
-            } ?: run {
-                Toast.makeText(this, "Failed to load data!", Toast.LENGTH_SHORT).show()
             }
         }
     }
-}
