@@ -9,7 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class MainViewModel (private val apiService: TheArticleDBInterface) : ViewModel() {
+class DetailsViewModel(private val apiService: TheArticleDBInterface) : ViewModel() {
     val nasaResponse = MutableLiveData<NasaResponse>()
     private val compositeDisposable = CompositeDisposable()
 
@@ -20,7 +20,7 @@ class MainViewModel (private val apiService: TheArticleDBInterface) : ViewModel(
             .subscribe({ response ->
                 nasaResponse.postValue(response)
             }, { error ->
-                Log.e("MainViewModel", "Error fetching image", error)
+                Log.e("DetailsViewModel", "Error fetching image", error)
             })
         compositeDisposable.add(disposable)
     }

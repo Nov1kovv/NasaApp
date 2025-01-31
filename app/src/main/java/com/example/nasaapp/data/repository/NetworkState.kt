@@ -5,6 +5,8 @@ enum class Status {
     SUCCESS,
     FAILED
 }
+
+//TODO: Переделать
 class NetworkState(val status: Status, val msg: String) {
     companion object {
         val LOADED = NetworkState(Status.SUCCESS, "Success")
