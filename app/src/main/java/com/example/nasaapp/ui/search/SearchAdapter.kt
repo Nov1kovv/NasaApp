@@ -3,14 +3,18 @@ package com.example.nasaapp.ui.search
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
+import com.squareup.picasso.Picasso
 
-class SearchAdapter(private val items: List<Item>) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
+class SearchAdapter(private val searchItems: List<SearchItem>) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
     class SearchViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.textView)
+        val imageView: ImageView = view.findViewById(R.id.imageView)
+        val dateTextView: TextView = view.findViewById(R.id.dateTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -19,9 +23,12 @@ class SearchAdapter(private val items: List<Item>) : RecyclerView.Adapter<Search
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        val item = items[position]
+        val item = searchItems[position]
         holder.textView.text = item.name
+        holder.dateTextView.text = item.date
+
+        Picasso.get().load(item.imageUrl).into(holder.imageView)
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = searchItems.size
 }

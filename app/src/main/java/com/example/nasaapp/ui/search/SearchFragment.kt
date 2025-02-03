@@ -16,10 +16,12 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
-        val items = List(25) { Item("Строка${it + 1}") }
+        val searchItems = List(100) { SearchItem("Строка${it + 1}",
+            "https://avatars.mds.yandex.net/i?id=c73ba79f654009e2cac2a6e885c19368_l-5334002-images-thumbs&n=13",
+            "03.02.2025")}
         val recyclerView: RecyclerView? = view?.findViewById(R.id.recycler_view)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        recyclerView?.adapter = SearchAdapter(items)
+        recyclerView?.adapter = SearchAdapter(searchItems)
 
         return view
     }
