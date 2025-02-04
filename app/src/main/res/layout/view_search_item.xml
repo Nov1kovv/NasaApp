@@ -18,6 +18,7 @@
         android:id="@+id/customTextView"
         android:layout_width="0dp"
         style="@style/CustomStyle"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/grid_2"
         android:text="Название"
         app:layout_constraintBottom_toBottomOf="@+id/customImageView"
@@ -29,6 +30,7 @@
     <TextView
         android:id="@+id/customDateTextView"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="@style/CustomStyle"
         android:layout_marginStart="@dimen/grid_2"
         android:text="Дата"
