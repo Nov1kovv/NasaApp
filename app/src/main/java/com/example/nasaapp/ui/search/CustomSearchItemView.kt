@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.example.nasaapp.R
 import com.squareup.picasso.Picasso
 
@@ -30,6 +31,8 @@ class CustomSearchItemView @JvmOverloads constructor(
     fun bind(name: String, imageUrl: String, date: String) {
         textView.text = name
         dateTextView.text = date
-        Picasso.get().load(imageUrl).into(imageView)
+        Glide.with(imageView.context)
+            .load(imageUrl)
+            .into(imageView)
     }
 }

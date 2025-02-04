@@ -4,7 +4,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class SearchAdapter(private val searchItems: List<SearchItem>) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
-
     class SearchViewHolder(val customView: CustomSearchItemView) : RecyclerView.ViewHolder(customView)
 
 

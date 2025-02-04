@@ -7,9 +7,9 @@
 
     <ImageView
         android:id="@+id/customImageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_margin="16dp"
+        android:layout_width="@dimen/grid_25"
+        android:layout_height="@dimen/grid_25"
+        android:layout_margin="@dimen/grid_2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_launcher_background" />
@@ -17,10 +17,9 @@
     <TextView
         android:id="@+id/customTextView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        style="@style/CustomStyle"
+        android:layout_marginStart="@dimen/grid_2"
         android:text="Название"
-        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/customImageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -30,10 +29,9 @@
     <TextView
         android:id="@+id/customDateTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        style="@style/CustomStyle"
+        android:layout_marginStart="@dimen/grid_2"
         android:text="Дата"
-        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/customImageView"
         app:layout_constraintStart_toEndOf="@+id/customImageView"
         app:layout_constraintTop_toBottomOf="@+id/customTextView"/>
