@@ -6,15 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.nasaapp.data.api.TheArticleDBInterface
 import com.example.nasaapp.data.value_object.NasaResponse
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import retrofit2.http.Query
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 class ArticleDetailsNetworkDataSource(
     private val apiService: TheArticleDBInterface,
-    private val compositeDisposable: CompositeDisposable
 ) {
     private val _networkState = MutableLiveData<NetworkState>()
     val networkState: LiveData<NetworkState>
@@ -24,26 +21,20 @@ class ArticleDetailsNetworkDataSource(
     val downloadedArticleResponse: LiveData<NasaResponse>
         get() = _downloadedNasaResponseResponse
 
-    fun fetchImageDetails(nasaId: String) {
+    suspend fun fetchImageDetails(query: String) {
         _networkState.postValue(NetworkState.LOADING)
 
         try {
-            compositeDisposable.add(
-                apiService.searchImages(query = "moon")
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                        {
-                            _downloadedNasaResponseResponse
-                            _networkState.postValue(NetworkState(Status.SUCCESS, "Success $it"))
-                        },
-                        {
-                            _networkState.postValue(NetworkState(Status.FAILED, "Error $it"))
-                        }
-                    )
-            )
+            val response = withContext(Dispatchers.IO) {
+                apiService.searchImages(query)
+            }
+
+            Log.d("API_RESPONSE", "Response: $response")
+            _downloadedNasaResponseResponse.postValue(response)
+            _networkState.postValue(NetworkState(Status.SUCCESS, "Success"))
         } catch (ex: Exception) {
-            Log.e("NetworkError", ex.printStackTrace().toString())
+            _networkState.postValue(NetworkState.ERROR)
+            ex.printStackTrace()
         }
     }
 }

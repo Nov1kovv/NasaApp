@@ -14,27 +14,4 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_launcher_background" />
 
-    <TextView
-        android:id="@+id/customTextView"
-        android:layout_width="0dp"
-        style="@style/CustomStyle"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/grid_2"
-        android:text="Название"
-        app:layout_constraintBottom_toBottomOf="@+id/customImageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/customImageView"
-        app:layout_constraintTop_toTopOf="@+id/customImageView" />
-
-    <TextView
-        android:id="@+id/customDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/CustomStyle"
-        android:layout_marginStart="@dimen/grid_2"
-        android:text="Дата"
-        app:layout_constraintBottom_toBottomOf="@+id/customImageView"
-        app:layout_constraintStart_toEndOf="@+id/customImageView"
-        app:layout_constraintTop_toBottomOf="@+id/customTextView"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
