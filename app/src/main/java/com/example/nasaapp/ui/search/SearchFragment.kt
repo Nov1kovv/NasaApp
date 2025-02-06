@@ -51,22 +51,22 @@ class SearchFragment : Fragment() {
             }
         }
 
-                searchView.setOnQueryTextListener(object :
-                    androidx.appcompat.widget.SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        query?.let {
-                            lifecycleScope.launch {
-                                searchViewModel.fetchImageDetails(it)
-                            }
-                        }
-                        return true
+        searchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    lifecycleScope.launch {
+                        searchViewModel.fetchImageDetails(it)
                     }
-
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        return true
-                    }
-                })
-
-                    return view
+                }
+                return true
             }
-        }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
+
+        return view
+    }
+}

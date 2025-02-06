@@ -1,4 +1,5 @@
 package com.example.nasaapp.ui.search
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +15,7 @@ class SearchViewModel(private val apiService: TheArticleDBInterface) : ViewModel
     fun fetchImageDetails(query: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val searchImage = apiService.searchImages(query)
-           downloadedArticleResponse.postValue(searchImage)
+            downloadedArticleResponse.postValue(searchImage)
         }
     }
 }
