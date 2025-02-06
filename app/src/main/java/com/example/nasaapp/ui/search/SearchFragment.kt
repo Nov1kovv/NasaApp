@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
 import com.example.nasaapp.data.api.TheArticleDBClient
-import com.example.nasaapp.data.repository.ArticleDetailsNetworkDataSource
-import com.example.nasaapp.data.repository.Status
 import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
@@ -34,13 +32,12 @@ class SearchFragment : Fragment() {
         val searchView: androidx.appcompat.widget.SearchView = view.findViewById(R.id.search_view)
 
         val apiService = TheArticleDBClient.getClient()
-        val networkDataSource = ArticleDetailsNetworkDataSource(apiService)
 
         searchViewModel = ViewModelProvider(
             this,
             object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return SearchViewModel(networkDataSource) as T
+                    return SearchViewModel(apiService) as T
                 }
             }
         ).get(SearchViewModel::class.java)
@@ -51,22 +48,6 @@ class SearchFragment : Fragment() {
                 recyclerView.adapter = SearchAdapter(response.collection.items)
             } else {
                 Toast.makeText(context, "Нет данных по запросу", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        searchViewModel.networkState.observe(viewLifecycleOwner) { networkState ->
-            when (networkState.status) {
-                Status.RUNNING -> {
-                    Toast.makeText(context, "running", Toast.LENGTH_SHORT).show()
-                }
-
-                Status.SUCCESS -> {
-                    Toast.makeText(context, "success", Toast.LENGTH_SHORT).show()
-                }
-
-                Status.FAILED -> {
-                    Toast.makeText(context, "Ошибка загрузки данных", Toast.LENGTH_SHORT).show()
-                }
             }
         }
 
