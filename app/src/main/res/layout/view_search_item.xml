@@ -9,9 +9,31 @@
         android:id="@+id/customImageView"
         android:layout_width="@dimen/grid_25"
         android:layout_height="@dimen/grid_25"
-        android:layout_margin="@dimen/grid_2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_launcher_background" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="07.02.2025"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/customImageView"
+        app:layout_constraintTop_toTopOf="@id/customImageView" />
+
+    <TextView
+        android:id="@+id/deschription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Image Title"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/customImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/customImageView"
+        app:layout_constraintTop_toBottomOf="@id/date" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

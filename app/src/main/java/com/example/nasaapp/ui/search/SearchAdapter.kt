@@ -21,9 +21,8 @@ class SearchAdapter(private val items: List<SearchItem>) :
         val item = items[position]
 
         Log.d("ITEM", "Image URL: ${item.imageUrl}")
-        Glide.with(holder.customView.context)
-                .load(item.imageUrl)
-                .into(holder.customView.imageView)
+
+        holder.customView.bind(item.name, item.date, item.imageUrl)
         }
 
     override fun getItemCount(): Int = items.size
