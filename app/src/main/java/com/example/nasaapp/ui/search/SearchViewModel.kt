@@ -3,19 +3,20 @@ package com.example.nasaapp.ui.search
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nasaapp.data.api.TheArticleDBInterface
-import com.example.nasaapp.data.value_object.NasaResponseDto
+import com.example.nasaapp.domain.model.SearchItem
+import com.example.nasaapp.domain.usecase.SearchImagesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class SearchViewModel(private val apiService: TheArticleDBInterface) : ViewModel() {
-    val downloadedArticleResponse: MutableLiveData<NasaResponseDto> = MutableLiveData<NasaResponseDto>()
+class SearchViewModel(private val searchImagesUseCase: SearchImagesUseCase) : ViewModel() {
+
+    val searchResults = MutableLiveData<List<SearchItem>>()
 
     fun fetchImageDetails(query: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val searchImage = apiService.searchImages(query)
-            downloadedArticleResponse.postValue(searchImage)
+            val result = searchImagesUseCase.execute(query)
+            searchResults.postValue(result)
         }
     }
 }

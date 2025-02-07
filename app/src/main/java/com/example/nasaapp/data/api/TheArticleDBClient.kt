@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 const val BASE_URL = "https://images-api.nasa.gov/"
 
 object TheArticleDBClient {
-    fun getClient(): TheArticleDBInterface {
+    fun getClient(): NasaApiService {
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
 
@@ -21,6 +21,6 @@ object TheArticleDBClient {
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(TheArticleDBInterface::class.java)
+            .create(NasaApiService::class.java)
     }
 }
