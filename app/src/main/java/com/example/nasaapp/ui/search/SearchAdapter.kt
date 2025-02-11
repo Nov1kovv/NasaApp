@@ -22,7 +22,7 @@ class SearchAdapter(private val items: List<SearchItem>) :
 
         Log.d("ITEM", "Image URL: ${item.imageUrl}")
 
-        holder.customView.bind(item.name, item.date, item.imageUrl)
+        holder.customView.bind(item.description, item.date, item.imageUrl)
         }
 
     override fun getItemCount(): Int = items.size

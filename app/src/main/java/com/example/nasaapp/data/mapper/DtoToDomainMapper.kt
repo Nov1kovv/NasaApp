@@ -9,7 +9,7 @@ object DtoToDomainMapper {
         return dto.collection.items.map { item ->
             val data = item.data.firstOrNull()
             SearchItem(
-                name = data?.title.orEmpty(),
+                description = data?.description.orEmpty(),
                 imageUrl = item.links.firstOrNull()?.href.orEmpty(),
                 date = data?.dateCreated.orEmpty()
             )

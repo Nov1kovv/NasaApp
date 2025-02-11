@@ -8,6 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.nasaapp.R
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class CustomSearchItemView @JvmOverloads constructor(
@@ -17,20 +19,29 @@ class CustomSearchItemView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     val imageView: ImageView
-    private val titleView: TextView
+    private val descriptionView: TextView
     private val dateView: TextView
     init {
         LayoutInflater.from(context).inflate(R.layout.view_search_item, this, true)
         imageView = findViewById(R.id.customImageView)
-        titleView = findViewById(R.id.deschription)
+        descriptionView = findViewById(R.id.deschription)
         dateView = findViewById(R.id.date)
     }
-    fun bind(name: String, date: String, url: String) {
+    fun bind(description: String, date: String, url: String) {
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        try {
+            val parsedDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).parse(date)
+            val formattedDate = parsedDate?.let { dateFormat.format(it) } ?: date
+            dateView.text = formattedDate
+        } catch (e: Exception) {
+            dateView.text = date
+        }
+
         Glide.with(context)
             .load(url)
+            .centerCrop()
             .into(imageView)
 
-        titleView.text = name
-        dateView.text = date
+        descriptionView.text = description
     }
 }
