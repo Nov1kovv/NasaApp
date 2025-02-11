@@ -1,10 +1,15 @@
 package com.example.nasaapp.ui.search
 
+import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.nasaapp.domain.model.SearchItem
 
-class SearchAdapter(private val searchItems: List<SearchItem>) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
-    class SearchViewHolder(val customView: CustomSearchItemView) : RecyclerView.ViewHolder(customView)
+class SearchAdapter(private val items: List<SearchItem>) :
+    RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
+    class SearchViewHolder(val customView: CustomSearchItemView) :
+        RecyclerView.ViewHolder(customView)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -13,9 +18,10 @@ class SearchAdapter(private val searchItems: List<SearchItem>) : RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        val item = searchItems[position]
-        holder.customView.bind(item.name, item.imageUrl, item.date)
-    }
+        val item = items[position]
 
-    override fun getItemCount(): Int = searchItems.size
+        holder.customView.bind(item.description, item.date, item.imageUrl)
+        }
+
+    override fun getItemCount(): Int = items.size
 }

@@ -3,4 +3,5 @@
     <string name="connection_problem">Connection problem!</string>
     <string name="information_video">Information video</string>
     <string name="todo">TODO</string>
+    <string name="search_hint">Search for images</string>
 </resources>
