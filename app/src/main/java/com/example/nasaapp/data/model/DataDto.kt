@@ -4,7 +4,7 @@ package com.example.nasaapp.data.model
 import com.google.gson.annotations.SerializedName
 
 //TODO: Добавить конвертацию в Domain models
-data class Data(
+data class DataDto(
     @SerializedName("album")
     val album: List<String>,
     @SerializedName("center")

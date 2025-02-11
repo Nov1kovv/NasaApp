@@ -27,7 +27,6 @@ class SearchFragment : Fragment() {
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
-
         val searchView: androidx.appcompat.widget.SearchView = view.findViewById(R.id.search_view)
 
 

@@ -2,4 +2,5 @@
 <resources>
     <dimen name="grid_25">200dp</dimen>
     <dimen name="grid_2">16dp</dimen>
+    <dimen name="grid_1">8dp</dimen>
 </resources>
