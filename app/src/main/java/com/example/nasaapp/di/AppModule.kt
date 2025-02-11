@@ -1,6 +1,7 @@
 package com.example.nasaapp.di
 
 import com.example.nasaapp.data.api.NasaApiService
+import com.example.nasaapp.data.mapper.DtoToDomainMapper
 import com.example.nasaapp.data.repository.NasaRemoteDataSource
 import com.example.nasaapp.data.repository.NasaRepositoryImpl
 import com.example.nasaapp.domain.repository.NasaRepository
@@ -19,9 +20,12 @@ object AppModule {
 
     private val apiService: NasaApiService = retrofit.create(NasaApiService::class.java)
 
-    private val remoteDataSource = NasaRemoteDataSource(apiService)
+    private val dtoToDomainMapper = DtoToDomainMapper
+
+    private val remoteDataSource = NasaRemoteDataSource(apiService, dtoToDomainMapper)
 
     private val nasaRepository: NasaRepository = NasaRepositoryImpl(remoteDataSource)
 
     val searchImagesUseCase = SearchImagesUseCase(nasaRepository)
 }
+//

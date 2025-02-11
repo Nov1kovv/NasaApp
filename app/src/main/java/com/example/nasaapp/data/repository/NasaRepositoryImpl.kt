@@ -7,6 +7,6 @@ import com.example.nasaapp.domain.repository.NasaRepository
 class NasaRepositoryImpl(private val remoteDataSource: NasaRemoteDataSource) : NasaRepository {
     override suspend fun searchImages(query: String): List<SearchItem> {
         val response = remoteDataSource.searchImages(query)
-        return DtoToDomainMapper.map(response)
+        return response
     }
 }
