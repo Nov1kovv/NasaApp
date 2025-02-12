@@ -6,18 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
-import com.example.nasaapp.di.AppModule
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
 
-    private lateinit var searchViewModel: SearchViewModel
+    private val searchViewModel: SearchViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,15 +27,6 @@ class SearchFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         val searchView: androidx.appcompat.widget.SearchView = view.findViewById(R.id.search_view)
 
-
-        searchViewModel = ViewModelProvider(
-            this,
-            object : ViewModelProvider.Factory {
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return SearchViewModel(AppModule.searchImagesUseCase) as T
-                }
-            }
-        ).get(SearchViewModel::class.java)
 
         searchViewModel.searchResults.observe(viewLifecycleOwner) { results ->
             if (results.isNotEmpty()) {
