@@ -6,26 +6,30 @@ import com.example.nasaapp.data.repository.NasaRemoteDataSource
 import com.example.nasaapp.data.repository.NasaRepositoryImpl
 import com.example.nasaapp.domain.repository.NasaRepository
 import com.example.nasaapp.domain.usecase.SearchImagesUseCase
+import com.example.nasaapp.ui.search.SearchViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object AppModule {
+val appModule = module{
+    single {
+        Retrofit.Builder()
+            .baseUrl("https://images-api.nasa.gov/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
 
-    private const val BASE_URL = "https://images-api.nasa.gov/"
+    single { get<Retrofit>().create(NasaApiService::class.java) }
 
-    private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    single { DtoToDomainMapper }
 
-    private val apiService: NasaApiService = retrofit.create(NasaApiService::class.java)
+    single { NasaRemoteDataSource(get(), get()) }
 
-    private val dtoToDomainMapper = DtoToDomainMapper
+    single<NasaRepository> { NasaRepositoryImpl(get()) }
 
-    private val remoteDataSource = NasaRemoteDataSource(apiService, dtoToDomainMapper)
+    single { SearchImagesUseCase(get()) }
 
-    private val nasaRepository: NasaRepository = NasaRepositoryImpl(remoteDataSource)
+    viewModel { SearchViewModel(get()) }
 
-    val searchImagesUseCase = SearchImagesUseCase(nasaRepository)
 }
-//

@@ -1,9 +1,7 @@
 package com.example.nasaapp.ui.search
 
-import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.nasaapp.domain.model.SearchItem
 
 class SearchAdapter(private val items: List<SearchItem>) :
