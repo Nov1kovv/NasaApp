@@ -12,7 +12,6 @@ import com.example.nasaapp.R
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-
 class CustomSearchItemView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

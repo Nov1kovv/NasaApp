@@ -4,12 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
-import com.example.nasaapp.R
 import com.example.nasaapp.databinding.DetailFragmentBinding
 import com.example.nasaapp.domain.model.SearchItem
 
