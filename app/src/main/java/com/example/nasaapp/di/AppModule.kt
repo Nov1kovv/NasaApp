@@ -12,12 +12,10 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-val appModule = module{
+val appModule = module {
     single {
-        Retrofit.Builder()
-            .baseUrl("https://images-api.nasa.gov/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        Retrofit.Builder().baseUrl("https://images-api.nasa.gov/")
+            .addConverterFactory(GsonConverterFactory.create()).build()
     }
 
     single { get<Retrofit>().create(NasaApiService::class.java) }

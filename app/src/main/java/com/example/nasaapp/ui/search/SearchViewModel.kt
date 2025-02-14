@@ -8,7 +8,6 @@ import com.example.nasaapp.domain.usecase.SearchImagesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-
 class SearchViewModel(private val searchImagesUseCase: SearchImagesUseCase) : ViewModel() {
 
     val searchResults = MutableLiveData<List<SearchItem>>()
