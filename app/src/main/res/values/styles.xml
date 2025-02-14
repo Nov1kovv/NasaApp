@@ -4,5 +4,9 @@
         <item name="android:background">@color/blue</item>
         <item name="android:iconifiedByDefault">false</item>
         <item name="android:textColor">#FFFFFF</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:queryHint">@string/search_for_images</item>
+        <item name="android:layout_marginBottom">@dimen/grid_2</item>
     </style>
 </resources>
