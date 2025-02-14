@@ -14,7 +14,6 @@ class SearchAdapter(private val items: List<SearchItem>) :
         class SearchViewHolder(val customView: CustomSearchItemView) :
         RecyclerView.ViewHolder(customView)
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val view = CustomSearchItemView(parent.context)
         return SearchViewHolder(view)

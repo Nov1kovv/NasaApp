@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.nasaapp.R
+import com.example.nasaapp.databinding.ViewSearchItemBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -18,21 +19,16 @@ class CustomSearchItemView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    val imageView: ImageView
-    private val descriptionView: TextView
-    private val dateView: TextView
-    init {
-        LayoutInflater.from(context).inflate(R.layout.view_search_item, this, true)
-        imageView = findViewById(R.id.customImageView)
-        descriptionView = findViewById(R.id.deschription)
-        dateView = findViewById(R.id.date)
-    }
+    private val binding: ViewSearchItemBinding =
+        ViewSearchItemBinding.inflate(LayoutInflater.from(context), this, true)
+
     fun bind(description: String, date: String, url: String) {
         val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
         try {
-            val parsedDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).parse(date)
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+            val parsedDate = inputFormat.parse(date)
             val formattedDate = parsedDate?.let { dateFormat.format(it) } ?: date
-            dateView.text = formattedDate
+            binding.date.text = formattedDate
         } catch (e: Exception) {
             Log.e("ERROR", "Something went wrong", e);
         }
@@ -40,8 +36,8 @@ class CustomSearchItemView @JvmOverloads constructor(
         Glide.with(context)
             .load(url)
             .centerCrop()
-            .into(imageView)
+            .into(binding.customImageView)
 
-        descriptionView.text = description
+        binding.deschription.text = description
     }
 }
