@@ -3,7 +3,6 @@ package com.example.nasaapp.data.model
 
 import com.google.gson.annotations.SerializedName
 
-
 data class DataDto(
     @SerializedName("album")
     val album: List<String>,

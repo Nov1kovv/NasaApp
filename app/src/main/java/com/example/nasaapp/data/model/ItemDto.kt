@@ -2,7 +2,6 @@ package com.example.nasaapp.data.model
 
 import com.google.gson.annotations.SerializedName
 
-
 data class ItemDto(
     @SerializedName("data")
     val `data`: List<DataDto>,
