@@ -28,7 +28,7 @@ class SearchAdapter(private val items: List<SearchItem>) :
         holder.customView.imageView.setOnClickListener {
 
             val bundle = Bundle()
-            bundle.putParcelable("searchItem", item)
+            bundle.putString("searchItemId", item.description)
 
             val detailFragment = DetailFragment()
             detailFragment.arguments = bundle
