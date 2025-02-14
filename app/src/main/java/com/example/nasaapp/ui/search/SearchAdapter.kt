@@ -9,7 +9,6 @@ class SearchAdapter(private val items: List<SearchItem>) :
     class SearchViewHolder(val customView: CustomSearchItemView) :
         RecyclerView.ViewHolder(customView)
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val view = CustomSearchItemView(parent.context)
         return SearchViewHolder(view)
@@ -19,7 +18,7 @@ class SearchAdapter(private val items: List<SearchItem>) :
         val item = items[position]
 
         holder.customView.bind(item.description, item.date, item.imageUrl)
-        }
+    }
 
     override fun getItemCount(): Int = items.size
 }
