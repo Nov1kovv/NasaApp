@@ -3,10 +3,10 @@ package com.example.nasaapp.ui.search
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
 import com.example.nasaapp.domain.model.SearchItem
+import com.example.nasaapp.ui.search.details.DetailFragment
 
 class SearchAdapter(private val items: List<SearchItem>) :
     RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {

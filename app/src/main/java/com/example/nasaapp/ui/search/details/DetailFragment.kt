@@ -1,4 +1,4 @@
-package com.example.nasaapp.ui.search
+package com.example.nasaapp.ui.search.details
 
 import android.os.Bundle
 import android.view.LayoutInflater
