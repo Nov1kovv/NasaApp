@@ -8,9 +8,12 @@ object DtoToDomainMapper {
         return dto.collection.items.map { item ->
             val data = item.data.firstOrNull()
             SearchItem(
+                nasaId = data?.nasaId.orEmpty(),
                 description = data?.description.orEmpty(),
                 imageUrl = item.links.firstOrNull()?.href.orEmpty(),
-                date = data?.dateCreated.orEmpty()
+                date = data?.dateCreated.orEmpty(),
+                fileSize = "Unknown",
+                fileFormat = "Unknown"
             )
         }
     }

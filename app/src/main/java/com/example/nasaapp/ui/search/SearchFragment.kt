@@ -24,9 +24,9 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
-
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
+
         val searchView: androidx.appcompat.widget.SearchView = view.findViewById(R.id.search_view)
 
         searchViewModel.searchResults.observe(viewLifecycleOwner) { results ->
@@ -51,6 +51,11 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+                    lifecycleScope.launch {
+                        searchViewModel.fetchImageDetails(it)
+                    }
+                }
                 return true
             }
         })
@@ -59,7 +64,10 @@ class SearchFragment : Fragment() {
     }
     private fun onItemClick(searchItem: SearchItem) {
         val bundle = Bundle().apply {
-            putString("searchItemId", searchItem.description)
+            putString("imageUrl", searchItem.imageUrl)
+            putString("nasaId", searchItem.nasaId)
+            putString("description", searchItem.description)
+            putString("date", searchItem.date)
         }
         val detailFragment = DetailFragment().apply {
             arguments = bundle
