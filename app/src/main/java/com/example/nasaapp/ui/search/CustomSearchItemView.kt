@@ -18,6 +18,8 @@ class CustomSearchItemView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
+    val imageView: ImageView
+        get() = binding.customImageView
 
     private val binding: ViewSearchItemBinding =
         ViewSearchItemBinding.inflate(LayoutInflater.from(context), this, true)

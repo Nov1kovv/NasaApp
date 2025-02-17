@@ -35,7 +35,7 @@ class DetailFragment : Fragment() {
         downloadButton.setOnClickListener {
 
         }
-        }
+    }
 
         return binding.root
     }

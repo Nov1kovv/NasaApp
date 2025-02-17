@@ -8,7 +8,7 @@ import com.example.nasaapp.R
 import com.example.nasaapp.domain.model.SearchItem
 import com.example.nasaapp.ui.search.details.DetailFragment
 
-class SearchAdapter(private val items: List<SearchItem>) :
+class SearchAdapter(private val items: List<SearchItem>, private val action: (SearchItem) -> Unit) :
     RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
         class SearchViewHolder(val customView: CustomSearchItemView) :
@@ -25,18 +25,8 @@ class SearchAdapter(private val items: List<SearchItem>) :
         holder.customView.bind(item.description, item.date, item.imageUrl)
 
         holder.customView.imageView.setOnClickListener {
+            action.invoke(item)
 
-            val bundle = Bundle()
-            bundle.putString("searchItemId", item.description)
-
-            val detailFragment = DetailFragment()
-            detailFragment.arguments = bundle
-
-            val fragmentManager = (it.context as AppCompatActivity).supportFragmentManager
-            val transaction = fragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, detailFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
         }
     }
     override fun getItemCount(): Int = items.size

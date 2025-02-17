@@ -10,6 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
+import com.example.nasaapp.domain.model.SearchItem
+import com.example.nasaapp.ui.search.details.DetailFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -29,7 +31,9 @@ class SearchFragment : Fragment() {
 
         searchViewModel.searchResults.observe(viewLifecycleOwner) { results ->
             if (results.isNotEmpty()) {
-                recyclerView.adapter = SearchAdapter(results)
+                recyclerView.adapter = SearchAdapter(results) {searchItem->
+                    onItemClick(searchItem)
+                }
             } else {
                 Toast.makeText(context, "Нет данных по запросу", Toast.LENGTH_SHORT).show()
             }
@@ -52,5 +56,19 @@ class SearchFragment : Fragment() {
         })
 
         return view
+    }
+    private fun onItemClick(searchItem: SearchItem) {
+        val bundle = Bundle().apply {
+            putString("searchItemId", searchItem.description)
+        }
+        val detailFragment = DetailFragment().apply {
+            arguments = bundle
+        }
+
+        val fragmentManager = parentFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, detailFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }

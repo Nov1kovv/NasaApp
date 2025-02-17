@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp"
+    android:padding="@dimen/grid_2"
     android:background="@color/dark_gray">
 
     <ImageView
         android:id="@+id/image_view"
         android:layout_width="0dp"
         android:layout_height="300dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/video_placeholder"
+        android:layout_marginBottom="@dimen/grid_2"
+        android:background="@color/blue"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
