@@ -29,5 +29,4 @@ val appModule = module {
     single { SearchImagesUseCase(get()) }
 
     viewModel { SearchViewModel(get()) }
-
 }
