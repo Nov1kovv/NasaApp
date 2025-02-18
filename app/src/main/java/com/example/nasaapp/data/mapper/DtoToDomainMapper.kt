@@ -1,6 +1,6 @@
 package com.example.nasaapp.data.mapper
 
-import com.example.nasaapp.data.model.NasaResponseDto
+import com.example.nasaapp.data.model.search.NasaResponseDto
 import com.example.nasaapp.domain.model.SearchItem
 
 object DtoToDomainMapper {
