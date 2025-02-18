@@ -51,11 +51,6 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let {
-                    lifecycleScope.launch {
-                        searchViewModel.fetchImageDetails(it)
-                    }
-                }
                 return true
             }
         })
