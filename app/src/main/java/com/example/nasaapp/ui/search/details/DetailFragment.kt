@@ -5,14 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.nasaapp.databinding.DetailFragmentBinding
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class DetailFragment : Fragment() {
 
     private var _binding: DetailFragmentBinding? = null
     private val binding get() = _binding!!
+    private val detailViewModel: DetailViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,17 +24,23 @@ class DetailFragment : Fragment() {
     ): View? {
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
         val imageUrl = arguments?.getString("imageUrl")
-        val fileSize = arguments?.getString("fileSize")
-        val fileFormat = arguments?.getString("fileFormat")
         val nasaId = arguments?.getString("nasaId")
 
-        with(binding) {
-            fileSizeText.text = "File Size: $fileSize"
-            fileFormatText.text = "Format: $fileFormat"
-            nasaIdText.text = "NASA ID: $nasaId"
+        Glide.with(requireContext()).load(imageUrl).into(binding.imageView)
 
-            Glide.with(requireContext()).load(imageUrl).into(imageView)
+        if (nasaId != null) {
+            detailViewModel.fetchDetailedInfo(nasaId)
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            detailViewModel.fileInfo.observe(viewLifecycleOwner) { detailedItem ->
+                detailedItem?.let {
+                    binding.fileSizeText.text = "File Size: ${it.fileSize}"
+                    binding.fileFormatText.text = "Format: ${it.fileFormat}"
+                }
+            }
+        }
+
         return binding.root
     }
 
