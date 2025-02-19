@@ -11,9 +11,7 @@ object DtoToDomainMapper {
                 nasaId = data?.nasaId.orEmpty(),
                 description = data?.description.orEmpty(),
                 imageUrl = item.links.firstOrNull()?.href.orEmpty(),
-                date = data?.dateCreated.orEmpty(),
-                fileSize = "Unknown",
-                fileFormat = "Unknown"
+                date = data?.dateCreated.orEmpty()
             )
         }
     }

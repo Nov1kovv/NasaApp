@@ -7,14 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.nasaapp.databinding.DetailFragmentBinding
-import com.example.nasaapp.domain.model.SearchItem
+
 
 class DetailFragment : Fragment() {
 
     private var _binding: DetailFragmentBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var searchItem: SearchItem
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,5 +39,3 @@ class DetailFragment : Fragment() {
         _binding = null
     }
 }
-
-
