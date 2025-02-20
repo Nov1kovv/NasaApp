@@ -25,6 +25,8 @@ class DetailFragment : Fragment() {
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
         val imageUrl = arguments?.getString("imageUrl") ?:""
         val nasaId = arguments?.getString("nasaId") ?:""
+        val description = arguments?.getString("description") ?: ""
+        binding.fileDescriptionText.text = "Description: $description"
 
         Glide.with(requireContext())
             .load(imageUrl)
