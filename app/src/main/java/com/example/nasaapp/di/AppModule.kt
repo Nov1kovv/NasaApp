@@ -28,7 +28,7 @@ val appModule = module {
 
     single {
         Retrofit.Builder()
-            .baseUrl("https://images-api.nasa.gov/")
+            .baseUrl("https://images-api.nasa.gov")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
