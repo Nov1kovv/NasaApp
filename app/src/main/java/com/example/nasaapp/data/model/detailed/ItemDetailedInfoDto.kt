@@ -10,7 +10,7 @@ data class ItemDetailedInfoDto(
     @SerializedName("File:FileName")
     val fileFileName: String,
     @SerializedName("AVAIL:Album")
-    val availAlbum: String,
+    val availAlbum: List<String>,
     @SerializedName("XMP:DateCreated")
     val xmpDateCreated: String,
     @SerializedName("EXIF:ComponentsConfiguration")

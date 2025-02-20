@@ -7,6 +7,7 @@ import com.example.nasaapp.data.model.search.NasaResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 interface NasaApiService {
     @GET("search")
@@ -18,6 +19,6 @@ interface NasaApiService {
     @GET("metadata/{nasaId}")
     suspend fun getMetadataUrl(@Path("nasaId") nasaId: String): MetaDataLinkDto
 
-    @GET("{url}")
-    suspend fun getResourceInfo(@Path("url") url: String): ItemDetailedInfoDto
+    @GET
+    suspend fun getResourceInfo(@Url url: String): ItemDetailedInfoDto
 }

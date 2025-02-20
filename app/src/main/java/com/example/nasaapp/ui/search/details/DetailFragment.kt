@@ -23,8 +23,8 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
-        val imageUrl = arguments?.getString("imageUrl")
-        val nasaId = arguments?.getString("nasaId")
+        val imageUrl = arguments?.getString("imageUrl") ?:""
+        val nasaId = arguments?.getString("nasaId") ?:""
 
         Glide.with(requireContext()).load(imageUrl).into(binding.imageView)
 

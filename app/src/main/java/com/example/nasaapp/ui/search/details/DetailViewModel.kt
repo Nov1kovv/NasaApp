@@ -1,5 +1,6 @@
 package com.example.nasaapp.ui.search.details
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +17,20 @@ class DetailViewModel(private val getDetailedInfoUseCase: GetDetailedInfoUseCase
 
     fun fetchDetailedInfo(nasaId: String) {
         viewModelScope.launch {
-            fileInfo.value = getDetailedInfoUseCase.execute(nasaId)
+            try {
+                Log.d("DetailViewModel", "Fetching details for NASA ID: $nasaId")
+
+                val result = getDetailedInfoUseCase.execute(nasaId)
+
+                Log.d("DetailViewModel", "Response received: $result")
+
+                fileInfo.value = result
+
+            } catch (e: Exception) {
+                Log.e("DetailViewModel", "Error fetching details", e)
+
+                fileInfo.value = DetailedFileInfo(fileSize = "0 KB", fileFormat = "Unknown")
+            }
         }
     }
 }
