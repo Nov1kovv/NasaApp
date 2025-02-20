@@ -26,7 +26,10 @@ class DetailFragment : Fragment() {
         val imageUrl = arguments?.getString("imageUrl") ?:""
         val nasaId = arguments?.getString("nasaId") ?:""
 
-        Glide.with(requireContext()).load(imageUrl).into(binding.imageView)
+        Glide.with(requireContext())
+            .load(imageUrl)
+            .centerCrop()
+            .into(binding.imageView)
 
         if (nasaId != null) {
             detailViewModel.fetchDetailedInfo(nasaId)

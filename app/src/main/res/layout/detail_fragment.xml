@@ -11,7 +11,6 @@
         android:layout_width="0dp"
         android:layout_height="300dp"
         android:layout_marginBottom="@dimen/grid_2"
-        android:background="@color/blue"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -36,15 +35,7 @@
         app:layout_constraintTop_toBottomOf="@id/fileSizeText"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/nasaIdText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/grid_3"
-        android:text="NASA ID:"
-        app:layout_constraintTop_toBottomOf="@id/fileFormatText"
-        app:layout_constraintStart_toStartOf="parent" />
+
 
     <Button
         android:id="@+id/download_button"
@@ -56,7 +47,7 @@
         android:text="Download"
         android:layout_marginTop="@dimen/grid_2"
         app:cornerRadius="0dp"
-        app:layout_constraintTop_toBottomOf="@id/nasaIdText"
+        app:layout_constraintTop_toBottomOf="@id/fileFormatText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
