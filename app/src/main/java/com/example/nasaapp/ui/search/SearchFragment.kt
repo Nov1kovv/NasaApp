@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchFragment : Fragment() {
 
     private val searchViewModel: SearchViewModel by viewModel()
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,8 +30,10 @@ class SearchFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         val searchView: androidx.appcompat.widget.SearchView = view.findViewById(R.id.search_view)
+        progressBar = view.findViewById(R.id.progress_bar)
 
         searchViewModel.searchResults.observe(viewLifecycleOwner) { results ->
+            progressBar.visibility = View.GONE
             if (results.isNotEmpty()) {
                 recyclerView.adapter = SearchAdapter(results) {searchItem->
                     onItemClick(searchItem)
@@ -43,6 +47,7 @@ class SearchFragment : Fragment() {
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
+                    progressBar.visibility = View.VISIBLE
                     lifecycleScope.launch {
                         searchViewModel.fetchImageDetails(it)
                     }
