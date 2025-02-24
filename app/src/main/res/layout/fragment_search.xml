@@ -7,7 +7,9 @@
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view"
-        style="@style/CustomSearchViewStyle"/>
+        style="@style/CustomSearchViewStyle"
+        android:iconifiedByDefault="false"
+        android:queryHint="Поиск..." />
 
     <ProgressBar
         android:id="@+id/progress_bar"

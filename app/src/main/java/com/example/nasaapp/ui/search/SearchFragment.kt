@@ -56,11 +56,19 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                searchView.findViewById<View>(androidx.appcompat.R.id.search_close_btn).visibility =
+                    if (newText.isNullOrEmpty()) View.GONE else View.VISIBLE
                 return true
             }
         })
 
+        val closeButton = searchView.findViewById<View>(androidx.appcompat.R.id.search_close_btn)
+        closeButton.setOnClickListener {
+            searchView.setQuery("", false)
+        }
+
         return view
+
     }
     private fun onItemClick(searchItem: SearchItem) {
         val bundle = Bundle().apply {
