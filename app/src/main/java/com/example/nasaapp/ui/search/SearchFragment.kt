@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
 import com.example.nasaapp.domain.model.SearchItem
 import com.example.nasaapp.ui.search.details.DetailFragment
+import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -26,11 +27,19 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
+        val toolbar: MaterialToolbar = view.findViewById(R.id.toolbar)
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
+        progressBar = view.findViewById(R.id.progress_bar)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        val searchView: androidx.appcompat.widget.SearchView = view.findViewById(R.id.search_view)
-        progressBar = view.findViewById(R.id.progress_bar)
+        toolbar.inflateMenu(R.menu.menu_search)
+        val searchItem = toolbar.menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
+
+        searchView.queryHint = "Введите запрос..."
+
+        //val searchView: androidx.appcompat.widget.SearchView = view.findViewById(R.id.search_view)
+
 
         searchViewModel.searchResults.observe(viewLifecycleOwner) { results ->
             progressBar.visibility = View.GONE
@@ -56,19 +65,11 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                searchView.findViewById<View>(androidx.appcompat.R.id.search_close_btn).visibility =
-                    if (newText.isNullOrEmpty()) View.GONE else View.VISIBLE
                 return true
             }
         })
 
-        val closeButton = searchView.findViewById<View>(androidx.appcompat.R.id.search_close_btn)
-        closeButton.setOnClickListener {
-            searchView.setQuery("", false)
-        }
-
         return view
-
     }
     private fun onItemClick(searchItem: SearchItem) {
         val bundle = Bundle().apply {
