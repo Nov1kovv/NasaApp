@@ -44,6 +44,11 @@ class SearchFragment : Fragment() {
 
         searchView.queryHint = "Введите запрос..."
 
+        lifecycleScope.launch {
+            progressBar.visibility = View.VISIBLE
+            searchViewModel.fetchImageDetails("nasa")
+        }
+
         searchViewModel.searchResults.observe(viewLifecycleOwner) { results ->
             progressBar.visibility = View.GONE
             if (results.isNotEmpty()) {
