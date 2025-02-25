@@ -73,6 +73,8 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                val filterItem = toolbar.menu.findItem(R.id.action_filter)
+                filterItem.isVisible = newText?.isNotEmpty() == true
                 return true
             }
         })
