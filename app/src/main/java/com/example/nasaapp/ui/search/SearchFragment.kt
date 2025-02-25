@@ -34,6 +34,21 @@ class SearchFragment : Fragment() {
         progressBar = view.findViewById(R.id.progress_bar)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_filter -> {
+                    val filterDialog = FilterDialogFragment()
+
+                    filterDialog.setOnFilterSelectedListener { selectedType ->
+                        Toast.makeText(context, "Выбран тип: $selectedType", Toast.LENGTH_SHORT).show()
+                    }
+                    filterDialog.show(childFragmentManager, "filter_dialog")
+                    true
+                }
+                else -> false
+            }
+        }
+
         toolbar.inflateMenu(R.menu.menu_search)
         val searchItem = toolbar.menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
