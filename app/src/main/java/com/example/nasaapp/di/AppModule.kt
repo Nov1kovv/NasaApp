@@ -34,7 +34,6 @@ val appModule = module {
             .build()
     }
 
-
     single { get<Retrofit>().create(NasaApiService::class.java) }
 
     single { DtoToDomainMapper }

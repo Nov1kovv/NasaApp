@@ -13,7 +13,6 @@ import com.example.nasaapp.databinding.DetailFragmentBinding
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 class DetailFragment : Fragment() {
 
     private var _binding: DetailFragmentBinding? = null

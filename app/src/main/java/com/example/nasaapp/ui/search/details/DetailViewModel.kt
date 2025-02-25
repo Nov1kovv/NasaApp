@@ -5,10 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nasaapp.domain.model.DetailedFileInfo
-import com.example.nasaapp.domain.model.SearchItem
 import com.example.nasaapp.domain.usecase.GetDetailedInfoUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class DetailViewModel(private val getDetailedInfoUseCase: GetDetailedInfoUseCase) : ViewModel() {
