@@ -14,6 +14,7 @@
         android:layout_height="?attr/actionBarSize"
         app:title="Поиск"
         app:titleTextColor="@android:color/white"
+        android:background="@color/blue"
         app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
         app:contentInsetStart="0dp"
         app:contentInsetEnd="0dp"

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -33,6 +34,7 @@ class SearchFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
         progressBar = view.findViewById(R.id.progress_bar)
         recyclerView.layoutManager = LinearLayoutManager(context)
+        requireActivity().window.statusBarColor = Color.BLUE
 
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -52,10 +54,15 @@ class SearchFragment : Fragment() {
         toolbar.inflateMenu(R.menu.menu_search)
         val searchItem = toolbar.menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
+        val searchIcon = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon)
+        searchIcon.visibility = View.GONE
 
         val searchTextView = searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
         searchTextView.setTextColor(Color.WHITE)
         searchTextView.setHintTextColor(Color.GRAY)
+
+        val filterItem = toolbar.menu.findItem(R.id.action_filter)
+        filterItem.icon?.setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.SRC_IN)
 
         searchView.queryHint = "Введите запрос..."
 
@@ -90,10 +97,12 @@ class SearchFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 val filterItem = toolbar.menu.findItem(R.id.action_filter)
                 filterItem.isVisible = newText?.isNotEmpty() == true
+
+                val searchItem = toolbar.menu.findItem(R.id.action_search)
+                searchItem.isVisible = false
                 return true
             }
         })
-
         return view
     }
     private fun onItemClick(searchItem: SearchItem) {
