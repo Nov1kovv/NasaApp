@@ -66,6 +66,8 @@ class SearchFragment : Fragment() {
 
         searchView.queryHint = "Введите запрос..."
 
+
+
         lifecycleScope.launch {
             progressBar.visibility = View.VISIBLE
             searchViewModel.fetchImageDetails("nasa")

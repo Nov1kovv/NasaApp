@@ -8,5 +8,8 @@ data class ItemDto(
     @SerializedName("href")
     val href: String,
     @SerializedName("links")
-    val links: List<LinkDto>
+    val links: List<LinkDto>,
+    @SerializedName("render")
+    val render: String
+
 )

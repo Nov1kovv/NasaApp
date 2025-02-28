@@ -5,4 +5,5 @@ data class SearchItem(
     val imageUrl: String,
     val date: String,
     val nasaId: String,
+    val isVideo: Boolean
 )

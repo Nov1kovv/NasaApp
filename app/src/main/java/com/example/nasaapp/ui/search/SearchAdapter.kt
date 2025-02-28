@@ -17,7 +17,7 @@ class SearchAdapter(private val items: List<SearchItem>, private val action: (Se
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val item = items[position]
-        holder.customView.bind(item.description, item.date, item.imageUrl)
+        holder.customView.bind(item.description, item.date, item.imageUrl, item.isVideo)
 
         holder.customView.imageView.setOnClickListener {
             action.invoke(item)
