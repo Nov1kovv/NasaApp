@@ -42,11 +42,13 @@ class SearchFragment : Fragment() {
                     val filterDialog = FilterDialogFragment()
 
                     filterDialog.setOnFilterSelectedListener { selectedType ->
-                        Toast.makeText(context, "Выбран тип: $selectedType", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Выбран тип: $selectedType", Toast.LENGTH_SHORT)
+                            .show()
                     }
                     filterDialog.show(childFragmentManager, "filter_dialog")
                     true
                 }
+
                 else -> false
             }
         }
@@ -57,7 +59,8 @@ class SearchFragment : Fragment() {
         val searchIcon = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon)
         searchIcon.visibility = View.GONE
 
-        val searchTextView = searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
+        val searchTextView =
+            searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
         searchTextView.setTextColor(Color.WHITE)
         searchTextView.setHintTextColor(Color.GRAY)
 
@@ -74,7 +77,7 @@ class SearchFragment : Fragment() {
         searchViewModel.searchResults.observe(viewLifecycleOwner) { results ->
             progressBar.visibility = View.GONE
             if (results.isNotEmpty()) {
-                recyclerView.adapter = SearchAdapter(results) {searchItem->
+                recyclerView.adapter = SearchAdapter(results) { searchItem ->
                     onItemClick(searchItem)
                 }
             } else {
@@ -105,6 +108,7 @@ class SearchFragment : Fragment() {
         })
         return view
     }
+
     private fun onItemClick(searchItem: SearchItem) {
         val bundle = Bundle().apply {
             putString("imageUrl", searchItem.imageUrl)

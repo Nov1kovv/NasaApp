@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:background="@color/dark_gray">
 
     <ImageView
@@ -25,17 +25,17 @@
         android:src="@drawable/ic_video"
         app:layout_constraintBottom_toBottomOf="@id/customImageView"
         app:layout_constraintEnd_toEndOf="@id/customImageView"
-        app:layout_constraintTop_toTopOf="@id/customImageView"
-        app:layout_constraintStart_toStartOf="@id/customImageView"/>
+        app:layout_constraintStart_toStartOf="@id/customImageView"
+        app:layout_constraintTop_toTopOf="@id/customImageView" />
 
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="07.02.2025"
-        android:textSize="14sp"
         android:layout_marginStart="@dimen/grid_2"
+        android:text="07.02.2025"
         android:textColor="@color/white"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/customImageView"
         app:layout_constraintTop_toTopOf="@id/customImageView" />
@@ -44,19 +44,19 @@
         android:id="@+id/deschription"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        tools:text="Image Title jhgfgsdddddddddddds"
+        android:layout_margin="@dimen/grid_2"
         android:textColor="@color/white"
         android:textSize="14sp"
-        android:layout_margin="@dimen/grid_2"
         app:layout_constraintBottom_toBottomOf="@+id/customImageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/customImageView"
-        app:layout_constraintTop_toBottomOf="@id/date"/>
+        app:layout_constraintTop_toBottomOf="@id/date"
+        tools:text="Image Title jhgfgsdddddddddddds" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
         android:layout_marginTop="@dimen/grid_1"
-        app:layout_constraintTop_toBottomOf="@id/customImageView"/>
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/customImageView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

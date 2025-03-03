@@ -12,7 +12,7 @@ interface NasaApiService {
     @GET("search")
     suspend fun searchImages(
         @Query("q") query: String,
-        @Query("media_type") mediaType: String 
+        @Query("media_type") mediaType: String
     ): NasaResponseDto
 
     @GET("metadata/{nasaId}")

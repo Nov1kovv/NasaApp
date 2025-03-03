@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_search"
-        android:title="Поиск"
         android:icon="@android:drawable/ic_menu_search"
-        app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+        android:title="Поиск"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
 
     <item
         android:id="@+id/action_filter"
         android:icon="@drawable/ic_filter"
+        android:tint="@android:color/white"
         android:title="Filter"
-        app:showAsAction="ifRoom"
         android:visible="false"
-        android:tint="@android:color/white"/>
+        app:showAsAction="ifRoom" />
 </menu>

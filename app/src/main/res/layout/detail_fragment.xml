@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/dark_gray">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -10,83 +10,82 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/grid_2">
 
-    <ProgressBar
-        android:id="@+id/imageProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <ProgressBar
+            android:id="@+id/imageProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:layout_marginBottom="@dimen/grid_2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_marginBottom="@dimen/grid_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/fileInfoProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        app:layout_constraintTop_toBottomOf="@id/imageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <ProgressBar
+            android:id="@+id/fileInfoProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageView" />
 
-    <TextView
-        android:id="@+id/fileSizeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/grid_3"
-        android:textColor="@android:color/white"
-        android:text="File Size:"
-        app:layout_constraintTop_toBottomOf="@id/imageView"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/fileSizeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="File Size:"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/grid_3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageView" />
 
-    <TextView
-        android:id="@+id/fileFormatText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/grid_3"
-        android:text="Format:"
-        app:layout_constraintTop_toBottomOf="@id/fileSizeText"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/fileFormatText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Format:"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/grid_3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fileSizeText" />
 
-    <TextView
-        android:id="@+id/fileDescriptionText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/grid_3"
-        android:text="Description:"
-        app:layout_constraintTop_toBottomOf="@id/fileFormatText"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/fileDescriptionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description:"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/grid_3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fileFormatText" />
 
 
+        <Button
+            android:id="@+id/download_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/grid_2"
+            android:backgroundTint="@color/blue"
+            android:text="Download"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/grid_5"
+            app:cornerRadius="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fileDescriptionText" />
 
-    <Button
-        android:id="@+id/download_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/blue"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/grid_5"
-        android:text="Download"
-        android:layout_marginTop="@dimen/grid_2"
-        app:cornerRadius="0dp"
-        app:layout_constraintTop_toBottomOf="@id/fileDescriptionText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
 
