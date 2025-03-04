@@ -1,5 +1,6 @@
 package com.example.nasaapp.ui.search.details
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +40,7 @@ class DetailFragment : Fragment() {
         Log.d("DetailFragment", "Video URL: $imageUrl")
         val nasaId = arguments?.getString("nasaId") ?:""
         val description = arguments?.getString("description") ?: ""
+        val isVideo = arguments?.getBoolean("isVideo") ?: false
         binding.fileDescriptionText.text = "Description: $description"
         imageProgressBar = binding.root.findViewById(R.id.imageProgressBar)
         fileInfoProgressBar = binding.root.findViewById(R.id.fileInfoProgressBar)
@@ -47,7 +49,7 @@ class DetailFragment : Fragment() {
             .setTrackSelector(DefaultTrackSelector(requireContext()))
             .setLoadControl(DefaultLoadControl())
             .build()
-        val mediaItem = MediaItem.fromUri(imageUrl)
+        val mediaItem = MediaItem.fromUri(Uri.parse("android.resource://com.example.nasaapp/raw/vd"))
         exoPlayer?.setMediaItem(mediaItem)
         exoPlayer?.prepare()
         binding.playerView.player = exoPlayer
@@ -67,7 +69,7 @@ class DetailFragment : Fragment() {
             imageProgressBar.visibility = View.GONE
         }
 
-        if (nasaId != null) {
+        if (nasaId.isNotEmpty()) {
             fileInfoProgressBar.visibility = View.VISIBLE
             detailViewModel.fetchDetailedInfo(nasaId)
         }
