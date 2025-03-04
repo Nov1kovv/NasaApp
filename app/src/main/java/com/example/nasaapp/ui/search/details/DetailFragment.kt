@@ -39,11 +39,6 @@ class DetailFragment : Fragment() {
             .centerCrop()
             .into(binding.imageView)
 
-        Glide.with(requireContext())
-            .load(imageUrl)
-            .centerCrop()
-            .into(binding.imageView)
-
         binding.imageView.post{
             imageProgressBar.visibility = View.GONE
         }
