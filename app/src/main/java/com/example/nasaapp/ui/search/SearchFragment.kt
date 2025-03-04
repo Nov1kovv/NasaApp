@@ -115,6 +115,7 @@ class SearchFragment : Fragment() {
             putString("nasaId", searchItem.nasaId)
             putString("description", searchItem.description)
             putString("date", searchItem.date)
+            putBoolean("isVideo", searchItem.isVideo)
         }
         val detailFragment = DetailFragment().apply {
             arguments = bundle
