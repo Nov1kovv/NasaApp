@@ -1,5 +1,6 @@
 package com.example.nasaapp.data.api
 
+import com.example.nasaapp.data.model.detailed.AssetCollection
 import com.example.nasaapp.data.model.detailed.AssetCollectionDto
 import com.example.nasaapp.data.model.detailed.ItemDetailedInfoDto
 import com.example.nasaapp.data.model.detailed.MetaDataLinkDto
@@ -24,5 +25,5 @@ interface NasaApiService {
     suspend fun getResourceInfo(@Url url: String): ItemDetailedInfoDto
 
     @GET
-    suspend fun getVideoLink(@Url url: String): AssetCollectionDto
+    suspend fun getVideoLink(@Url url: String): AssetCollection
 }

@@ -14,6 +14,13 @@ class DetailNasaRemoteDataSource(private val apiService: NasaApiService) {
     suspend fun getVideoLink(nasaId: String): String {
         val assetCollection = apiService.getVideoLink("https://images-api.nasa.gov/asset/$nasaId")
         Log.d("DetailNasaRemoteDataSource", "Fetched video asset collection: $assetCollection")
-        return assetCollection.items.firstOrNull()?.href ?: ""
+        val videoItems = assetCollection.collection.items.filter {
+            it.href.endsWith(".mp4") == true
+        }
+
+        val videoLink = videoItems?.firstOrNull()?.href ?: ""
+        Log.d("DetailNasaRemoteDataSource", "Selected video link: $videoLink")
+
+        return videoLink
     }
 }
