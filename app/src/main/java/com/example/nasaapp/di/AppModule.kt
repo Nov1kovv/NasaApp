@@ -7,6 +7,7 @@ import com.example.nasaapp.data.repository.NasaRemoteDataSource
 import com.example.nasaapp.data.repository.NasaRepositoryImpl
 import com.example.nasaapp.domain.repository.NasaRepository
 import com.example.nasaapp.domain.usecase.GetDetailedInfoUseCase
+import com.example.nasaapp.domain.usecase.GetVideoLinkUseCase
 import com.example.nasaapp.domain.usecase.SearchImagesUseCase
 import com.example.nasaapp.ui.search.SearchViewModel
 import com.example.nasaapp.ui.search.details.DetailViewModel
@@ -48,7 +49,9 @@ val appModule = module {
 
     single { GetDetailedInfoUseCase(get()) }
 
+    single { GetVideoLinkUseCase(get()) }
+
     viewModel { SearchViewModel(get()) }
 
-    viewModel { DetailViewModel(get()) }
+    viewModel { DetailViewModel(get(),get()) }
 }

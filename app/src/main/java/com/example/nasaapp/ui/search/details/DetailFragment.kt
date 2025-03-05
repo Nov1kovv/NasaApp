@@ -48,7 +48,8 @@ class DetailFragment : Fragment() {
             .setTrackSelector(DefaultTrackSelector(requireContext()))
             .setLoadControl(DefaultLoadControl())
             .build()
-        val mediaItem = MediaItem.fromUri(Uri.parse(imageUrl))
+
+        val mediaItem = MediaItem.fromUri(Uri.parse(""))
         exoPlayer?.setMediaItem(mediaItem)
         exoPlayer?.prepare()
         binding.playerView.player = exoPlayer
@@ -66,6 +67,7 @@ class DetailFragment : Fragment() {
         if (nasaId.isNotEmpty()) {
             fileInfoProgressBar.visibility = View.VISIBLE
             detailViewModel.fetchDetailedInfo(nasaId)
+            detailViewModel.fetchVideoLink(nasaId)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -77,8 +79,23 @@ class DetailFragment : Fragment() {
                 }
             }
         }
+        detailViewModel.videoLink.observe(viewLifecycleOwner) { videoLink ->
+            if (videoLink.isNotEmpty()) {
+                Log.d("DetailFragment", "Video link received: $videoLink")
+                updatePlayerWithVideo(videoLink)
+            } else {
+                Log.e("DetailFragment", "Video link is empty or unavailable.")
+            }
+        }
 
         return binding.root
+    }
+
+    private fun updatePlayerWithVideo(videoLink: String) {
+        val mediaItem = MediaItem.fromUri(Uri.parse(videoLink))
+        exoPlayer?.setMediaItem(mediaItem)
+        exoPlayer?.prepare()
+        exoPlayer?.playWhenReady = true
     }
     override fun onStart() {
         super.onStart()

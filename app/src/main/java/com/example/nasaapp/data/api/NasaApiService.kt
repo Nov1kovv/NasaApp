@@ -1,7 +1,9 @@
 package com.example.nasaapp.data.api
 
+import com.example.nasaapp.data.model.detailed.AssetCollectionDto
 import com.example.nasaapp.data.model.detailed.ItemDetailedInfoDto
 import com.example.nasaapp.data.model.detailed.MetaDataLinkDto
+import com.example.nasaapp.data.model.search.CollectionDto
 import com.example.nasaapp.data.model.search.NasaResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -20,4 +22,7 @@ interface NasaApiService {
 
     @GET
     suspend fun getResourceInfo(@Url url: String): ItemDetailedInfoDto
+
+    @GET
+    suspend fun getVideoLink(@Url url: String): AssetCollectionDto
 }
