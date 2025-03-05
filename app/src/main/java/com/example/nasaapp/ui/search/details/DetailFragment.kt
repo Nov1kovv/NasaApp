@@ -1,5 +1,6 @@
 package com.example.nasaapp.ui.search.details
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -93,10 +94,10 @@ class DetailFragment : Fragment() {
 
     private fun updatePlayerWithVideo(videoLink: String) {
         if (videoLink.isNotEmpty()) {
-        val mediaItem = MediaItem.fromUri(Uri.parse(videoLink))
-        exoPlayer?.setMediaItem(mediaItem)
-        exoPlayer?.prepare()
-        exoPlayer?.playWhenReady = true
+            val mediaItem = MediaItem.fromUri(Uri.parse(videoLink))
+            exoPlayer?.setMediaItem(mediaItem)
+            exoPlayer?.prepare()
+            exoPlayer?.playWhenReady = true
             Log.d("DetailFragment", "Playing video from URL: $videoLink")
         } else {
             Log.e("DetailFragment", "No video link available to play")
