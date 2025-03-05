@@ -40,7 +40,6 @@ class DetailFragment : Fragment() {
         Log.d("DetailFragment", "Video URL: $imageUrl")
         val nasaId = arguments?.getString("nasaId") ?:""
         val description = arguments?.getString("description") ?: ""
-        val isVideo = arguments?.getBoolean("isVideo") ?: false
         binding.fileDescriptionText.text = "Description: $description"
         imageProgressBar = binding.root.findViewById(R.id.imageProgressBar)
         fileInfoProgressBar = binding.root.findViewById(R.id.fileInfoProgressBar)
@@ -49,17 +48,12 @@ class DetailFragment : Fragment() {
             .setTrackSelector(DefaultTrackSelector(requireContext()))
             .setLoadControl(DefaultLoadControl())
             .build()
-        val mediaItem = MediaItem.fromUri(Uri.parse("android.resource://com.example.nasaapp/raw/vd"))
+        val mediaItem = MediaItem.fromUri(Uri.parse(imageUrl))
         exoPlayer?.setMediaItem(mediaItem)
         exoPlayer?.prepare()
         binding.playerView.player = exoPlayer
 
         imageProgressBar.visibility = View.VISIBLE
-        Glide.with(requireContext())
-            .load(imageUrl)
-            .centerCrop()
-            .into(binding.imageView)
-
         Glide.with(requireContext())
             .load(imageUrl)
             .centerCrop()
