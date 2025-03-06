@@ -9,7 +9,8 @@ class DetailNasaRemoteDataSource(private val apiService: NasaApiService) {
     suspend fun getDetailedInfo(nasaId: String): DetailedFileInfo {
         val metadata = apiService.getMetadataUrl(nasaId)
         val detailedInfoDto = apiService.getResourceInfo(metadata.location)
-        return DetailedDtoToDomainMapper.map(detailedInfoDto)
+        val videoUrl = getVideoLink(nasaId)
+        return DetailedDtoToDomainMapper.map(detailedInfoDto,videoUrl)
     }
     suspend fun getVideoLink(nasaId: String): String {
         val assetCollection = apiService.getVideoLink("https://images-api.nasa.gov/asset/$nasaId")

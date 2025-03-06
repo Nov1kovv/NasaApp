@@ -82,8 +82,10 @@ class DetailFragment : Fragment() {
         }
         detailViewModel.videoLink.observe(viewLifecycleOwner) { videoLink ->
             if (videoLink.isNotEmpty()) {
-                Log.d("DetailFragment", "Video link received: $videoLink")
-                updatePlayerWithVideo(videoLink)
+                val fixedVideoLink = videoLink.replace(" ", "%20")
+                    .replace("http://", "https://")
+                Log.d("DetailFragment", "Video link received: $fixedVideoLink")
+                updatePlayerWithVideo(fixedVideoLink)
             } else {
                 Log.e("DetailFragment", "Video link is empty or unavailable.")
             }
@@ -94,7 +96,10 @@ class DetailFragment : Fragment() {
 
     private fun updatePlayerWithVideo(videoLink: String) {
         if (videoLink.isNotEmpty()) {
-            val mediaItem = MediaItem.fromUri(Uri.parse(videoLink))
+            val fixedVideoLink = videoLink.replace(" ", "%20")
+                .replace("http://", "https://")
+            Log.d("DetailFragment", "Fixed Video URL: $fixedVideoLink")
+            val mediaItem = MediaItem.fromUri(Uri.parse(fixedVideoLink))
             exoPlayer?.setMediaItem(mediaItem)
             exoPlayer?.prepare()
             exoPlayer?.playWhenReady = true
