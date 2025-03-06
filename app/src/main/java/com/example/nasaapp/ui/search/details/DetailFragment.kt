@@ -1,6 +1,5 @@
 package com.example.nasaapp.ui.search.details
 
-import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -82,24 +81,24 @@ class DetailFragment : Fragment() {
         }
         detailViewModel.videoLink.observe(viewLifecycleOwner) { videoLink ->
             if (videoLink.isNotEmpty()) {
-                val fixedVideoLink = videoLink.replace(" ", "%20")
-                    .replace("http://", "https://")
+                val fixedVideoLink = formatVideoUrl(videoLink)
                 Log.d("DetailFragment", "Video link received: $fixedVideoLink")
                 updatePlayerWithVideo(fixedVideoLink)
             } else {
                 Log.e("DetailFragment", "Video link is empty or unavailable.")
             }
         }
-
         return binding.root
+    }
+
+    private fun formatVideoUrl(videoLink: String): String {
+        return videoLink.replace(" ", "%20")
+            .replace("http://", "https://")
     }
 
     private fun updatePlayerWithVideo(videoLink: String) {
         if (videoLink.isNotEmpty()) {
-            val fixedVideoLink = videoLink.replace(" ", "%20")
-                .replace("http://", "https://")
-            Log.d("DetailFragment", "Fixed Video URL: $fixedVideoLink")
-            val mediaItem = MediaItem.fromUri(Uri.parse(fixedVideoLink))
+            val mediaItem = MediaItem.fromUri(Uri.parse(videoLink))
             exoPlayer?.setMediaItem(mediaItem)
             exoPlayer?.prepare()
             exoPlayer?.playWhenReady = true
