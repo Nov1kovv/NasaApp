@@ -24,6 +24,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
 
+    companion object {
+        const val KEY_IMAGE_URL = "imageUrl"
+        const val KEY_NASA_ID = "nasaId"
+        const val KEY_DESCRIPTION = "description"
+        const val KEY_DATE = "date"
+    }
+
     private val searchViewModel: SearchViewModel by viewModel()
     private lateinit var binding: FragmentSearchBinding
     private lateinit var progressBar: ProgressBar
@@ -120,11 +127,12 @@ class SearchFragment : Fragment() {
 
     private fun onItemClick(searchItem: SearchItem) {
         val bundle = Bundle().apply {
-            putString("imageUrl", searchItem.imageUrl)
-            putString("nasaId", searchItem.nasaId)
-            putString("description", searchItem.description)
-            putString("date", searchItem.date)
+            putString(KEY_IMAGE_URL, searchItem.imageUrl)
+            putString(KEY_NASA_ID, searchItem.nasaId)
+            putString(KEY_DESCRIPTION, searchItem.description)
+            putString(KEY_DATE, searchItem.date)
         }
+
         val detailFragment = DetailFragment().apply {
             arguments = bundle
         }
@@ -139,7 +147,7 @@ class SearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         val toolbar: MaterialToolbar = binding.toolbar
         val recyclerView: RecyclerView = binding.recyclerView
