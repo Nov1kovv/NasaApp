@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
@@ -19,7 +18,6 @@ import com.example.nasaapp.databinding.FragmentSearchBinding
 import com.example.nasaapp.domain.model.SearchItem
 import com.example.nasaapp.ui.search.details.DetailFragment
 import com.google.android.material.appbar.MaterialToolbar
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -81,11 +79,13 @@ class SearchFragment : Fragment() {
 
         searchView.queryHint = "Введите запрос..."
 
-        searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 onSearchQuerySubmit(query)
                 return true
             }
+
             //переделать на UDF MVVM
             override fun onQueryTextChange(newText: String?): Boolean {
                 onSearchQueryChange(newText)
@@ -97,7 +97,7 @@ class SearchFragment : Fragment() {
     private fun onSearchQuerySubmit(query: String?) {
         query?.let {
             progressBar.visibility = View.VISIBLE
-                searchViewModel.fetchImageDetails(it)
+            searchViewModel.fetchImageDetails(it)
         }
     }
 
@@ -115,6 +115,7 @@ class SearchFragment : Fragment() {
                 showFilterDialog()
                 true
             }
+
             else -> false
         }
     }

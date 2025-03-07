@@ -24,7 +24,7 @@ class DetailViewModel(private val getDetailedInfoUseCase: GetDetailedInfoUseCase
                 fileInfo.value = result
 
             } catch (e: Exception) {
-               e.printStackTrace()
+                e.printStackTrace()
                 fileInfo.value = DetailedFileInfo(fileSize = "0 KB", fileFormat = "Unknown")
             }
         }
