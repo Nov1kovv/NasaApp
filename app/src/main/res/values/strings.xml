@@ -5,4 +5,5 @@
     <string name="todo">TODO</string>
     <string name="search_hint">Search for images</string>
     <string name="search_for_images">Search for images</string>
+    <string name="search_title">Поиск</string>
 </resources>
