@@ -11,11 +11,18 @@ import kotlinx.coroutines.launch
 class SearchViewModel(private val searchImagesUseCase: SearchImagesUseCase) : ViewModel() {
 
     val searchResults = MutableLiveData<List<SearchItem>>()
+    val isLoading = MutableLiveData<Boolean>()
+
+    init {
+        fetchImageDetails("nasa")
+    }
 
     fun fetchImageDetails(query: String) {
+        isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             val result = searchImagesUseCase.execute(query)
             searchResults.postValue(result)
+            isLoading.postValue(false)
         }
     }
 }

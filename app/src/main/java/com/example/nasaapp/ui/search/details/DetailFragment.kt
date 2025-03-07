@@ -20,15 +20,15 @@ class DetailFragment : Fragment() {
     private val detailViewModel: DetailViewModel by viewModel()
     private lateinit var imageProgressBar: ProgressBar
     private lateinit var fileInfoProgressBar: ProgressBar
+    private val imageUrl: String by lazy { arguments?.getString("imageUrl") ?: "" }
+    private val nasaId: String by lazy { arguments?.getString("nasaId") ?: "" }
+    private val description: String by lazy { arguments?.getString("description") ?: "" }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
-        val imageUrl = arguments?.getString("imageUrl") ?:""
-        val nasaId = arguments?.getString("nasaId") ?:""
-        val description = arguments?.getString("description") ?: ""
         binding.fileDescriptionText.text = "Description: $description"
         imageProgressBar = binding.root.findViewById(R.id.imageProgressBar)
         fileInfoProgressBar = binding.root.findViewById(R.id.fileInfoProgressBar)

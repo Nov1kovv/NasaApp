@@ -35,6 +35,28 @@ class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private lateinit var progressBar: ProgressBar
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        val toolbar: MaterialToolbar = binding.toolbar
+        val recyclerView: RecyclerView = binding.recyclerView
+        progressBar = binding.progressBar
+
+        requireActivity().window.statusBarColor = Color.BLUE
+
+        setupToolbar(toolbar)
+
+        setupRecyclerView(recyclerView)
+
+        observeSearchResults(recyclerView)
+
+        observeLoadingState()
+
+        return binding.root
+    }
+
     private fun setupToolbar(toolbar: MaterialToolbar) {
         toolbar.setOnMenuItemClickListener { item ->
             onMenuItemClick(item)
@@ -75,9 +97,7 @@ class SearchFragment : Fragment() {
     private fun onSearchQuerySubmit(query: String?) {
         query?.let {
             progressBar.visibility = View.VISIBLE
-            lifecycleScope.launch {
                 searchViewModel.fetchImageDetails(it)
-            }
         }
     }
 
@@ -125,6 +145,13 @@ class SearchFragment : Fragment() {
         }
     }
 
+    private fun observeLoadingState() {
+        searchViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+    }
+
+
     private fun onItemClick(searchItem: SearchItem) {
         val bundle = Bundle().apply {
             putString(KEY_IMAGE_URL, searchItem.imageUrl)
@@ -142,30 +169,5 @@ class SearchFragment : Fragment() {
         transaction.replace(R.id.fragment_container, detailFragment)
         transaction.addToBackStack(null)
         transaction.commit()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
-        val toolbar: MaterialToolbar = binding.toolbar
-        val recyclerView: RecyclerView = binding.recyclerView
-        progressBar = binding.progressBar
-
-        requireActivity().window.statusBarColor = Color.BLUE
-
-        setupToolbar(toolbar)
-
-        setupRecyclerView(recyclerView)
-
-        observeSearchResults(recyclerView)
-
-        lifecycleScope.launch {
-            progressBar.visibility = View.VISIBLE
-            searchViewModel.fetchImageDetails("nasa")
-        }
-
-        return binding.root
     }
 }
