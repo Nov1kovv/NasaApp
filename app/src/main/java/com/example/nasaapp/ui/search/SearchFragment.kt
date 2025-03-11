@@ -17,6 +17,7 @@ import com.example.nasaapp.R
 import com.example.nasaapp.domain.model.SearchItem
 import com.example.nasaapp.ui.search.details.DetailFragment
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -91,7 +92,7 @@ class SearchFragment : Fragment() {
                 query?.let {
                     progressBar.visibility = View.VISIBLE
                     lifecycleScope.launch {
-                        searchViewModel.fetchImageDetails(it)
+                        searchViewModel.fetchImageDetails(it) 
                     }
                 }
                 return true

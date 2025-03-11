@@ -83,8 +83,10 @@ class DetailFragment : Fragment() {
             if (videoLink.isNotEmpty()) {
                 val fixedVideoLink = formatVideoUrl(videoLink)
                 Log.d("DetailFragment", "Video link received: $fixedVideoLink")
+                binding.imageView.visibility = View.GONE
                 updatePlayerWithVideo(fixedVideoLink)
             } else {
+                binding.playerView.visibility = View.GONE
                 Log.e("DetailFragment", "Video link is empty or unavailable.")
             }
         }
