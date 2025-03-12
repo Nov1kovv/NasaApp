@@ -95,6 +95,7 @@ class DetailFragment : Fragment() {
 
     private fun formatVideoUrl(videoLink: String): String {
         return videoLink.replace(" ", "%20")
+            .replace("+", "%2B")
             .replace("http://", "https://")
     }
 
