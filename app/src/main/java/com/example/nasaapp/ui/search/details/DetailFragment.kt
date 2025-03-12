@@ -1,5 +1,6 @@
 package com.example.nasaapp.ui.search.details
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,6 +30,7 @@ class DetailFragment : Fragment() {
     private lateinit var imageProgressBar: ProgressBar
     private lateinit var fileInfoProgressBar: ProgressBar
     private var exoPlayer: ExoPlayer? = null
+    private var mediaUrl: String = ""
 
     @OptIn(UnstableApi::class)
     override fun onCreateView(
@@ -85,11 +87,18 @@ class DetailFragment : Fragment() {
                 Log.d("DetailFragment", "Video link received: $fixedVideoLink")
                 binding.imageView.visibility = View.GONE
                 updatePlayerWithVideo(fixedVideoLink)
+                mediaUrl = fixedVideoLink
             } else {
                 binding.playerView.visibility = View.GONE
+                mediaUrl = imageUrl
                 Log.e("DetailFragment", "Video link is empty or unavailable.")
             }
         }
+
+        binding.shareButton.setOnClickListener {
+            shareContent(mediaUrl)
+        }
+
         return binding.root
     }
 
@@ -109,6 +118,13 @@ class DetailFragment : Fragment() {
         } else {
             Log.e("DetailFragment", "No video link available to play")
         }
+    }
+
+    private fun shareContent(url: String) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, url)
+        startActivity(Intent.createChooser(intent, "Поделиться через"))
     }
 
     override fun onStart() {
