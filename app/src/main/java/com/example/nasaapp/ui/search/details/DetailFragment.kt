@@ -58,7 +58,7 @@ class DetailFragment : Fragment() {
 
         imageProgressBar.visibility = View.VISIBLE
         Glide.with(requireContext())
-            .load(imageUrl)
+            .load(formatImageUrl(imageUrl))
             .centerCrop()
             .into(binding.imageView)
 
@@ -104,6 +104,12 @@ class DetailFragment : Fragment() {
 
     private fun formatVideoUrl(videoLink: String): String {
         return videoLink.replace(" ", "%20")
+            .replace("+", "%2B")
+            .replace("http://", "https://")
+    }
+
+    private fun formatImageUrl(imageUrl: String): String {
+        return imageUrl.replace(" ", "%20")
             .replace("+", "%2B")
             .replace("http://", "https://")
     }
