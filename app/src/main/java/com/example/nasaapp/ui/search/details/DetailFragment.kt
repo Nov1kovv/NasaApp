@@ -1,8 +1,13 @@
 package com.example.nasaapp.ui.search.details
 
+import android.Manifest
+import android.app.DownloadManager
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +17,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import android.util.Log
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
@@ -95,6 +103,14 @@ class DetailFragment : Fragment() {
             }
         }
 
+        binding.downloadButton.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+            } else {
+                downloadContent(mediaUrl)
+            }
+        }
+
         binding.shareButton.setOnClickListener {
             shareContent(mediaUrl)
         }
@@ -124,6 +140,26 @@ class DetailFragment : Fragment() {
         } else {
             Log.e("DetailFragment", "No video link available to play")
         }
+    }
+
+    private fun downloadContent(url: String) {
+        if (url.isEmpty()) {
+            Log.e("DetailFragment", "No content to download")
+            return
+        }
+
+        val uri = Uri.parse(url)
+        val fileName = uri.lastPathSegment ?: "downloaded_file"
+
+        val request = DownloadManager.Request(uri)
+            .setTitle(fileName)
+            .setDescription("Downloading file")
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+
+        val downloadManager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        downloadManager.enqueue(request)
+
+        Toast.makeText(requireContext(), "Downloading $fileName", Toast.LENGTH_SHORT).show()
     }
 
     private fun shareContent(url: String) {
