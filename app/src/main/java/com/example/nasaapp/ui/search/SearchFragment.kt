@@ -25,6 +25,7 @@ class SearchFragment : Fragment() {
 
     private val searchViewModel: SearchViewModel by viewModel()
     private lateinit var progressBar: ProgressBar
+    private var selectedMediaType: String = "image"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,24 +38,8 @@ class SearchFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         requireActivity().window.statusBarColor = Color.BLUE
 
-        toolbar.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.action_filter -> {
-                    val filterDialog = FilterDialogFragment()
 
-                    filterDialog.setOnFilterSelectedListener { selectedType ->
-                        Toast.makeText(context, "Выбран тип: $selectedType", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                    filterDialog.show(childFragmentManager, "filter_dialog")
-                    true
-                }
-
-                else -> false
-            }
-        }
-
-        toolbar.inflateMenu(R.menu.menu_search)
+    toolbar.inflateMenu(R.menu.menu_search)
         val searchItem = toolbar.menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
         val searchIcon = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon)
@@ -70,10 +55,21 @@ class SearchFragment : Fragment() {
 
         searchView.queryHint = "Введите запрос..."
 
-        lifecycleScope.launch {
-            progressBar.visibility = View.VISIBLE
-            searchViewModel.fetchImageDetails("nasa")
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_filter -> {
+                    val filterDialog = FilterDialogFragment()
+                    filterDialog.setOnFilterSelectedListener { selectedType ->
+                        selectedMediaType = selectedType
+                        performSearch(searchView.query.toString())
+                    }
+                    filterDialog.show(childFragmentManager, "filter_dialog")
+                    true
+                }
+                else -> false
+            }
         }
+        performSearch("nasa")
 
         searchViewModel.searchResults.observe(viewLifecycleOwner) { results ->
             progressBar.visibility = View.GONE
@@ -92,7 +88,7 @@ class SearchFragment : Fragment() {
                 query?.let {
                     progressBar.visibility = View.VISIBLE
                     lifecycleScope.launch {
-                        searchViewModel.fetchImageDetails(it) 
+                        performSearch(it)
                     }
                 }
                 return true
@@ -108,6 +104,13 @@ class SearchFragment : Fragment() {
             }
         })
         return view
+    }
+
+    private fun performSearch(query: String) {
+        progressBar.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            searchViewModel.fetchImageDetails(query, selectedMediaType)
+        }
     }
 
     private fun onItemClick(searchItem: SearchItem) {

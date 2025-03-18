@@ -14,11 +14,13 @@ class FilterDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val types = arrayOf("Image", "Video", "Audio")
+        val types = arrayOf("Image", "Video")
+        val apiTypes = arrayOf("image", "video")
+
         return AlertDialog.Builder(requireContext())
-            .setTitle("Select Data Type")
+            .setTitle("Выберите тип данных")
             .setItems(types) { _, which ->
-                val selectedType = types[which]
+                val selectedType = apiTypes[which]
                 listener?.invoke(selectedType)
             }
             .create()

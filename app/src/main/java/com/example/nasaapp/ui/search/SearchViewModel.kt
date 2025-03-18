@@ -1,5 +1,6 @@
 package com.example.nasaapp.ui.search
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,10 +13,19 @@ class SearchViewModel(private val searchImagesUseCase: SearchImagesUseCase) : Vi
 
     val searchResults = MutableLiveData<List<SearchItem>>()
 
-    fun fetchImageDetails(query: String) {
+    fun fetchImageDetails(query: String, mediaType: String = "image") {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = searchImagesUseCase.execute(query)
-            searchResults.postValue(result)
+            try {
+                val result = searchImagesUseCase.execute(query, mediaType)
+                searchResults.postValue(result)
+            } catch (e: Exception) {
+                searchResults.postValue(emptyList())
+                Log.e("SearchViewModel", "Ошибка при поиске данных", e)
+            }
         }
+    }
+
+    fun search(mediaType: String) {
+        fetchImageDetails("nasa", mediaType)
     }
 }

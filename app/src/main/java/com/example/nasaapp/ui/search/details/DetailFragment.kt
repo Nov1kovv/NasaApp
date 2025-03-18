@@ -156,8 +156,8 @@ class DetailFragment : Fragment() {
             .setDescription("Downloading file")
             .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
 
-        val downloadManager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        downloadManager.enqueue(request)
+        val downloadManager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as? DownloadManager
+        downloadManager?.enqueue(request)
 
         Toast.makeText(requireContext(), "Downloading $fileName", Toast.LENGTH_SHORT).show()
     }
