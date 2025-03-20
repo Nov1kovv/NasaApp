@@ -11,8 +11,8 @@ class NasaRepositoryImpl(
     private val remoteDataSource: NasaRemoteDataSource,
     private val detailNasaRemoteDataSource: DetailNasaRemoteDataSource
 ) : NasaRepository {
-    override suspend fun searchImages(query: String, mediaType: String?): List<SearchItem> {
-        val response = remoteDataSource.searchImages(query, mediaType.toString())
+    override suspend fun searchImages(query: String, mediaType: String?,page: Int): List<SearchItem> {
+        val response = remoteDataSource.searchImages(query, mediaType?: "image,video,audio",page)
         return response
     }
 

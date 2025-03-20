@@ -1,6 +1,7 @@
 package com.example.nasaapp.ui.search
 
 import android.graphics.Color
+import androidx.appcompat.widget.SearchView
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,42 +12,55 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
+import com.example.nasaapp.data.paging.SearchPagingAdapter
 import com.example.nasaapp.domain.model.SearchItem
 import com.example.nasaapp.ui.search.details.DetailFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
 
     private val searchViewModel: SearchViewModel by viewModel()
+    private lateinit var adapter: SearchPagingAdapter
     private lateinit var progressBar: ProgressBar
     private var selectedMediaType: String = "image"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
         val toolbar: MaterialToolbar = view.findViewById(R.id.toolbar)
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
         progressBar = view.findViewById(R.id.progress_bar)
-        recyclerView.layoutManager = LinearLayoutManager(context)
+
         requireActivity().window.statusBarColor = Color.BLUE
 
+        setupToolbar(toolbar)
+        setupRecyclerView(recyclerView)
+        observeSearchResults("")
 
-    toolbar.inflateMenu(R.menu.menu_search)
+        return view
+    }
+
+    private fun setupToolbar(toolbar: MaterialToolbar) {
+        toolbar.inflateMenu(R.menu.menu_search)
+
         val searchItem = toolbar.menu.findItem(R.id.action_search)
-        val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
+        val searchView = searchItem.actionView as SearchView
         val searchIcon = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon)
         searchIcon.visibility = View.GONE
 
-        val searchTextView =
-            searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
+        val searchTextView = searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
         searchTextView.setTextColor(Color.WHITE)
         searchTextView.setHintTextColor(Color.GRAY)
 
@@ -69,48 +83,46 @@ class SearchFragment : Fragment() {
                 else -> false
             }
         }
-        performSearch("nasa")
 
-        searchViewModel.searchResults.observe(viewLifecycleOwner) { results ->
-            progressBar.visibility = View.GONE
-            if (results.isNotEmpty()) {
-                recyclerView.adapter = SearchAdapter(results) { searchItem ->
-                    onItemClick(searchItem)
-                }
-            } else {
-                Toast.makeText(context, "Нет данных по запросу", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        searchView.setOnQueryTextListener(object :
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let {
-                    progressBar.visibility = View.VISIBLE
-                    lifecycleScope.launch {
-                        performSearch(it)
-                    }
-                }
+                query?.let { performSearch(it) }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                val filterItem = toolbar.menu.findItem(R.id.action_filter)
                 filterItem.isVisible = newText?.isNotEmpty() == true
-
-                val searchItem = toolbar.menu.findItem(R.id.action_search)
                 searchItem.isVisible = false
                 return true
             }
         })
-        return view
+    }
+
+    private fun setupRecyclerView(recyclerView: RecyclerView) {
+        adapter = SearchPagingAdapter { searchItem -> onItemClick(searchItem) }
+
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
+
+        adapter.addLoadStateListener { loadStates ->
+            progressBar.visibility = if (loadStates.refresh is LoadState.Loading) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun observeSearchResults(query: String) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.STARTED) {
+                searchViewModel.searchImages(query, selectedMediaType).collectLatest { pagingData ->
+                    adapter.submitData(pagingData)
+                }
+            }
+        }
     }
 
     private fun performSearch(query: String) {
         progressBar.visibility = View.VISIBLE
-        lifecycleScope.launch {
-            searchViewModel.fetchImageDetails(query, selectedMediaType)
-        }
+        adapter.refresh()
+        observeSearchResults(query)
     }
 
     private fun onItemClick(searchItem: SearchItem) {
@@ -121,14 +133,6 @@ class SearchFragment : Fragment() {
             putString("date", searchItem.date)
             putBoolean("isVideo", searchItem.isVideo)
         }
-        val detailFragment = DetailFragment().apply {
-            arguments = bundle
-        }
-
-        val fragmentManager = parentFragmentManager
-        val transaction = fragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, detailFragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+        findNavController().navigate(R.id.action_searchFragment_to_detailFragment, bundle)
     }
 }

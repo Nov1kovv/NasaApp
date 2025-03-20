@@ -14,8 +14,8 @@ class FilterDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val types = arrayOf("Image", "Video")
-        val apiTypes = arrayOf("image", "video")
+        val types = arrayOf("Image", "Video", "Audio")
+        val apiTypes = arrayOf("image", "video", "audio")
 
         return AlertDialog.Builder(requireContext())
             .setTitle("Выберите тип данных")
