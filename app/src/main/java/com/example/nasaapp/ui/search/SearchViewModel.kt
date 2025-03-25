@@ -17,10 +17,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class SearchViewModel(private val repository: NasaRepository) : ViewModel() {
+    private var lastQuery: String = ""
+
     fun searchImages(query: String, mediaType: String): Flow<PagingData<SearchItem>> {
+        lastQuery = query
         return Pager(
             config = PagingConfig(pageSize = 10, prefetchDistance = 2),
             pagingSourceFactory = { NasaPagingSource(repository, query, mediaType) }
         ).flow.cachedIn(viewModelScope)
     }
+    fun getLastQuery(): String = lastQuery
 }

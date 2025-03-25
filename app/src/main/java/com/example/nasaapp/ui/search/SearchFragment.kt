@@ -52,6 +52,15 @@ class SearchFragment : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val lastQuery = searchViewModel.getLastQuery()
+        if (lastQuery.isNotEmpty()) {
+            performSearch(lastQuery)
+        }
+    }
+
     private fun setupToolbar(toolbar: MaterialToolbar) {
         toolbar.inflateMenu(R.menu.menu_search)
 
