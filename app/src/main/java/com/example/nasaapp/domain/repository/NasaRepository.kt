@@ -1,6 +1,5 @@
 package com.example.nasaapp.domain.repository
 
-import com.example.nasaapp.data.model.detailed.AssetCollectionDto
 import com.example.nasaapp.domain.model.DetailedFileInfo
 import com.example.nasaapp.domain.model.SearchItem
 

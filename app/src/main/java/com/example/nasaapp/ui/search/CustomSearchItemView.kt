@@ -9,7 +9,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.example.nasaapp.databinding.ViewSearchItemBinding
-import com.facebook.shimmer.Shimmer
 import java.text.SimpleDateFormat
 import java.util.Locale
 

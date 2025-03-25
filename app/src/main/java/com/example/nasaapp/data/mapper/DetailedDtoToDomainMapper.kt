@@ -1,7 +1,5 @@
 package com.example.nasaapp.data.mapper
 
-import android.net.Uri
-import com.example.nasaapp.data.model.detailed.AssetCollection
 import com.example.nasaapp.data.model.detailed.ItemDetailedInfoDto
 import com.example.nasaapp.domain.model.DetailedFileInfo
 

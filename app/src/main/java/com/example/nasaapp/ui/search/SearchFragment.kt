@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -20,9 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
 import com.example.nasaapp.data.paging.SearchPagingAdapter
 import com.example.nasaapp.domain.model.SearchItem
-import com.example.nasaapp.ui.search.details.DetailFragment
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel

@@ -1,12 +1,10 @@
 package com.example.nasaapp.ui.search.details
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nasaapp.domain.model.DetailedFileInfo
-import com.example.nasaapp.domain.repository.NasaRepository
 import com.example.nasaapp.domain.usecase.GetDetailedInfoUseCase
 import com.example.nasaapp.domain.usecase.GetVideoLinkUseCase
 import kotlinx.coroutines.launch
