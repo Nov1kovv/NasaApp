@@ -1,4 +1,4 @@
-package com.example.nasaapp.data.model
+package com.example.nasaapp.data.model.search
 
 import com.google.gson.annotations.SerializedName
 

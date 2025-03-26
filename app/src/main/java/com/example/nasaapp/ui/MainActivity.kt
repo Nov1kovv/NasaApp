@@ -1,6 +1,5 @@
 package com.example.nasaapp.ui
 
-
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nasaapp.R
@@ -15,7 +14,6 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, searchFragment)
             .commit()
-
     }
 }
 

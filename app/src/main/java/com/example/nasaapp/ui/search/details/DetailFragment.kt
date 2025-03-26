@@ -4,46 +4,65 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
+import com.example.nasaapp.R
 import com.example.nasaapp.databinding.DetailFragmentBinding
-import com.example.nasaapp.domain.model.SearchItem
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailFragment : Fragment() {
 
     private var _binding: DetailFragmentBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var searchItem: SearchItem
+    private val detailViewModel: DetailViewModel by viewModel()
+    private lateinit var imageProgressBar: ProgressBar
+    private lateinit var fileInfoProgressBar: ProgressBar
+    private val imageUrl: String by lazy { arguments?.getString("imageUrl") ?: "" }
+    private val nasaId: String by lazy { arguments?.getString("nasaId") ?: "" }
+    private val description: String by lazy { arguments?.getString("description") ?: "" }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        val searchItemId = arguments?.getString("searchItemId")
-            ?: throw IllegalArgumentException("SearchItem ID argument is required")
-
-
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
+        binding.fileDescriptionText.text = "Description: $description"
+        imageProgressBar = binding.root.findViewById(R.id.imageProgressBar)
+        fileInfoProgressBar = binding.root.findViewById(R.id.fileInfoProgressBar)
 
-        with(binding) {
-            fileSize.text = "File Size: 500MB"
-            fileFormat.text = "Format: MP4"
-            nasaId.text = "NASA ID: ABC123XYZ"
+        imageProgressBar.visibility = View.VISIBLE
+        Glide.with(requireContext())
+            .load(imageUrl)
+            .centerCrop()
+            .into(binding.imageView)
 
-
-        downloadButton.setOnClickListener {
-
+        binding.imageView.post {
+            imageProgressBar.visibility = View.GONE
         }
-    }
+
+        if (nasaId != null) {
+            fileInfoProgressBar.visibility = View.VISIBLE
+            detailViewModel.fetchDetailedInfo(nasaId)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            detailViewModel.fileInfo.observe(viewLifecycleOwner) { detailedItem ->
+                detailedItem?.let {
+                    binding.fileSizeText.text = "File Size: ${it.fileSize}"
+                    binding.fileFormatText.text = "Format: ${it.fileFormat}"
+                    fileInfoProgressBar.visibility = View.GONE
+                }
+            }
+        }
 
         return binding.root
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
-
-
-
