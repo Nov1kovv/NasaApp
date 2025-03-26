@@ -1,15 +1,28 @@
 package com.example.nasaapp.data.api
 
-import com.example.nasaapp.data.model.NasaResponseDto
+import com.example.nasaapp.data.model.detailed.AssetCollection
+import com.example.nasaapp.data.model.detailed.ItemDetailedInfoDto
+import com.example.nasaapp.data.model.detailed.MetaDataLinkDto
+import com.example.nasaapp.data.model.search.NasaResponseDto
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.Url
 
-// Пакет api предназначен для взаимодействия с API NASA, используется в repository для получения данных
-// Интерфейс для взаимодействия с API NASA
 interface NasaApiService {
     @GET("search")
     suspend fun searchImages(
         @Query("q") query: String,
-        @Query("media_type") mediaType: String = "image"
+        @Query("media_type") mediaType: String,
+        @Query("page") page: Int
     ): NasaResponseDto
+
+    @GET("metadata/{nasaId}")
+    suspend fun getMetadataUrl(@Path("nasaId") nasaId: String): MetaDataLinkDto
+
+    @GET
+    suspend fun getResourceInfo(@Url url: String): ItemDetailedInfoDto
+
+    @GET
+    suspend fun getVideoLink(@Url url: String): AssetCollection
 }
