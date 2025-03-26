@@ -29,8 +29,7 @@ class DetailViewModel(
                 fileInfo.value = result
 
             } catch (e: Exception) {
-                Log.e("DetailViewModel", "Error fetching details", e)
-
+                e.printStackTrace()
                 fileInfo.value = DetailedFileInfo(fileSize = "0 KB", fileFormat = "Unknown")
             }
         }

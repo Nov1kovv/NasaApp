@@ -70,7 +70,7 @@ class DetailFragment : Fragment() {
             .centerCrop()
             .into(binding.imageView)
 
-        binding.imageView.post{
+        binding.imageView.post {
             imageProgressBar.visibility = View.GONE
         }
 
