@@ -1,6 +1,7 @@
 package com.example.nasaapp.ui.search
 
 import android.graphics.Color
+import android.graphics.PorterDuff
 import androidx.appcompat.widget.SearchView
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -71,7 +72,7 @@ class SearchFragment : Fragment() {
         searchTextView.setHintTextColor(Color.GRAY)
 
         val filterItem = toolbar.menu.findItem(R.id.action_filter)
-        filterItem.icon?.setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.SRC_IN)
+        filterItem.icon?.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN)
 
         searchView.queryHint = "Введите запрос..."
 
