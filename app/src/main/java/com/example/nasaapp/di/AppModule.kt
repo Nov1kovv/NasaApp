@@ -2,13 +2,12 @@ package com.example.nasaapp.di
 
 import com.example.nasaapp.data.api.NasaApiService
 import com.example.nasaapp.data.mapper.DtoToDomainMapper
-import com.example.nasaapp.data.repository.DetailNasaRemoteDataSource
-import com.example.nasaapp.data.repository.NasaRemoteDataSource
+import com.example.nasaapp.data.remote.DetailNasaRemoteDataSourceImpl
+import com.example.nasaapp.data.remote.NasaRemoteDataSourceImpl
 import com.example.nasaapp.data.repository.NasaRepositoryImpl
+import com.example.nasaapp.domain.datasourse.DetailNasaRemoteDataSource
+import com.example.nasaapp.domain.datasourse.NasaRemoteDataSource
 import com.example.nasaapp.domain.repository.NasaRepository
-import com.example.nasaapp.domain.usecase.GetDetailedInfoUseCase
-import com.example.nasaapp.domain.usecase.GetVideoLinkUseCase
-import com.example.nasaapp.domain.usecase.SearchImagesUseCase
 import com.example.nasaapp.ui.search.SearchViewModel
 import com.example.nasaapp.ui.search.details.DetailViewModel
 import okhttp3.OkHttpClient
@@ -41,19 +40,13 @@ val appModule = module {
 
     single { DtoToDomainMapper }
 
-    single { NasaRemoteDataSource(get(),get()) }
+    single<NasaRemoteDataSource> { NasaRemoteDataSourceImpl(get(),get()) }
 
-    single { DetailNasaRemoteDataSource(get())}
+    single<DetailNasaRemoteDataSource> { DetailNasaRemoteDataSourceImpl(get()) }
 
     single<NasaRepository> {NasaRepositoryImpl(get(), get()) }
 
-    single { SearchImagesUseCase(get()) }
-
-    single { GetDetailedInfoUseCase(get()) }
-
-    single { GetVideoLinkUseCase(get()) }
-
     viewModel { SearchViewModel(get()) }
 
-    viewModel { DetailViewModel(get(),get()) }
+    viewModel { DetailViewModel(get()) }
 }
