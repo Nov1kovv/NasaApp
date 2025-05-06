@@ -1,6 +1,6 @@
 package com.example.nasaapp.data.api
 
-import com.example.nasaapp.data.model.detailed.AssetCollection
+import com.example.nasaapp.data.model.detailed.AssetDto
 import com.example.nasaapp.data.model.detailed.ItemDetailedInfoDto
 import com.example.nasaapp.data.model.detailed.MetaDataLinkDto
 import com.example.nasaapp.data.model.search.NasaResponseDto
@@ -12,11 +12,11 @@ import retrofit2.http.Url
 
 interface NasaApiService {
     @GET("search")
-    suspend fun searchImages(
+    fun searchImages(
         @Query("q") query: String,
         @Query("media_type") mediaType: String,
         @Query("page") page: Int
-    ): NasaResponseDto
+    ): Single<NasaResponseDto>
 
     @GET("metadata/{nasaId}")
      fun getMetadataUrl(@Path("nasaId") nasaId: String): Single<MetaDataLinkDto>
@@ -25,5 +25,5 @@ interface NasaApiService {
      fun getResourceInfo(@Url url: String): Single<ItemDetailedInfoDto>
 
     @GET
-     fun getVideoLink(@Url url: String): Single<AssetCollection>
+     fun getVideoLink(@Url url: String): Single<AssetDto>
 }

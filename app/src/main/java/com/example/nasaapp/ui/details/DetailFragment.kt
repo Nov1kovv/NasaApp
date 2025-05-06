@@ -1,4 +1,4 @@
-package com.example.nasaapp.ui.search.details
+package com.example.nasaapp.ui.details
 
 import android.Manifest
 import android.app.DownloadManager

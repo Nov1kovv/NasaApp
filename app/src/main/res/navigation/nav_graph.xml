@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.nasaapp.ui.search.details.DetailFragment"
+        android:name="com.example.nasaapp.ui.details.DetailFragment"
         android:label="Detail"
         tools:layout="@layout/detail_fragment" />
 

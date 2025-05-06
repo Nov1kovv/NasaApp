@@ -9,7 +9,7 @@ import com.example.nasaapp.domain.datasourse.DetailNasaRemoteDataSource
 import com.example.nasaapp.domain.datasourse.NasaRemoteDataSource
 import com.example.nasaapp.domain.repository.NasaRepository
 import com.example.nasaapp.ui.search.SearchViewModel
-import com.example.nasaapp.ui.search.details.DetailViewModel
+import com.example.nasaapp.ui.details.DetailViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel

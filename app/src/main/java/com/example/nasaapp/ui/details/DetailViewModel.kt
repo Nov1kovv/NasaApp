@@ -1,9 +1,9 @@
-package com.example.nasaapp.ui.search.details
+package com.example.nasaapp.ui.details
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.nasaapp.domain.model.DetailedFileInfo
+import com.example.nasaapp.domain.model.DetailedItem
 import com.example.nasaapp.domain.repository.NasaRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -11,7 +11,7 @@ import io.reactivex.schedulers.Schedulers
 
 class DetailViewModel(private val nasaRepository: NasaRepository) : ViewModel() {
 
-    val fileInfo = MutableLiveData<DetailedFileInfo>()
+    val fileInfo = MutableLiveData<DetailedItem>()
     val videoLink = MutableLiveData<String>()
 
     private val compositeDisposable = CompositeDisposable()
@@ -25,7 +25,7 @@ class DetailViewModel(private val nasaRepository: NasaRepository) : ViewModel() 
                 fileInfo.value = result
             }, { error ->
                 error.printStackTrace()
-                fileInfo.value = DetailedFileInfo(fileSize = "0 KB", fileFormat = "Unknown")
+                fileInfo.value = DetailedItem(fileSize = "0 KB", fileFormat = "Unknown")
             })
 
         compositeDisposable.add(disposable)
