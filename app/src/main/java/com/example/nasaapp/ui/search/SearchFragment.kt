@@ -84,7 +84,7 @@ class SearchFragment : Fragment() {
                 else -> false
             }
         }
-
+        // TODO: переделать на поиск по вводу на каждый синг через switchmap
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { performSearch(it) }

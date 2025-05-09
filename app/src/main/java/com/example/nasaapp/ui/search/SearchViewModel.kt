@@ -1,15 +1,18 @@
 package com.example.nasaapp.ui.search
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.nasaapp.domain.model.SearchItem
 import com.example.nasaapp.domain.repository.NasaRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class SearchViewModel(private val repository: NasaRepository) : ViewModel() {
-    val searchResult = MutableLiveData<List<SearchItem>>()
+
+    private val _searchResult = MutableLiveData<List<SearchItem>>()
+    val searchResult: LiveData<List<SearchItem>> = _searchResult
+
     private val errorMessage = MutableLiveData<String?>()
     private val compositeDisposable = CompositeDisposable()
 
@@ -23,11 +26,10 @@ class SearchViewModel(private val repository: NasaRepository) : ViewModel() {
     ) {
         val disposable = repository.searchImages(query, mediaType)
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ items ->
-                searchResult.value = items
+                _searchResult.postValue(items)
             }, { error ->
-                errorMessage.value = error.message
+                errorMessage.postValue(error.message)
             })
         compositeDisposable.add(disposable)
     }
