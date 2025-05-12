@@ -3,10 +3,8 @@ package com.example.nasaapp.di
 import com.example.nasaapp.data.api.NasaApiService
 import com.example.nasaapp.data.mapper.DtoToDomainMapper
 import com.example.nasaapp.data.remote.DetailNasaRemoteDataSourceImpl
-import com.example.nasaapp.data.remote.NasaRemoteDataSourceImpl
 import com.example.nasaapp.data.repository.NasaRepositoryImpl
 import com.example.nasaapp.domain.datasourse.DetailNasaRemoteDataSource
-import com.example.nasaapp.domain.datasourse.NasaRemoteDataSource
 import com.example.nasaapp.domain.repository.NasaRepository
 import com.example.nasaapp.ui.search.SearchViewModel
 import com.example.nasaapp.ui.details.DetailViewModel
@@ -40,11 +38,9 @@ val appModule = module {
 
     single { DtoToDomainMapper }
 
-    single<NasaRemoteDataSource> { NasaRemoteDataSourceImpl(get(),get()) }
+    single<DetailNasaRemoteDataSource> { DetailNasaRemoteDataSourceImpl(get(),get()) }
 
-    single<DetailNasaRemoteDataSource> { DetailNasaRemoteDataSourceImpl(get()) }
-
-    single<NasaRepository> {NasaRepositoryImpl(get(), get()) }
+    single<NasaRepository> {NasaRepositoryImpl(get()) }
 
     viewModel { SearchViewModel(get()) }
 

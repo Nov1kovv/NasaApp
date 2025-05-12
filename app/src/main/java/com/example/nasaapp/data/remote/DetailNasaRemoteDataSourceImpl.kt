@@ -2,30 +2,30 @@ package com.example.nasaapp.data.remote
 
 import com.example.nasaapp.data.api.NasaApiService
 import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
+import com.example.nasaapp.data.mapper.DtoToDomainMapper
+import com.example.nasaapp.data.model.detailed.AssetDto
+import com.example.nasaapp.data.model.detailed.ItemDetailedInfoDto
+import com.example.nasaapp.data.model.detailed.MetaDataLinkDto
+import com.example.nasaapp.data.model.search.NasaResponseDto
 import com.example.nasaapp.domain.datasourse.DetailNasaRemoteDataSource
 import com.example.nasaapp.domain.model.DetailedItem
+import com.example.nasaapp.domain.model.SearchItem
 import io.reactivex.Single
 
-class DetailNasaRemoteDataSourceImpl(private val apiService: NasaApiService):
+class DetailNasaRemoteDataSourceImpl(private val apiService: NasaApiService, private val dtoToDomainMapper: DtoToDomainMapper):
     DetailNasaRemoteDataSource {
 
     // TODO: вынести во ViewModel, количество методов datasource должно соответсовать количеству методов ApiService. Dto должны мапиться в domain сущности или в примитивные типы
-    override fun getDetailedInfo(nasaId: String): Single<DetailedItem> {
-        return apiService.getMetadataUrl(nasaId)
-            .flatMap { metaData ->
-                apiService.getResourceInfo(metaData.location)
-                    .flatMap { detailedInfoDto ->
-                        getVideoLink(nasaId)
-                            .map { videoUrl ->
-                                DetailedDtoToDomainMapper.map(detailedInfoDto, videoUrl)
-                                }
-                    }
-            }
+    override fun searchImages(query: String, mediaType: String, page: Int): Single<List<SearchItem>> {
+        return apiService.searchImages(query, mediaType,page)
+            .map{dtoToDomainMapper.map(it)}
     }
-    override fun getVideoLink(nasaId: String): Single<String> {
-        return apiService.getVideoLink("https://images-api.nasa.gov/asset/$nasaId")
-            .map { assetCollection ->
-                assetCollection.collection.items.firstOrNull { it.href.endsWith(".mp4") }?.href.orEmpty()
-            }
+        override fun getMetadataUrl(nasaId: String): Single<MetaDataLinkDto> =
+        apiService.getMetadataUrl(nasaId)
+
+    override fun getResourceInfo(url: String): Single<ItemDetailedInfoDto> =
+        apiService.getResourceInfo(url)
+
+    override fun getVideoLink(url: String): Single<AssetDto> =
+        apiService.getVideoLink(url)
     }
-}

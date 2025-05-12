@@ -3,6 +3,7 @@ package com.example.nasaapp.ui.details
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
 import com.example.nasaapp.domain.model.DetailedItem
 import com.example.nasaapp.domain.repository.NasaRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,7 +18,15 @@ class DetailViewModel(private val nasaRepository: NasaRepository) : ViewModel() 
     private val compositeDisposable = CompositeDisposable()
 
     fun fetchDetailedInfo(nasaId: String) {
-        val disposable = nasaRepository.getDetailedInfo(nasaId)
+        val videoLinkSingle = nasaRepository.getVideoLink(nasaId)
+        val metadataUrlSingle = nasaRepository.getMetadataUrl(nasaId)
+            .map { it.location }
+        val disposable = metadataUrlSingle.flatMap { metadataUrl ->
+            nasaRepository.getResourceInfo(metadataUrl)
+        }
+            .zipWith(videoLinkSingle) { resourceInfo, videoUrl ->//Объединяем два Single resourceInfo из metadata и videoUrlиз videoLinkSingle
+                DetailedDtoToDomainMapper.map(resourceInfo, videoUrl)
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
@@ -43,6 +52,7 @@ class DetailViewModel(private val nasaRepository: NasaRepository) : ViewModel() 
 
         compositeDisposable.add(disposable)
     }
+
 
     override fun onCleared() {
         super.onCleared()
