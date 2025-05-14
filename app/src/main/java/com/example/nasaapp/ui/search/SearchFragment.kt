@@ -124,7 +124,7 @@ class SearchFragment : Fragment() {
 
         disposables.add(disposable)
     }
-
+//
     private fun setupRecyclerView(recyclerView: RecyclerView) {
         adapter = SearchAdapter(emptyList()) { searchItem -> onItemClick(searchItem) }
         recyclerView.layoutManager = LinearLayoutManager(context)
