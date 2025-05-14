@@ -79,7 +79,7 @@ class SearchFragment : Fragment() {
                     val filterDialog = FilterDialogFragment()
                     filterDialog.setOnFilterSelectedListener { selectedType ->
                         selectedMediaType = selectedType
-                        performSearch(searchView.query.toString())
+                        searchViewModel.emitSearchQuery(searchView.query.toString(), selectedMediaType)
                     }
                     filterDialog.show(childFragmentManager, "filter_dialog")
                     true
@@ -88,8 +88,6 @@ class SearchFragment : Fragment() {
                 else -> false
             }
         }
-
-        val subject = PublishSubject.create<String>() // не должно, subject должен быть во viewmodel
 
         /**
          *в onQueryTextChange вызываю метод ViewModel, который эммитит eventы в Subject во ViewModel
@@ -100,7 +98,7 @@ class SearchFragment : Fragment() {
          * */
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { performSearch(it) }
+                query?.let { searchViewModel.emitSearchQuery(it, selectedMediaType) }
                 return true
             }
 
@@ -119,12 +117,6 @@ class SearchFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
     }
-
-
-    private fun performSearch(query: String) {
-        searchViewModel.searchImages(query, selectedMediaType)
-    }
-
 
     private fun onItemClick(searchItem: SearchItem) {
         val bundle = Bundle().apply {
