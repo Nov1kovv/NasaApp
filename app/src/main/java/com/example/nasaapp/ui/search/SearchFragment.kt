@@ -30,7 +30,6 @@ class SearchFragment : Fragment() {
     private val searchViewModel: SearchViewModel by viewModel()
     private lateinit var progressBar: ProgressBar
     private var selectedMediaType: String = "image"
-    private val disposables = CompositeDisposable()
     private lateinit var adapter: SearchAdapter
 
     override fun onCreateView(
@@ -90,9 +89,15 @@ class SearchFragment : Fragment() {
             }
         }
 
-        val subject = PublishSubject.create<String>()
+        val subject = PublishSubject.create<String>() // не должно, subject должен быть во viewmodel
 
-        // TODO: переделать на поиск по вводу на каждый синг через switchmap
+        /**
+         *в onQueryTextChange вызываю метод ViewModel, который эммитит eventы в Subject во ViewModel
+         * потом подписываюсь на этот subject в отдельном методе ViewModel, который делает switchMap и в subscribe
+         * пушит данные в LiveData
+         * подписку можно сделать в методе init во ViewModel
+         * фрагмент только наблюдает за данными, который приходит в LiveData, пример в DetailFragment
+         * */
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { performSearch(it) }
@@ -102,29 +107,13 @@ class SearchFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 filterItem.isVisible = newText?.isNotEmpty() == true
                 searchItem.isVisible = false
-                subject.onNext(newText.orEmpty())
+                searchViewModel.emitSearchQuery(newText.orEmpty(), selectedMediaType)//подпискана метод который эммитит eventы в Subject во ViewModel
                 return true
             }
         })
-        val disposable = subject
-            .debounce(300, TimeUnit.MILLISECONDS) //отсрочить выполнение действия на 300 милисекунд
-            .filter { it.isNotBlank() } //если строчка пустая, то пропускаю, ищу только заполненую строчку
-            .distinctUntilChanged() //игнорирую запросы которые одинаковые с прошлым
-            .switchMap { query -> //переключение на новый поток, для каждого запроса
-                searchViewModel.searchImagesObservable(query, selectedMediaType) //получаю Observable из ViewModel для выполнения поиска
-                .subscribeOn(Schedulers.io())
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({items ->
-            adapter.updateItems(items)
-                progressBar.visibility = View.GONE
-            }, { error ->
-                Log.e("SearchFragment", "Error", error)
-            })
-
-        disposables.add(disposable)
+        //вся бизнес логика должна быть во viewmodel. state должен лежать в livedata, фрагмент наблюдает за livedata. UDF MVVM
     }
-//
+
     private fun setupRecyclerView(recyclerView: RecyclerView) {
         adapter = SearchAdapter(emptyList()) { searchItem -> onItemClick(searchItem) }
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -146,11 +135,6 @@ class SearchFragment : Fragment() {
             putBoolean("isVideo", searchItem.isVideo)
         }
         findNavController().navigate(R.id.action_searchFragment_to_detailFragment, bundle)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        disposables.clear()
     }
 }
 
