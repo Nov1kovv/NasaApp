@@ -3,6 +3,7 @@ package com.example.nasaapp.ui.search
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +18,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
 import com.example.nasaapp.domain.model.SearchItem
 import com.google.android.material.appbar.MaterialToolbar
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.concurrent.TimeUnit
 
 class SearchFragment : Fragment() {
 
@@ -84,6 +89,9 @@ class SearchFragment : Fragment() {
                 else -> false
             }
         }
+
+        val subject = PublishSubject.create<String>()
+
         // TODO: переделать на поиск по вводу на каждый синг через switchmap
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -94,9 +102,27 @@ class SearchFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 filterItem.isVisible = newText?.isNotEmpty() == true
                 searchItem.isVisible = false
+                subject.onNext(newText.orEmpty())
                 return true
             }
         })
+        val disposable = subject
+            .debounce(300, TimeUnit.MILLISECONDS) //отсрочить выполнение действия на 300 милисекунд
+            .filter { it.isNotBlank() } //если строчка пустая, то пропускаю, ищу только заполненую строчку
+            .distinctUntilChanged() //игнорирую запросы которые одинаковые с прошлым
+            .switchMap { query -> //переключение на новый поток, для каждого запроса
+                searchViewModel.searchImagesObservable(query, selectedMediaType) //получаю Observable из ViewModel для выполнения поиска
+                .subscribeOn(Schedulers.io())
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({items ->
+            adapter.updateItems(items)
+                progressBar.visibility = View.GONE
+            }, { error ->
+                Log.e("SearchFragment", "Error", error)
+            })
+
+        disposables.add(disposable)
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
