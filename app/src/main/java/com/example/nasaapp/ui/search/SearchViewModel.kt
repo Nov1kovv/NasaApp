@@ -12,9 +12,11 @@ import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
 class SearchViewModel(private val repository: NasaRepository) : ViewModel() {
-
-    private val _searchResult = MutableLiveData<UiState>()
+    private val _searchResult = MutableLiveData<UiState>()//здесь хранится state
     val searchResult: LiveData<UiState> = _searchResult
+
+    private val _errorToast = MutableLiveData<Unit>()
+    val errorToast: LiveData<Unit> = _errorToast
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -42,6 +44,7 @@ class SearchViewModel(private val repository: NasaRepository) : ViewModel() {
             }, { error ->
                 Log.e("SearchViewModel", "Error search", error)  // Печатаем подробный лог ошибки
                 _searchResult.postValue(UiState(error = true, isLoading = false))
+                _errorToast.postValue(Unit)
             })
         compositeDisposable.add(disposable)
     }

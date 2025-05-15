@@ -53,15 +53,20 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         searchViewModel.searchResult.observe(viewLifecycleOwner) { uiState ->
             progressBar.isVisible = uiState.isLoading
-            if (uiState.error){
-                Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show();
                 /**
                  * данные не загрузились, должен быть отдельный item в recyclerView, для него нужно сделать свой viewholder, decorator для recycler
                  * xml.
                  * и еще снизу сделать toast как side эффект, проверьте подключение к интернету
                  * side эффект отдельная livedata, другая livedata для state*/
-            }
+
             adapter.updateItems(uiState.items)
+        }
+        searchViewModel.errorToast.observe(viewLifecycleOwner) {
+            Toast.makeText(
+                requireContext(),
+                "Произошла ошибка, проверьте подключение к интернету.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
