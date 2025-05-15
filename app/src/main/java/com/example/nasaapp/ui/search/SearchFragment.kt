@@ -10,7 +10,9 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,9 +51,17 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        searchViewModel.searchResult.observe(viewLifecycleOwner) { items ->
-            adapter.updateItems(items)
-            progressBar.visibility = View.GONE
+        searchViewModel.searchResult.observe(viewLifecycleOwner) { uiState ->
+            progressBar.isVisible = uiState.isLoading
+            if (uiState.error){
+                Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show();
+                /**
+                 * данные не загрузились, должен быть отдельный item в recyclerView, для него нужно сделать свой viewholder, decorator для recycler
+                 * xml.
+                 * и еще снизу сделать toast как side эффект, проверьте подключение к интернету
+                 * side эффект отдельная livedata, другая livedata для state*/
+            }
+            adapter.updateItems(uiState.items)
         }
     }
 
