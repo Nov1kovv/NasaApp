@@ -3,7 +3,6 @@ package com.example.nasaapp.ui.search
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,12 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
 import com.example.nasaapp.domain.model.SearchItem
 import com.google.android.material.appbar.MaterialToolbar
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeUnit
 
 class SearchFragment : Fragment() {
 
@@ -53,11 +47,11 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         searchViewModel.searchResult.observe(viewLifecycleOwner) { uiState ->
             progressBar.isVisible = uiState.isLoading
-                /**
-                 * данные не загрузились, должен быть отдельный item в recyclerView, для него нужно сделать свой viewholder, decorator для recycler
-                 * xml.
-                 * и еще снизу сделать toast как side эффект, проверьте подключение к интернету
-                 * side эффект отдельная livedata, другая livedata для state*/
+            /**
+             * данные не загрузились, должен быть отдельный item в recyclerView, для него нужно сделать свой viewholder, decorator для recycler
+             * xml.
+             * и еще снизу сделать toast как side эффект, проверьте подключение к интернету
+             * side эффект отдельная livedata, другая livedata для state*/
 
             adapter.updateItems(uiState.items)
         }
@@ -94,7 +88,10 @@ class SearchFragment : Fragment() {
                     val filterDialog = FilterDialogFragment()
                     filterDialog.setOnFilterSelectedListener { selectedType ->
                         selectedMediaType = selectedType
-                        searchViewModel.emitSearchQuery(searchView.query.toString(), selectedMediaType)
+                        searchViewModel.emitSearchQuery(
+                            searchView.query.toString(),
+                            selectedMediaType
+                        )
                     }
                     filterDialog.show(childFragmentManager, "filter_dialog")
                     true
@@ -120,7 +117,10 @@ class SearchFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 filterItem.isVisible = newText?.isNotEmpty() == true
                 searchItem.isVisible = false
-                searchViewModel.emitSearchQuery(newText.orEmpty(), selectedMediaType)//подпискана метод который эммитит eventы в Subject во ViewModel
+                searchViewModel.emitSearchQuery(
+                    newText.orEmpty(),
+                    selectedMediaType
+                )//подпискана метод который эммитит eventы в Subject во ViewModel
                 return true
             }
         })
