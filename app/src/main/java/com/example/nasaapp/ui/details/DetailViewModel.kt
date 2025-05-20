@@ -10,7 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class DetailViewModel(private val nasaRepository: NasaRepository) : ViewModel() {
+class DetailViewModel(private val nasaRepository: NasaRepository, private val detailedDtoToDomainMapper: DetailedDtoToDomainMapper) : ViewModel() {
 
     val fileInfo = MutableLiveData<DetailedItem>()
     val videoLink = MutableLiveData<String>()
@@ -25,7 +25,7 @@ class DetailViewModel(private val nasaRepository: NasaRepository) : ViewModel() 
             nasaRepository.getResourceInfo(metadataUrl)
         }
             .zipWith(videoLinkSingle) { resourceInfo, videoUrl ->//Объединяем два Single resourceInfo из metadata и videoUrlиз videoLinkSingle
-                DetailedDtoToDomainMapper.map(resourceInfo, videoUrl)
+                detailedDtoToDomainMapper.map(resourceInfo, videoUrl)
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

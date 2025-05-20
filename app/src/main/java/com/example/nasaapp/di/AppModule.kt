@@ -1,6 +1,7 @@
 package com.example.nasaapp.di
 
 import com.example.nasaapp.data.api.NasaApiService
+import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
 import com.example.nasaapp.data.mapper.DtoToDomainMapper
 import com.example.nasaapp.data.remote.DetailNasaRemoteDataSourceImpl
 import com.example.nasaapp.data.repository.NasaRepositoryImpl
@@ -36,13 +37,13 @@ val appModule = module {
 
     single { get<Retrofit>().create(NasaApiService::class.java) }
 
-    single { DtoToDomainMapper }
+    single { DtoToDomainMapper() }
 
     single<DetailNasaRemoteDataSource> { DetailNasaRemoteDataSourceImpl(get(),get()) }
 
     single<NasaRepository> {NasaRepositoryImpl(get()) }
 
     viewModel { SearchViewModel(get()) }
-
-    viewModel { DetailViewModel(get()) }
+    single { DetailedDtoToDomainMapper() }
+    viewModel { DetailViewModel(get(), get()) }
 }

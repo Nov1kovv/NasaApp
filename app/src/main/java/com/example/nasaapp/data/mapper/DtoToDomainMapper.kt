@@ -3,8 +3,9 @@ package com.example.nasaapp.data.mapper
 import android.util.Log
 import com.example.nasaapp.data.model.search.NasaResponseDto
 import com.example.nasaapp.domain.model.SearchItem
+import javax.inject.Inject
 
-object DtoToDomainMapper {
+class DtoToDomainMapper @Inject constructor() {
     fun map(dto: NasaResponseDto): List<SearchItem> {
         return dto.collection.items.map { item ->
             val data = item.data.firstOrNull()

@@ -2,8 +2,9 @@ package com.example.nasaapp.data.mapper
 
 import com.example.nasaapp.data.model.detailed.ItemDetailedInfoDto
 import com.example.nasaapp.domain.model.DetailedItem
+import javax.inject.Inject
 
-object DetailedDtoToDomainMapper {
+class DetailedDtoToDomainMapper {
     fun map(dto: ItemDetailedInfoDto, videoUrl: String = ""): DetailedItem {
         return DetailedItem(
             fileSize = dto.fileFileSize,
