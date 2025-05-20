@@ -18,20 +18,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
 import com.example.nasaapp.domain.model.SearchItem
+import com.example.nasaapp.ui.details.DaggerDetailComponent
+import com.example.nasaapp.ui.details.DetailViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import javax.inject.Inject
 
 class SearchFragment : Fragment() {
 
-    private val searchViewModel: SearchViewModel by viewModel()
     private lateinit var progressBar: ProgressBar
     private var selectedMediaType: String = "image"
     private lateinit var adapter: SearchAdapter
+
+    @Inject
+    lateinit var searchViewModel: SearchViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        DaggerDetailComponent.factory().create().inject(this)
         val view = inflater.inflate(R.layout.fragment_search, container, false)
         val toolbar: MaterialToolbar = view.findViewById(R.id.toolbar)
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
