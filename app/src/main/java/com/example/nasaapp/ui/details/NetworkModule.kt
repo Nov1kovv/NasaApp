@@ -1,7 +1,6 @@
 package com.example.nasaapp.ui.details
 
 import com.example.nasaapp.data.api.NasaApiService
-import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
 import com.example.nasaapp.data.mapper.DtoToDomainMapper
 import com.example.nasaapp.data.remote.DetailNasaRemoteDataSourceImpl
 import com.example.nasaapp.data.repository.NasaRepositoryImpl
@@ -18,10 +17,6 @@ import javax.inject.Singleton
 
 @Module
 class NetworkModule {
-
-    @Provides
-    @Singleton
-    fun provideDetailedDtoToDomainMapper(): DetailedDtoToDomainMapper = DetailedDtoToDomainMapper()
 
     @Provides
     @Singleton
@@ -50,11 +45,13 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideDetailNasaRemoteDataSource(apiService: NasaApiService, dtoToDomainMapper: DtoToDomainMapper
+    fun provideDetailNasaRemoteDataSource(
+        apiService: NasaApiService, dtoToDomainMapper: DtoToDomainMapper
     ): DetailNasaRemoteDataSource = DetailNasaRemoteDataSourceImpl(apiService, dtoToDomainMapper)
 
 
     @Provides
     @Singleton
-    fun provideNasaRepository(remoteDataSource: DetailNasaRemoteDataSource): NasaRepository = NasaRepositoryImpl(remoteDataSource)
+    fun provideNasaRepository(remoteDataSource: DetailNasaRemoteDataSource): NasaRepository =
+        NasaRepositoryImpl(remoteDataSource)
 }
