@@ -19,9 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
 import com.example.nasaapp.domain.model.SearchItem
 import com.example.nasaapp.ui.details.DaggerDetailComponent
-import com.example.nasaapp.ui.details.DetailViewModel
 import com.google.android.material.appbar.MaterialToolbar
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import javax.inject.Inject
 
 class SearchFragment : Fragment() {

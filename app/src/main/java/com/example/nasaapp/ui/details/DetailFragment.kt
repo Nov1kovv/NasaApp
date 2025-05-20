@@ -26,14 +26,8 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import com.bumptech.glide.Glide
 import com.example.nasaapp.R
-import com.example.nasaapp.data.api.NasaApiService
-import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
 import com.example.nasaapp.databinding.DetailFragmentBinding
-import com.example.nasaapp.domain.datasourse.DetailNasaRemoteDataSource
-import com.example.nasaapp.domain.repository.NasaRepository
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import retrofit2.Retrofit
 import javax.inject.Inject
 
 class DetailFragment : Fragment() {
