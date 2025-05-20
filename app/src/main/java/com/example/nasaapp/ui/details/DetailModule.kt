@@ -4,7 +4,9 @@ import com.example.nasaapp.data.api.NasaApiService
 import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
 import com.example.nasaapp.data.mapper.DtoToDomainMapper
 import com.example.nasaapp.data.remote.DetailNasaRemoteDataSourceImpl
+import com.example.nasaapp.data.repository.NasaRepositoryImpl
 import com.example.nasaapp.domain.datasourse.DetailNasaRemoteDataSource
+import com.example.nasaapp.domain.repository.NasaRepository
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -52,7 +54,7 @@ class DetailModule {
     ): DetailNasaRemoteDataSource = DetailNasaRemoteDataSourceImpl(apiService, dtoToDomainMapper)
 
 
-//    @Provides
-//    @Singleton
-//    fun provideNasaRepository(remoteDataSource: DetailNasaRemoteDataSource): NasaRepository = NasaRepositoryImpl(remoteDataSource)
+    @Provides
+    @Singleton
+    fun provideNasaRepository(remoteDataSource: DetailNasaRemoteDataSource): NasaRepository = NasaRepositoryImpl(remoteDataSource)
 }

@@ -47,14 +47,7 @@ class DetailFragment : Fragment() {
     private var mediaUrl: String = ""
 
     @Inject
-    lateinit var mapper: DetailedDtoToDomainMapper
-
-    @Inject
-    lateinit var apiService: NasaApiService
-    @Inject
-    lateinit var remoteDataSource: DetailNasaRemoteDataSource
-//    @Inject
-//    lateinit var repository: NasaRepository
+    lateinit var repository: NasaRepository
 
     @OptIn(UnstableApi::class)
     override fun onCreateView(
@@ -62,7 +55,7 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         DaggerDetailComponent.factory().create().inject(this)
-        Log.i("lovnfjsdk", "onCreateView:$mapper, $apiService,$remoteDataSource")
+        Log.i("lovnfjsdk", "onCreateView:$repository")
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
         val imageUrl = arguments?.getString("imageUrl") ?:""
         Log.d("DetailFragment", "Video URL: $imageUrl")
