@@ -4,7 +4,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [DetailModule::class])
+@Component(modules = [NetworkModule::class])
 interface DetailComponent {
     fun inject(detailFragment: DetailFragment)
 

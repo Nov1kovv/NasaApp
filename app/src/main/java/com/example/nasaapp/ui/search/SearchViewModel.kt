@@ -10,8 +10,9 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class SearchViewModel(private val repository: NasaRepository) : ViewModel() {
+class SearchViewModel @Inject constructor (private val repository: NasaRepository) : ViewModel() {
     private val _searchResult = MutableLiveData<UiState>()//здесь хранится state
     val searchResult: LiveData<UiState> = _searchResult
 

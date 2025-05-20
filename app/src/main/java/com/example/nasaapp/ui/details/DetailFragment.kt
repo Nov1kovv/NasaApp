@@ -40,14 +40,14 @@ class DetailFragment : Fragment() {
 
     private var _binding: DetailFragmentBinding? = null
     private val binding get() = _binding!!
-    private val detailViewModel: DetailViewModel by viewModel()
+
     private lateinit var imageProgressBar: ProgressBar
     private lateinit var fileInfoProgressBar: ProgressBar
     private var exoPlayer: ExoPlayer? = null
     private var mediaUrl: String = ""
 
     @Inject
-    lateinit var repository: NasaRepository
+    lateinit var detailViewModel: DetailViewModel
 
     @OptIn(UnstableApi::class)
     override fun onCreateView(
@@ -55,7 +55,6 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         DaggerDetailComponent.factory().create().inject(this)
-        Log.i("lovnfjsdk", "onCreateView:$repository")
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
         val imageUrl = arguments?.getString("imageUrl") ?:""
         Log.d("DetailFragment", "Video URL: $imageUrl")

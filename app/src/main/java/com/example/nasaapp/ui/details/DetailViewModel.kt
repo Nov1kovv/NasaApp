@@ -9,8 +9,9 @@ import com.example.nasaapp.domain.repository.NasaRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class DetailViewModel(private val nasaRepository: NasaRepository, private val detailedDtoToDomainMapper: DetailedDtoToDomainMapper) : ViewModel() {
+class DetailViewModel @Inject constructor(private val nasaRepository: NasaRepository, private val detailedDtoToDomainMapper: DetailedDtoToDomainMapper) : ViewModel() {
 
     val fileInfo = MutableLiveData<DetailedItem>()
     val videoLink = MutableLiveData<String>()

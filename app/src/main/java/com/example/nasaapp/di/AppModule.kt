@@ -44,6 +44,5 @@ val appModule = module {
     single<NasaRepository> {NasaRepositoryImpl(get()) }
 
     viewModel { SearchViewModel(get()) }
-    single { DetailedDtoToDomainMapper() }
-    viewModel { DetailViewModel(get(), get()) }
+
 }
