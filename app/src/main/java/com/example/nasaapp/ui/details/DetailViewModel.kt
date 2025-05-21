@@ -31,6 +31,7 @@ class DetailViewModel @Inject constructor(
     }
 
     fun setNasaId(nasaId: String){
+        uiState.value = DetailedUiState(isLoading = true, isError = false)
         nasaIdSubject.onNext(nasaId)// отправляю новое значение nasaid в Subject
     }
 
@@ -64,10 +65,19 @@ class DetailViewModel @Inject constructor(
                 Log.i("DetailViewModel222", "Resource info $resourceInfo")
                 fileInfo.value = detailedDtoToDomainMapper.map(resourceInfo, videoUrl)
                 videoLink.value = videoUrl
+                uiState.value = DetailedUiState(
+                    isLoading = false,
+                    isError = false,
+                    videoLink = videoUrl,
+                )
 
             }, { error ->
                 Log.i("DetailViewModel333", "initSubscriptions", error)
                 fileInfo.value = DetailedItem(fileSize = "0 KB", fileFormat = "Unknown")
+                uiState.value = DetailedUiState(
+                    isLoading = false,
+                    isError = true,
+                )
 
             })
 

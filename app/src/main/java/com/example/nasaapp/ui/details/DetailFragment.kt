@@ -35,8 +35,6 @@ class DetailFragment : Fragment() {
     private var _binding: DetailFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var imageProgressBar: ProgressBar
-    private lateinit var fileInfoProgressBar: ProgressBar
     private var exoPlayer: ExoPlayer? = null
     private var mediaUrl: String = ""
 
@@ -55,8 +53,6 @@ class DetailFragment : Fragment() {
         val nasaId = arguments?.getString("nasaId") ?:""
         val description = arguments?.getString("description") ?: ""
         binding.fileDescriptionText.text = "Description: $description"
-        imageProgressBar = binding.root.findViewById(R.id.imageProgressBar)
-        fileInfoProgressBar = binding.root.findViewById(R.id.fileInfoProgressBar)
 
         exoPlayer = ExoPlayer.Builder(requireContext())
             .setTrackSelector(DefaultTrackSelector(requireContext()))
@@ -68,30 +64,26 @@ class DetailFragment : Fragment() {
         exoPlayer?.prepare()
         binding.playerView.player = exoPlayer
 
-        imageProgressBar.visibility = View.VISIBLE
         Glide.with(requireContext())
             .load(formatImageUrl(imageUrl))
             .centerCrop()
             .into(binding.imageView)
 
         binding.imageView.post {
-            imageProgressBar.visibility = View.GONE
         }
 
         if (nasaId.isNotEmpty()) {
-            fileInfoProgressBar.visibility = View.VISIBLE
             detailViewModel.setNasaId(nasaId)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            detailViewModel.fileInfo.observe(viewLifecycleOwner) { detailedItem ->
-                detailedItem?.let {
-                    binding.fileSizeText.text = "File Size: ${it.fileSize}"
-                    binding.fileFormatText.text = "Format: ${it.fileFormat}"
-                    fileInfoProgressBar.visibility = View.GONE
+            detailViewModel.uiState.observe(viewLifecycleOwner) { state ->
+                with(binding){
+                    imageProgressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+                    }
                 }
             }
-        }
+
         detailViewModel.videoLink.observe(viewLifecycleOwner) { videoLink ->
             if (videoLink.isNotEmpty()) {
                 val fixedVideoLink = formatVideoUrl(videoLink)
