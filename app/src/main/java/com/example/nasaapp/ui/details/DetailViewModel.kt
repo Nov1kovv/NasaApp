@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
 import com.example.nasaapp.domain.model.DetailedItem
 import com.example.nasaapp.domain.repository.NasaRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -30,70 +31,49 @@ class DetailViewModel @Inject constructor(
     }
 
     fun setNasaId(nasaId: String){
-        nasaIdSubject.onNext(nasaId)
+        nasaIdSubject.onNext(nasaId)// отправляю новое значение nasaid в Subject
     }
 
-    fun initSubscriptions() {
-        val detailInfoObservable = nasaIdSubject.flatMapSingle {
-            nasaRepository.getResourceInfo(it)
+    fun initSubscriptions() { //observable который при получении nasa запрашивает данные
+        val detailInfoObservable = nasaIdSubject.flatMapSingle { nasaId ->
+            nasaRepository.getMetadataUrl(nasaId)//получаею url с метаданными по nasaid
+                .subscribeOn(Schedulers.io())
+                .map { it.location }//извлекаею location url из результата
+                .flatMap { metadataUrl ->
+                    nasaRepository.getResourceInfo(metadataUrl)//запрашиваем подробную информацию о ресурсе по url метаданных
+                        .subscribeOn(Schedulers.io())//запрос в фоне
+                }
         }
 
-        val detailedVideoLink = nasaIdSubject.flatMapSingle {
-            nasaRepository.getVideoLink(it)
+        val detailedVideoLink = nasaIdSubject.flatMapSingle { nasaId ->//observable который при получении nasa id запрашивает ссылку на видео
+            Log.d("DetailViewModelVideooo", "Link $nasaId")
+            nasaRepository.getVideoLink(nasaId)
+                .subscribeOn(Schedulers.io())
         }
 
-        val disposable = detailInfoObservable.zipWith(detailedVideoLink){
+        val disposable = detailInfoObservable
+            .observeOn(Schedulers.io())
+            .zipWith(detailedVideoLink){//объединяет два Observable информацию о ресурсе и ссылку на видео
                 resourceInfo, videoUrl ->
-            resourceInfo to videoUrl
-        }.subscribeOn(Schedulers.io())
+            resourceInfo to videoUrl//Возвращает пару информация о ресурсе и ссылка на видео
+        }
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({result ->
                 val (resourceInfo, videoUrl) = result
+                Log.i("DetailViewModel111", "Video URL $videoUrl")
+                Log.i("DetailViewModel222", "Resource info $resourceInfo")
                 fileInfo.value = detailedDtoToDomainMapper.map(resourceInfo, videoUrl)
-
+                videoLink.value = videoUrl
 
             }, { error ->
+                Log.i("DetailViewModel333", "initSubscriptions", error)
                 fileInfo.value = DetailedItem(fileSize = "0 KB", fileFormat = "Unknown")
 
             })
 
         compositeDisposable.add(disposable)
 
-
-
-//        val videoLinkSingle = nasaRepository.getVideoLink(nasaId)
-//        val metadataUrlSingle = nasaRepository.getMetadataUrl(nasaId)
-//            .map { it.location }
-//        val disposable = metadataUrlSingle.flatMap { metadataUrl ->
-//            nasaRepository.getResourceInfo(metadataUrl)
-//        }
-//            .zipWith(videoLinkSingle) { resourceInfo, videoUrl ->//Объединяем два Single resourceInfo из metadata и videoUrlиз videoLinkSingle
-//                detailedDtoToDomainMapper.map(resourceInfo, videoUrl)
-//            }
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe({ result ->
-//                Log.d("DetailViewModel", "Response received: $result")
-//                fileInfo.value = result
-//            }, { error ->
-//                error.printStackTrace()
-//                fileInfo.value = DetailedItem(fileSize = "0 KB", fileFormat = "Unknown")
-//            })
-//
-//        compositeDisposable.add(disposable)
     }
-
-//    fun fetchVideoLink(nasaId: String) { //val video link observable и потом zip
-//        val disposable = nasaRepository.getVideoLink(nasaId)
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe({ link ->
-//                videoLink.value = link
-//            }, { error ->
-//                Log.e("DetailViewModel", "Error fetching video link", error)
-//            })
-//
-//        compositeDisposable.add(disposable)
-//    }
 
 
     override fun onCleared() {
