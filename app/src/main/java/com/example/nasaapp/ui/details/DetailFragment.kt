@@ -80,8 +80,7 @@ class DetailFragment : Fragment() {
 
         if (nasaId.isNotEmpty()) {
             fileInfoProgressBar.visibility = View.VISIBLE
-            detailViewModel.fetchDetailedInfo(nasaId)
-            detailViewModel.fetchVideoLink(nasaId)
+            detailViewModel.setNasaId(nasaId)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
