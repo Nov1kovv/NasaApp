@@ -1,5 +1,6 @@
 package com.example.nasaapp.ui.details
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
@@ -48,6 +49,7 @@ class DetailViewModel @Inject constructor(
             .subscribe({result ->
                 val (resourceInfo, videoUrl) = result
                 fileInfo.value = detailedDtoToDomainMapper.map(resourceInfo, videoUrl)
+
 
             }, { error ->
                 fileInfo.value = DetailedItem(fileSize = "0 KB", fileFormat = "Unknown")
