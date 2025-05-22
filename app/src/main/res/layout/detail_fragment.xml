@@ -39,18 +39,20 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginBottom="@dimen/grid_2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintDimensionRatio="4:3"/>
 
             <androidx.media3.ui.PlayerView
                 android:id="@+id/playerView"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:visibility="gone"
                 app:surface_type="surface_view"
+                app:layout_constraintDimensionRatio="4:3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
