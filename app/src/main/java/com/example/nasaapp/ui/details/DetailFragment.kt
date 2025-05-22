@@ -36,6 +36,8 @@ class DetailFragment : Fragment() {
     private var _binding: DetailFragmentBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var fileInfoProgressBar: ProgressBar
+
     private var exoPlayer: ExoPlayer? = null
     private var mediaUrl: String = ""
 
@@ -54,8 +56,7 @@ class DetailFragment : Fragment() {
         val nasaId = arguments?.getString("nasaId") ?:""
         val description = arguments?.getString("description") ?: ""
         binding.fileDescriptionText.text = getString(R.string.file_description, description)
-//        binding.fileSizeText.text = getString(R.string.file_size_format)
-//        binding.fileFormatText.text = getString(R.string.file_format_format)
+        fileInfoProgressBar = binding.root.findViewById(R.id.fileInfoProgressBar)
 
         exoPlayer = ExoPlayer.Builder(requireContext())
             .setTrackSelector(DefaultTrackSelector(requireContext()))
@@ -76,6 +77,7 @@ class DetailFragment : Fragment() {
         }
 
         if (nasaId.isNotEmpty()) {
+            fileInfoProgressBar.visibility = View.VISIBLE
             detailViewModel.setNasaId(nasaId)
         }
 
@@ -87,6 +89,7 @@ class DetailFragment : Fragment() {
                     state.detailedItem?.let {
                         fileSizeText.text = getString(R.string.file_size_format, it.fileSize)
                         fileFormatText.text = getString(R.string.file_format_format, it.fileFormat)
+                        fileInfoProgressBar.visibility = View.GONE
                     }
                     }
                 }
