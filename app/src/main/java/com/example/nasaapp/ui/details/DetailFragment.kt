@@ -1,6 +1,7 @@
 package com.example.nasaapp.ui.details
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
@@ -52,7 +53,9 @@ class DetailFragment : Fragment() {
         Log.d("DetailFragment", "Video URL: $imageUrl")
         val nasaId = arguments?.getString("nasaId") ?:""
         val description = arguments?.getString("description") ?: ""
-        binding.fileDescriptionText.text = "Description: $description"
+        binding.fileDescriptionText.text = getString(R.string.file_description, description)
+//        binding.fileSizeText.text = getString(R.string.file_size_format)
+//        binding.fileFormatText.text = getString(R.string.file_format_format)
 
         exoPlayer = ExoPlayer.Builder(requireContext())
             .setTrackSelector(DefaultTrackSelector(requireContext()))
@@ -80,6 +83,11 @@ class DetailFragment : Fragment() {
             detailViewModel.uiState.observe(viewLifecycleOwner) { state ->
                 with(binding){
                     imageProgressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+
+                    state.detailedItem?.let {
+                        fileSizeText.text = getString(R.string.file_size_format, it.fileSize)
+                        fileFormatText.text = getString(R.string.file_format_format, it.fileFormat)
+                    }
                     }
                 }
             }
@@ -89,10 +97,12 @@ class DetailFragment : Fragment() {
                 val fixedVideoLink = formatVideoUrl(videoLink)
                 Log.d("DetailFragment", "Video link received: $fixedVideoLink")
                 binding.imageView.visibility = View.GONE
+                binding.playerView.visibility = View.VISIBLE
                 updatePlayerWithVideo(fixedVideoLink)
                 mediaUrl = fixedVideoLink
             } else {
                 binding.playerView.visibility = View.GONE
+                binding.imageView.visibility = View.VISIBLE
                 mediaUrl = imageUrl
                 Log.e("DetailFragment", "Video link is empty or unavailable.")
             }
@@ -180,3 +190,7 @@ class DetailFragment : Fragment() {
         _binding = null
     }
 }
+
+
+//        binding.fileSizeText.text = "File Size: ${state.detailedItem?.fileSize}"
+//        binding.fileFormatText.text = "Format: ${state.detailedItem?.fileFormat}"

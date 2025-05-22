@@ -63,12 +63,14 @@ class DetailViewModel @Inject constructor(
                 val (resourceInfo, videoUrl) = result
                 Log.i("DetailViewModel111", "Video URL $videoUrl")
                 Log.i("DetailViewModel222", "Resource info $resourceInfo")
-                fileInfo.value = detailedDtoToDomainMapper.map(resourceInfo, videoUrl)
+                val detailedItem = detailedDtoToDomainMapper.map(resourceInfo, videoUrl)
+                fileInfo.value = detailedItem
                 videoLink.value = videoUrl
                 uiState.value = DetailedUiState(
                     isLoading = false,
                     isError = false,
                     videoLink = videoUrl,
+                    detailedItem = detailedItem
                 )
 
             }, { error ->

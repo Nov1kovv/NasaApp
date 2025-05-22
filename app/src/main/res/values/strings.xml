@@ -6,4 +6,10 @@
     <string name="search_hint">Search for images</string>
     <string name="search_for_images">Search for images</string>
     <string name="search_title">Поиск</string>
+    <string name="file_description">File description: %s</string>
+    <string name="file_size_format">File Size: %s</string>
+    <string name="file_format_format">Format: %ss</string>
+    <string name="download">Download</string>
+
+
 </resources>
