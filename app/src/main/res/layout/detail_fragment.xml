@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/dark_gray">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,20 +26,11 @@
             app:title="Nasa"
             app:titleTextColor="@android:color/white" />
 
-        текст задавать через стиль tools atribute -
-        убрать фиксированную ширину
-        размер текста через sp
-        ограничения
-        стиль для кнопки
-        assisted inject на деталке
-
-
-
-
         <FrameLayout
             android:id="@+id/videoContainer"
             android:layout_width="0dp"
-            android:layout_height="300dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="4:3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar">
@@ -55,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"
-                app:surface_type="surface_view"/>
+                app:surface_type="surface_view" />
 
             <ProgressBar
                 android:id="@+id/imageProgressBar"
@@ -84,61 +75,53 @@
             android:id="@+id/fileSizeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="File Size:"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/grid_3"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/videoContainer" />
+            app:layout_constraintTop_toBottomOf="@id/videoContainer"
+            tools:text="File Size:" />
 
         <TextView
             android:id="@+id/fileFormatText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Format:"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/grid_3"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fileSizeText" />
+            app:layout_constraintTop_toBottomOf="@id/fileSizeText"
+            tools:text="Format:" />
 
         <TextView
             android:id="@+id/fileDescriptionText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/grid_3"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fileFormatText"
-            tools:text="Description: this is description"
-            />
-
+            tools:text="Description: this is description" />
 
         <Button
             android:id="@+id/download_button"
+            style="@style/DownloadButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/grid_2"
             android:padding="@dimen/grid_2"
-            android:backgroundTint="@color/blue"
             android:text="@string/download"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/grid_3"
-            app:cornerRadius="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fileDescriptionText" />
 
         <Button
             android:id="@+id/share_button"
+            style="@style/ShareButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/grid_2"
             android:padding="@dimen/grid_2"
-            android:backgroundTint="@color/blue"
-            android:text="Поделиться"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/grid_3"
-            app:cornerRadius="0dp"
+            android:text="@string/share"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/download_button" />

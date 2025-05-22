@@ -10,6 +10,7 @@
     <string name="file_size_format">File Size: %s</string>
     <string name="file_format_format">Format: %ss</string>
     <string name="download">Download</string>
+    <string name="share">SHARE</string>
 
 
 </resources>
