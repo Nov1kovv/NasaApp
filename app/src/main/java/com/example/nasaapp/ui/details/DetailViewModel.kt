@@ -17,11 +17,13 @@ class DetailViewModel @Inject constructor(
     private val detailedDtoToDomainMapper: DetailedDtoToDomainMapper
 ) : ViewModel() {
     val uiState = MutableLiveData<DetailedUiState>()
+
+
     val fileInfo = MutableLiveData<DetailedItem>()
     val videoLink = MutableLiveData<String>()
 
     //инкапсуляция как на SearchFragment для LiveData, она будет одна с DetailedUiState - новый класс будет iserror is loading video link и т.д
-    //после assisted inject, метод вызывать в инит блоке(в самом конце)
+
 
     private val nasaIdSubject = PublishSubject.create<String>()
     private val compositeDisposable = CompositeDisposable()
@@ -31,7 +33,6 @@ class DetailViewModel @Inject constructor(
     }
 
     fun setNasaId(nasaId: String){
-        uiState.value = DetailedUiState(isLoading = true, isError = false)
         nasaIdSubject.onNext(nasaId)// отправляю новое значение nasaid в Subject
     }
 
@@ -79,6 +80,7 @@ class DetailViewModel @Inject constructor(
                 uiState.value = DetailedUiState(
                     isLoading = false,
                     isError = true,
+                    detailedItem = DetailedItem("","","")
                 )
 
             })
@@ -97,6 +99,6 @@ class DetailViewModel @Inject constructor(
 data class DetailedUiState(
     val isError: Boolean = false,
     val isLoading: Boolean = true,
-    val videoLink: String? = null,
-    val detailedItem: DetailedItem? = null,
+    val videoLink: String = "",
+    val detailedItem: DetailedItem ,
 )
