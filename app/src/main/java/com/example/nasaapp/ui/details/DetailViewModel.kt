@@ -7,13 +7,15 @@ import androidx.lifecycle.ViewModel
 import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
 import com.example.nasaapp.domain.model.DetailedItem
 import com.example.nasaapp.domain.repository.NasaRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import javax.inject.Inject
 
-class DetailViewModel @Inject constructor(
+class DetailViewModel @AssistedInject constructor(
+    @Assisted("nasaId") private val nasaId : String,
     private val nasaRepository: NasaRepository,
     private val detailedDtoToDomainMapper: DetailedDtoToDomainMapper
 ) : ViewModel() {
@@ -30,12 +32,10 @@ class DetailViewModel @Inject constructor(
         initSubscriptions()
     }
 
-    fun setNasaId(nasaId: String){
-        nasaIdSubject.onNext(nasaId)// отправляю новое значение nasaid в Subject
-    }
-
     fun initSubscriptions() { //observable который при получении nasa запрашивает данные
-        val detailInfoObservable = nasaIdSubject.flatMapSingle { nasaId ->
+        val detailInfoObservable = nasaIdSubject
+            .startWith(nasaId)
+            .flatMapSingle { nasaId ->
             nasaRepository.getMetadataUrl(nasaId)//получаею url с метаданными по nasaid
                 .subscribeOn(Schedulers.io())
                 .map { it.location }//извлекаею location url из результата

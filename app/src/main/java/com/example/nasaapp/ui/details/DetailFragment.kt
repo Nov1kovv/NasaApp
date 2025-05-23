@@ -49,7 +49,7 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        DaggerDetailComponent.factory().create().inject(this)
+//        DaggerDetailComponent.factory().create().inject(this)
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
         val imageUrl = arguments?.getString("imageUrl") ?:""
         Log.d("DetailFragment", "Video URL: $imageUrl")
@@ -78,7 +78,6 @@ class DetailFragment : Fragment() {
 
         if (nasaId.isNotEmpty()) {
             fileInfoProgressBar.visibility = View.VISIBLE
-            detailViewModel.setNasaId(nasaId)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
