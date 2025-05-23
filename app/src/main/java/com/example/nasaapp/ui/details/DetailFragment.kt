@@ -91,25 +91,23 @@ class DetailFragment : Fragment() {
                         fileFormatText.text = getString(R.string.file_format_format, it.fileFormat)
                         fileInfoProgressBar.visibility = View.GONE
                     }
+                    if (state.videoLink.isNotEmpty()) {
+                        val fixedVideoLink = formatVideoUrl(state.videoLink)
+                        Log.d("DetailFragment", "Video link received: $fixedVideoLink")
+                        imageView.visibility = View.GONE
+                        playerView.visibility = View.VISIBLE
+                        updatePlayerWithVideo(fixedVideoLink)
+                        mediaUrl = fixedVideoLink
+                    } else {
+                        playerView.visibility = View.GONE
+                        imageView.visibility = View.VISIBLE
+                        mediaUrl = imageUrl
+                        Log.e("DetailFragment", "Video link is empty or unavailable.")
                     }
                 }
             }
-
-        detailViewModel.videoLink.observe(viewLifecycleOwner) { videoLink ->
-            if (videoLink.isNotEmpty()) {
-                val fixedVideoLink = formatVideoUrl(videoLink)
-                Log.d("DetailFragment", "Video link received: $fixedVideoLink")
-                binding.imageView.visibility = View.GONE
-                binding.playerView.visibility = View.VISIBLE
-                updatePlayerWithVideo(fixedVideoLink)
-                mediaUrl = fixedVideoLink
-            } else {
-                binding.playerView.visibility = View.GONE
-                binding.imageView.visibility = View.VISIBLE
-                mediaUrl = imageUrl
-                Log.e("DetailFragment", "Video link is empty or unavailable.")
-            }
         }
+
 
         binding.downloadButton.setOnClickListener {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -193,7 +191,3 @@ class DetailFragment : Fragment() {
         _binding = null
     }
 }
-
-
-//        binding.fileSizeText.text = "File Size: ${state.detailedItem?.fileSize}"
-//        binding.fileFormatText.text = "Format: ${state.detailedItem?.fileFormat}"

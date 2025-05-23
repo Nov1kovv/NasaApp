@@ -1,6 +1,7 @@
 package com.example.nasaapp.ui.details
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
@@ -16,11 +17,8 @@ class DetailViewModel @Inject constructor(
     private val nasaRepository: NasaRepository,
     private val detailedDtoToDomainMapper: DetailedDtoToDomainMapper
 ) : ViewModel() {
-    val uiState = MutableLiveData<DetailedUiState>()
-
-
-    val fileInfo = MutableLiveData<DetailedItem>()
-    val videoLink = MutableLiveData<String>()
+    private val _uiState = MutableLiveData<DetailedUiState>()
+    val uiState: LiveData<DetailedUiState> get() = _uiState
 
     //инкапсуляция как на SearchFragment для LiveData, она будет одна с DetailedUiState - новый класс будет iserror is loading video link и т.д
 
@@ -65,9 +63,7 @@ class DetailViewModel @Inject constructor(
                 Log.i("DetailViewModel111", "Video URL $videoUrl")
                 Log.i("DetailViewModel222", "Resource info $resourceInfo")
                 val detailedItem = detailedDtoToDomainMapper.map(resourceInfo, videoUrl)
-                fileInfo.value = detailedItem
-                videoLink.value = videoUrl
-                uiState.value = DetailedUiState(
+                _uiState.value = DetailedUiState(
                     isLoading = false,
                     isError = false,
                     videoLink = videoUrl,
@@ -76,8 +72,7 @@ class DetailViewModel @Inject constructor(
 
             }, { error ->
                 Log.i("DetailViewModel333", "initSubscriptions", error)
-                fileInfo.value = DetailedItem(fileSize = "0 KB", fileFormat = "Unknown")
-                uiState.value = DetailedUiState(
+                _uiState.value = DetailedUiState(
                     isLoading = false,
                     isError = true,
                     detailedItem = DetailedItem("","","")
