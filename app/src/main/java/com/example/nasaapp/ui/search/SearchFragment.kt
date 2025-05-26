@@ -18,8 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
 import com.example.nasaapp.domain.model.SearchItem
-import com.example.nasaapp.ui.details.DaggerDetailComponent
-import com.example.nasaapp.ui.details.DetailFragment
+import com.example.nasaapp.ui.details.DaggerAppComponent
 import com.google.android.material.appbar.MaterialToolbar
 import javax.inject.Inject
 
@@ -36,7 +35,7 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        DaggerDetailComponent.factory().create().inject(this)
+        DaggerAppComponent.factory().create().inject(this)
         val view = inflater.inflate(R.layout.fragment_search, container, false)
         val toolbar: MaterialToolbar = view.findViewById(R.id.toolbar)
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
@@ -148,6 +147,20 @@ class SearchFragment : Fragment() {
             putBoolean("isVideo", searchItem.isVideo)
         }
         findNavController().navigate(R.id.action_searchFragment_to_detailFragment, bundle)
+    }
+    companion object {
+        private const val ARG_QUERY = ("query")
+        private const val ARG_MEDIA_TYPE = ("mediaType")
+
+
+        fun createDetailsFragment(query: String, mediaType:String): SearchFragment {
+            return SearchFragment().apply {
+                val bundle = Bundle()
+                bundle.putString(ARG_QUERY, "query")
+                bundle.putString(ARG_MEDIA_TYPE, "query")
+                arguments = bundle
+            }
+        }
     }
 }
 

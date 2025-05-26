@@ -61,5 +61,3 @@ class UiState(
     val isLoading: Boolean = true,
     val items: List<SearchItem> = emptyList()
 )
-
-

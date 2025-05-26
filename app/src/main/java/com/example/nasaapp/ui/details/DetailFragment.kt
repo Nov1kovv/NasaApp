@@ -51,7 +51,7 @@ class DetailFragment : Fragment() {
     }
 
     override fun onAttach(context: Context) {
-        DaggerDetailComponent.factory().create().inject(this)
+        DaggerAppComponent.factory().create().inject(this)
         super.onAttach(context)
     }
 
