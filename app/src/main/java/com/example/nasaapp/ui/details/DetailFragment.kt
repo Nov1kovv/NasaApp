@@ -1,7 +1,6 @@
 package com.example.nasaapp.ui.details
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
@@ -9,19 +8,19 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.annotation.OptIn
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.media3.common.MediaItem
-import android.util.Log
 import android.widget.Toast
+import androidx.annotation.OptIn
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
@@ -42,19 +41,19 @@ class DetailFragment : Fragment() {
     private var exoPlayer: ExoPlayer? = null
     private var mediaUrl: String = ""
     private val nasaId: String
-        get() = arguments?.getString(ARG_NASA_ID) ?:""
-//    val nasaId = arguments?.getString("nasaId") ?:""
-@Inject
-lateinit var factory: DetailViewModel.Factory.DetailFactory
+        get() = arguments?.getString(ARG_NASA_ID) ?: ""
 
+    //    val nasaId = arguments?.getString("nasaId") ?:""
+    @Inject
+    lateinit var factory: DetailViewModel.Factory.DetailFactory
 
-    private val detailViewModel: DetailViewModel by viewModels(){
+    private val detailViewModel: DetailViewModel by viewModels {
         factory.create(nasaId)
     }
 
     override fun onAttach(context: Context) {
-        super.onAttach(context)
         DaggerDetailComponent.factory().create().inject(this)
+        super.onAttach(context)
     }
 
     companion object {
@@ -66,21 +65,19 @@ lateinit var factory: DetailViewModel.Factory.DetailFactory
         }
     }
 
+
+
     @OptIn(UnstableApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
-        val imageUrl = arguments?.getString("imageUrl") ?:""
-        val nasaId = arguments?.getString("nasaId") ?:""
+        val imageUrl = arguments?.getString("imageUrl") ?: ""
+        val nasaId = arguments?.getString("nasaId") ?: ""
         val description = arguments?.getString("description") ?: ""
         binding.fileDescriptionText.text = getString(R.string.file_description, description)
         fileInfoProgressBar = binding.root.findViewById(R.id.fileInfoProgressBar)
-
-
-
-
 
         exoPlayer = ExoPlayer.Builder(requireContext())
             .setTrackSelector(DefaultTrackSelector(requireContext()))
@@ -104,14 +101,12 @@ lateinit var factory: DetailViewModel.Factory.DetailFactory
             fileInfoProgressBar.visibility = View.VISIBLE
         }
 
-
-
         viewLifecycleOwner.lifecycleScope.launch {
             detailViewModel.uiState.observe(viewLifecycleOwner) { state ->
-                with(binding){
+                with(binding) {
                     imageProgressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
 
-                    state.detailedItem?.let {
+                    state.detailedItem.let {
                         fileSizeText.text = getString(R.string.file_size_format, it.fileSize)
                         fileFormatText.text = getString(R.string.file_format_format, it.fileFormat)
                         fileInfoProgressBar.visibility = View.GONE
@@ -135,8 +130,16 @@ lateinit var factory: DetailViewModel.Factory.DetailFactory
 
 
         binding.downloadButton.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    1
+                )
             } else {
                 downloadContent(mediaUrl)
             }
@@ -148,7 +151,6 @@ lateinit var factory: DetailViewModel.Factory.DetailFactory
 
         return binding.root
     }
-
 
 
     private fun formatVideoUrl(videoLink: String): String {
@@ -189,7 +191,8 @@ lateinit var factory: DetailViewModel.Factory.DetailFactory
             .setDescription("Downloading file")
             .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
 
-        val downloadManager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as? DownloadManager
+        val downloadManager =
+            requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as? DownloadManager
         downloadManager?.enqueue(request)
 
         Toast.makeText(requireContext(), "Downloading $fileName", Toast.LENGTH_SHORT).show()
@@ -206,6 +209,7 @@ lateinit var factory: DetailViewModel.Factory.DetailFactory
         super.onStart()
         exoPlayer?.play()
     }
+
     override fun onStop() {
         super.onStop()
         exoPlayer?.pause()

@@ -15,7 +15,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import javax.inject.Inject
 
 class DetailViewModel (
     private val nasaId : String,
@@ -47,7 +46,9 @@ class DetailViewModel (
                 }
         }
 
-        val detailedVideoLink = nasaIdSubject.flatMapSingle { nasaId ->//observable который при получении nasa id запрашивает ссылку на видео
+        val detailedVideoLink = nasaIdSubject
+            .startWith(nasaId)
+            .flatMapSingle { nasaId ->//observable который при получении nasa id запрашивает ссылку на видео
             Log.d("DetailViewModelVideooo", "Link $nasaId")
             nasaRepository.getVideoLink(nasaId)
                 .subscribeOn(Schedulers.io())
