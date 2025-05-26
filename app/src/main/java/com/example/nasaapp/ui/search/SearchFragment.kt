@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
 import com.example.nasaapp.domain.model.SearchItem
 import com.example.nasaapp.ui.details.DaggerDetailComponent
+import com.example.nasaapp.ui.details.DetailFragment
 import com.google.android.material.appbar.MaterialToolbar
 import javax.inject.Inject
 
@@ -137,6 +138,7 @@ class SearchFragment : Fragment() {
         recyclerView.adapter = adapter
     }
 
+    // TODO: навигация через clicklistener и fragmentmanager
     private fun onItemClick(searchItem: SearchItem) {
         val bundle = Bundle().apply {
             putString("imageUrl", searchItem.imageUrl)

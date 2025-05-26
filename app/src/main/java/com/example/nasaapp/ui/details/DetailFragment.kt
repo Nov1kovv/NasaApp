@@ -43,7 +43,6 @@ class DetailFragment : Fragment() {
     private val nasaId: String
         get() = arguments?.getString(ARG_NASA_ID) ?: ""
 
-    //    val nasaId = arguments?.getString("nasaId") ?:""
     @Inject
     lateinit var factory: DetailViewModel.Factory.DetailFactory
 
@@ -56,17 +55,6 @@ class DetailFragment : Fragment() {
         super.onAttach(context)
     }
 
-    companion object {
-        private const val ARG_NASA_ID = "nasaId"
-        fun makeArgs(nasaId: String): Bundle {
-            return Bundle(1).apply {
-                putString(ARG_NASA_ID, nasaId)
-            }
-        }
-    }
-
-
-
     @OptIn(UnstableApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,7 +62,6 @@ class DetailFragment : Fragment() {
     ): View {
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
         val imageUrl = arguments?.getString("imageUrl") ?: ""
-        val nasaId = arguments?.getString("nasaId") ?: ""
         val description = arguments?.getString("description") ?: ""
         binding.fileDescriptionText.text = getString(R.string.file_description, description)
         fileInfoProgressBar = binding.root.findViewById(R.id.fileInfoProgressBar)
@@ -220,5 +207,17 @@ class DetailFragment : Fragment() {
         exoPlayer?.release()
         exoPlayer = null
         _binding = null
+    }
+
+    companion object {
+        private const val ARG_NASA_ID = "nasaId"
+
+        fun createDetailsFragment(nasaId: String): DetailFragment {
+            return DetailFragment().apply {
+                val bundle = Bundle()
+                bundle.putString(ARG_NASA_ID, nasaId)
+                arguments = bundle
+            }
+        }
     }
 }
