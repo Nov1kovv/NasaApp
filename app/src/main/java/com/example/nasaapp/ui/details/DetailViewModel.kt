@@ -4,26 +4,28 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
 import com.example.nasaapp.domain.model.DetailedItem
 import com.example.nasaapp.domain.repository.NasaRepository
 import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import javax.inject.Inject
 
-class DetailViewModel @AssistedInject constructor(
-    @Assisted("nasaId") private val nasaId : String,
+class DetailViewModel (
+    private val nasaId : String,
     private val nasaRepository: NasaRepository,
     private val detailedDtoToDomainMapper: DetailedDtoToDomainMapper
-) : ViewModel() {
+) : ViewModel(), ViewModelProvider.Factory {
     private val _uiState = MutableLiveData<DetailedUiState>()
     val uiState: LiveData<DetailedUiState> get() = _uiState
 
     //инкапсуляция как на SearchFragment для LiveData, она будет одна с DetailedUiState - новый класс будет iserror is loading video link и т.д
-
 
     private val nasaIdSubject = PublishSubject.create<String>()
     private val compositeDisposable = CompositeDisposable()
@@ -88,6 +90,22 @@ class DetailViewModel @AssistedInject constructor(
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()
+    }
+
+    class Factory @AssistedInject constructor(
+        @Assisted("nasaId") private val nasaId: String, private val nasaRepository: NasaRepository,
+        private val detailedDtoToDomainMapper: DetailedDtoToDomainMapper
+    ) : ViewModelProvider.Factory{
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            require(modelClass == DetailViewModel::class.java)
+            return DetailViewModel(nasaId, nasaRepository, detailedDtoToDomainMapper) as T
+        }
+        @AssistedFactory
+        interface DetailFactory{
+            fun create (@Assisted("nasaId") nasaId: String):DetailViewModel.Factory
+        }
     }
 }
 

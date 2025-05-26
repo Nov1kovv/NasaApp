@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Component(modules = [NetworkModule::class, DetailedModule::class])
 interface DetailComponent {
 
-    fun inject(detailFragment: DetailFragment, @Assisted("nasaId") nasaId:String)
+    fun inject(detailFragment: DetailFragment)
     fun inject(searchFragment: SearchFragment)
 
     @Component.Factory

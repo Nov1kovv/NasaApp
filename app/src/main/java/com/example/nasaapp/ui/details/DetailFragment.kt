@@ -21,6 +21,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
@@ -40,23 +41,46 @@ class DetailFragment : Fragment() {
 
     private var exoPlayer: ExoPlayer? = null
     private var mediaUrl: String = ""
+    private val nasaId: String
+        get() = arguments?.getString(ARG_NASA_ID) ?:""
+//    val nasaId = arguments?.getString("nasaId") ?:""
+@Inject
+lateinit var factory: DetailViewModel.Factory.DetailFactory
 
-    @Inject
-    lateinit var detailViewModel: DetailViewModel
+
+    private val detailViewModel: DetailViewModel by viewModels(){
+        factory.create(nasaId)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        DaggerDetailComponent.factory().create().inject(this)
+    }
+
+    companion object {
+        private const val ARG_NASA_ID = "nasaId"
+        fun makeArgs(nasaId: String): Bundle {
+            return Bundle(1).apply {
+                putString(ARG_NASA_ID, nasaId)
+            }
+        }
+    }
 
     @OptIn(UnstableApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        DaggerDetailComponent.factory().create().inject(this)
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
         val imageUrl = arguments?.getString("imageUrl") ?:""
-        Log.d("DetailFragment", "Video URL: $imageUrl")
         val nasaId = arguments?.getString("nasaId") ?:""
         val description = arguments?.getString("description") ?: ""
         binding.fileDescriptionText.text = getString(R.string.file_description, description)
         fileInfoProgressBar = binding.root.findViewById(R.id.fileInfoProgressBar)
+
+
+
+
 
         exoPlayer = ExoPlayer.Builder(requireContext())
             .setTrackSelector(DefaultTrackSelector(requireContext()))
@@ -79,6 +103,8 @@ class DetailFragment : Fragment() {
         if (nasaId.isNotEmpty()) {
             fileInfoProgressBar.visibility = View.VISIBLE
         }
+
+
 
         viewLifecycleOwner.lifecycleScope.launch {
             detailViewModel.uiState.observe(viewLifecycleOwner) { state ->
@@ -122,6 +148,8 @@ class DetailFragment : Fragment() {
 
         return binding.root
     }
+
+
 
     private fun formatVideoUrl(videoLink: String): String {
         return videoLink.replace(" ", "%20")
