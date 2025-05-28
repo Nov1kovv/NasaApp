@@ -8,8 +8,9 @@ import com.example.nasaapp.domain.model.DetailedItem
 import com.example.nasaapp.domain.model.SearchItem
 import com.example.nasaapp.domain.repository.NasaRepository
 import io.reactivex.Single
+import javax.inject.Inject
 
-class NasaRepositoryImpl(
+class NasaRepositoryImpl @Inject constructor(
     private val detailNasaRemoteDataSource: DetailNasaRemoteDataSource
 ) : NasaRepository {
     override fun searchImages(query: String, mediaType: String?, page: Int): Single<List<SearchItem>> {
@@ -30,5 +31,4 @@ class NasaRepositoryImpl(
     override fun getResourceInfo(url: String): Single<ItemDetailedInfoDto> {
         return detailNasaRemoteDataSource.getResourceInfo(url)
     }
-
 }
