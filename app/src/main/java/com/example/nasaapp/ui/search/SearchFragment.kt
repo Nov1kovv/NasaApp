@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.R
 import com.example.nasaapp.domain.model.SearchItem
 import com.example.nasaapp.ui.details.DaggerAppComponent
+import com.example.nasaapp.ui.details.DetailFragment
 import com.google.android.material.appbar.MaterialToolbar
 import javax.inject.Inject
 
@@ -146,7 +147,14 @@ class SearchFragment : Fragment() {
             putString("date", searchItem.date)
             putBoolean("isVideo", searchItem.isVideo)
         }
-        findNavController().navigate(R.id.action_searchFragment_to_detailFragment, bundle)
+        val detailFragment = DetailFragment().apply {
+            arguments = bundle
+        }
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, detailFragment)
+            .addToBackStack(null)
+            .commit()
     }
     companion object {
         private const val ARG_QUERY = ("query")
