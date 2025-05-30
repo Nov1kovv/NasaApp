@@ -5,7 +5,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton // Один и тот же экземпляр этого класса будет использоваться везде, где он инжектится
-@Component(modules = [NetworkModule::class, DetailedModule::class, RepositoryModule::class])
+@Component(modules = [NetworkModule::class, DetailedModule::class])
 interface AppComponent {
 
     fun inject(detailFragment: DetailFragment)

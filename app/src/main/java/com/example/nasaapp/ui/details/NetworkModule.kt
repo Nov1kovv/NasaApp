@@ -20,8 +20,9 @@ import javax.inject.Singleton
 @Module
 class NetworkModule {
 
-    @Provides
+    @Provides // Используется когда нету @Inject constructor и я самостоятельно создаю объект
     @Singleton // Один и тот же экземпляр этого класса будет использоваться везде, где он инжектится
+    //Удаляется только при завершении приложения (очистка памяти)
     fun provideRetrofit(): Retrofit {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
@@ -31,7 +32,7 @@ class NetworkModule {
             .addInterceptor(loggingInterceptor)
             .build()
 
-        return Retrofit.Builder()
+        return Retrofit.Builder() //получаю экземпляр класса Retrofit
             .baseUrl("https://images-api.nasa.gov")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
@@ -39,10 +40,10 @@ class NetworkModule {
             .build()
     }
 
-    @Provides
+    @Provides // Используется когда нету @Inject constructor и я самостоятельно создаю объект
     @Singleton // Один и тот же экземпляр этого класса будет использоваться везде, где он инжектится
     fun provideApiService(retrofit: Retrofit): NasaApiService {
-        return retrofit.create(NasaApiService::class.java)
+        return retrofit.create(NasaApiService::class.java) //возвращаю экземпляр класса NasaApiService
     }
 
     //@Named нужен, когда у тебя есть две или более зависимости одного и того же типа. Dagger не сможет понять, какую именно нужно инжектить
@@ -52,23 +53,42 @@ class NetworkModule {
 //        return retrofit.create(NasaApiService::class.java)
 //    }
 
-    @Provides
+    @Provides // Используется когда нету @Inject constructor и я самостоятельно создаю объект
     @Singleton // Один и тот же экземпляр этого класса будет использоваться везде, где он инжектится
     fun provideDetailNasaRemoteDataSource(
         apiService: NasaApiService, dtoToDomainMapper: DtoToDomainMapper
     ): DetailNasaRemoteDataSource = DetailNasaRemoteDataSourceImpl(apiService, dtoToDomainMapper)
+    //вызываю конструктор, передавая зависимость (apiService, dtoToDomainMapper)и возвращаю экземпляр DetailNasaRemoteDataSourceImpl
 
 
-//    @Binds
-//    @Singleton // Один и тот же экземпляр этого класса будет использоваться везде, где он инжектится
-//    fun provideNasaRepository(remoteDataSource: DetailNasaRemoteDataSource): NasaRepository =
-//        NasaRepositoryImpl(remoteDataSource)
+    @Provides // Используется когда нету @Inject constructor и я самостоятельно создаю объект
+    @Singleton // Один и тот же экземпляр этого класса будет использоваться везде, где он инжектится
+    fun provideNasaRepository(remoteDataSource: DetailNasaRemoteDataSource): NasaRepository =
+        NasaRepositoryImpl(remoteDataSource) // вызываю конструктор, передавая зависимость (remoteDataSource)и возвращаю экземпляр
 }
 
-@Module
-abstract class RepositoryModule {
+//Чтобы использовать @Binds, его нужно создавать в отдельном абстрактном классе.
+//В классе с имплементацией указывать @Inject constructor
 
-    @Binds
-    @Singleton
-    abstract fun bindNasaRepository(impl: NasaRepositoryImpl): NasaRepository
-}
+//@Module
+//abstract class RepositoryModule {
+//
+//    @Binds  -  Связывает интерфейс с реализацией
+//    @Singleton
+//    abstract fun bindNasaRepository(impl: NasaRepositoryImpl): NasaRepository - используй экземпляр NasaRepositoryImpl
+//}
+
+
+//"
+// @Scope - этот объект должен жить столько, сколько живёт компонент, к которому он привязан
+//@Retention(AnnotationRetention.RUNTIME)
+//annotation class ActivityScope
+//
+//@ActivityScope
+//@Subcomponent
+//interface ActivityComponent
+//
+// Объекты будут жить, пока живёт активити или фрагмент
+//
+//Когда активити уничтожается, компонента больше нет, то объекты становятся недоступны и сборщик мусора их удаляет"
+//

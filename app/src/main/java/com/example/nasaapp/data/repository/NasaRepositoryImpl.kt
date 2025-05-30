@@ -1,16 +1,13 @@
 package com.example.nasaapp.data.repository
 
-import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
 import com.example.nasaapp.data.model.detailed.ItemDetailedInfoDto
 import com.example.nasaapp.data.model.detailed.MetaDataLinkDto
 import com.example.nasaapp.domain.datasourse.DetailNasaRemoteDataSource
-import com.example.nasaapp.domain.model.DetailedItem
 import com.example.nasaapp.domain.model.SearchItem
 import com.example.nasaapp.domain.repository.NasaRepository
 import io.reactivex.Single
-import javax.inject.Inject
 
-class NasaRepositoryImpl @Inject constructor(
+class NasaRepositoryImpl (
     private val detailNasaRemoteDataSource: DetailNasaRemoteDataSource
 ) : NasaRepository {
     override fun searchImages(query: String, mediaType: String?, page: Int): Single<List<SearchItem>> {
