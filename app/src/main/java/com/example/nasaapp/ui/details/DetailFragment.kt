@@ -27,6 +27,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import com.bumptech.glide.Glide
 import com.example.nasaapp.R
+import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
 import com.example.nasaapp.databinding.DetailFragmentBinding
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -46,12 +47,20 @@ class DetailFragment : Fragment() {
     @Inject
     lateinit var factory: DetailViewModel.Factory.DetailFactory
 
+    @Inject
+    lateinit var mapper2: DetailedDtoToDomainMapper
+
+    private lateinit var mapper1: DetailedDtoToDomainMapper
+
     private val detailViewModel: DetailViewModel by viewModels {
         factory.create(nasaId)
     }
 
     override fun onAttach(context: Context) {
-        DaggerAppComponent.factory().create().inject(this)
+        val component = DaggerAppComponent.factory().create()
+        mapper1 = component.provideDetailedDtoToDomainMapper()
+        component.inject(this)
+        Log.i("fdskj.ha.", "onAttach: ${mapper1}")
         super.onAttach(context)
     }
 

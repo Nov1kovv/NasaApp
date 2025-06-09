@@ -1,10 +1,16 @@
 package com.example.nasaapp.ui.details
 
-//SubComponents - Получает зависимости от родителя
+//SubComponents - компонент с зависимостью от другого компонента
 //Добавляет свои
 //Живёт, пока живёт родитель например, активити, фрагмент
-
 // Нужен чтобы делить зависимости по слоям
+
+
+//
+//@Component
+//interface AppComponent { - родитель сабкомпонента
+//    fun mainComponent(): MainComponent.Factory
+//}
 
 //@Subcomponent
 //interface MainComponent {
@@ -14,11 +20,6 @@ package com.example.nasaapp.ui.details
 //    interface Factory {
 //        fun create(): MainComponent
 //    }
-//}
-//
-//@Component
-//interface AppComponent { - родитель сабкомпонента
-//    fun mainComponent(): MainComponent.Factory
 //}
 //
 //class MainActivity : AppCompatActivity() {
