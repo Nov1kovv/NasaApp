@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide
 import com.example.nasaapp.R
 import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
 import com.example.nasaapp.databinding.DetailFragmentBinding
+import com.example.nasaapp.ui.details.adapter.DetailAdapter
 import com.example.nasaapp.ui.test.Contract
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,6 +40,7 @@ class DetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var fileInfoProgressBar: ProgressBar
+    private lateinit var adapter: DetailAdapter
 
     private var exoPlayer: ExoPlayer? = null
     private var mediaUrl: String = ""
