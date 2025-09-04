@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide
 import com.example.nasaapp.R
 import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
 import com.example.nasaapp.databinding.DetailFragmentBinding
+import com.example.nasaapp.ui.test.Contract
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -48,9 +49,9 @@ class DetailFragment : Fragment() {
     lateinit var factory: DetailViewModel.Factory.DetailFactory
 
     @Inject
-    lateinit var mapper2: DetailedDtoToDomainMapper
+    lateinit var mapper2: DetailedDtoToDomainMapper //пример с Inject
 
-    private lateinit var mapper1: DetailedDtoToDomainMapper
+    private lateinit var mapper1: DetailedDtoToDomainMapper //пример без Inject
 
     private val detailViewModel: DetailViewModel by viewModels {
         factory.create(nasaId)
@@ -58,7 +59,7 @@ class DetailFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         val component = DaggerAppComponent.factory().create()
-        mapper1 = component.provideDetailedDtoToDomainMapper()
+        mapper1 = component.provideDetailedDtoToDomainMapper()//пример без Inject
         component.inject(this)
         Log.i("fdskj.ha.", "onAttach: ${mapper1}")
         super.onAttach(context)

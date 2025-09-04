@@ -11,10 +11,10 @@
 6)Реализовать навигацию через фрагмент менеджер
 
 
-Google Books(compose внутри фрагмента, navgraph, koin, room, corutines )
+Google Books(compose внутри фрагмента, navgraph, koin, room, corutines, MVI Orbit)
 1)Books проект создать + git ignore
 
-Реализовать трехмодульную чистую ахрхитетуру самому плюс koin
+Реализовать трехмодульную чистую ахрхитетуру самому плюс Koin
 
 2)логин/регистрация
 Refresh token, accsess token (Igor)
@@ -22,7 +22,7 @@ Refresh token, accsess token (Igor)
 3)Экран поиска
 SearchView
 
-4)Экран найденных результатов
+4)Экран найденных результатов,
 Пагинация, краткое описание найденной книги категории теги и т.п
 
 5)Деталка
