@@ -9,7 +9,8 @@ class DetailAdapter(
 
     init {
         delegatesManager
-            .addDelegate(PhotoDelegate(onDownloadClick, onShareClick))
+            .addDelegate(PhotoDelegate())
             .addDelegate(VideoDelegate(onDownloadClick, onShareClick))
+            .addDelegate(TextDelegate())
     }
 }

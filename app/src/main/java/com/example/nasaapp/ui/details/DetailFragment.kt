@@ -25,11 +25,13 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.nasaapp.R
 import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
 import com.example.nasaapp.databinding.DetailFragmentBinding
 import com.example.nasaapp.ui.details.adapter.DetailAdapter
+import com.example.nasaapp.ui.details.adapter.DetailItem
 import com.example.nasaapp.ui.test.Contract
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -73,82 +75,62 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
-        val imageUrl = arguments?.getString("imageUrl") ?: ""
-        val description = arguments?.getString("description") ?: ""
-        binding.fileDescriptionText.text = getString(R.string.file_description, description)
-        fileInfoProgressBar = binding.root.findViewById(R.id.fileInfoProgressBar)
 
-        exoPlayer = ExoPlayer.Builder(requireContext())
-            .setTrackSelector(DefaultTrackSelector(requireContext()))
-            .setLoadControl(DefaultLoadControl())
-            .build()
-
-        val mediaItem = MediaItem.fromUri(Uri.parse(""))
-        exoPlayer?.setMediaItem(mediaItem)
-        exoPlayer?.prepare()
-        binding.playerView.player = exoPlayer
-
-        Glide.with(requireContext())
-            .load(formatImageUrl(imageUrl))
-            .centerCrop()
-            .into(binding.imageView)
-
-        binding.imageView.post {
-        }
-
-        if (nasaId.isNotEmpty()) {
-            fileInfoProgressBar.visibility = View.VISIBLE
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            detailViewModel.uiState.observe(viewLifecycleOwner) { state ->
-                with(binding) {
-                    imageProgressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
-
-                    state.detailedItem.let {
-                        fileSizeText.text = getString(R.string.file_size_format, it.fileSize)
-                        fileFormatText.text = getString(R.string.file_format_format, it.fileFormat)
-                        fileInfoProgressBar.visibility = View.GONE
-                    }
-                    if (state.videoLink.isNotEmpty()) {
-                        val fixedVideoLink = formatVideoUrl(state.videoLink)
-                        Log.d("DetailFragment", "Video link received: $fixedVideoLink")
-                        imageView.visibility = View.GONE
-                        playerView.visibility = View.VISIBLE
-                        updatePlayerWithVideo(fixedVideoLink)
-                        mediaUrl = fixedVideoLink
-                    } else {
-                        playerView.visibility = View.GONE
-                        imageView.visibility = View.VISIBLE
-                        mediaUrl = imageUrl
-                        Log.e("DetailFragment", "Video link is empty or unavailable.")
-                    }
-                }
-            }
-        }
-
-
-        binding.downloadButton.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    requireActivity(),
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    1
-                )
-            } else {
-                downloadContent(mediaUrl)
-            }
-        }
-
-        binding.shareButton.setOnClickListener {
-            shareContent(mediaUrl)
-        }
+        adapter = DetailAdapter(
+            onDownloadClick = { url -> downloadContent(url) },
+            onShareClick = { url -> shareContent(url) }
+        )
+        binding.detailRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.detailRecyclerView.adapter = adapter
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val items = listOf(
+            DetailItem.TextItem("Text 1"),
+            DetailItem.TextItem("Text 2"),
+            DetailItem.TextItem("Text 3"),
+            DetailItem.TextItem("Text 4"),
+            DetailItem.TextItem("Text 5"),
+            DetailItem.TextItem("Text 6"),
+            DetailItem.TextItem("Text 7"),
+            DetailItem.TextItem("Text 8"),
+            DetailItem.TextItem("Text 9"),
+            DetailItem.TextItem("Text 1"),
+            DetailItem.TextItem("Text 2"),
+            DetailItem.TextItem("Text 3"),
+            DetailItem.TextItem("Text 4"),
+            DetailItem.TextItem("Text 5"),
+            DetailItem.TextItem("Text 6"),
+            DetailItem.TextItem("Text 7"),
+            DetailItem.TextItem("Text 8"),
+            DetailItem.TextItem("Text 9"),
+            DetailItem.TextItem("Text 1"),
+            DetailItem.TextItem("Text 2"),
+            DetailItem.TextItem("Text 3"),
+            DetailItem.TextItem("Text 4"),
+            DetailItem.TextItem("Text 5"),
+            DetailItem.TextItem("Text 6"),
+            DetailItem.Photo("https://assets.science.nasa.gov/dynamicimage/assets/science/astro/universe/internal_resources/402/Carina_Nebula-1.jpeg?w=1600&h=927&fit=clip&crop=faces%2Cfocalpoint"),
+            DetailItem.TextItem("Text 7"),
+            DetailItem.TextItem("Text 8"),
+            DetailItem.TextItem("Text 9"),
+            DetailItem.Video("https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"),
+            DetailItem.TextItem("Text 1"),
+            DetailItem.TextItem("Text 2"),
+            DetailItem.TextItem("Text 3"),
+            DetailItem.TextItem("Text 4"),
+            DetailItem.TextItem("Text 5"),
+            DetailItem.TextItem("Text 6"),
+            DetailItem.TextItem("Text 7"),
+            DetailItem.TextItem("Text 8"),
+            DetailItem.TextItem("Text 9")
+
+            )
+        adapter.items = items
+
     }
 
 

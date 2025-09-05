@@ -22,7 +22,7 @@ class VideoDelegate(
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.custom_item_search, parent, false)
+            .inflate(R.layout.item_player, parent, false)
         return VideoViewHolder(view)
     }
 
@@ -38,15 +38,9 @@ class VideoDelegate(
 
     inner class VideoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val playerView = view.findViewById<PlayerView>(R.id.playerView)
-        private val description = view.findViewById<TextView>(R.id.deschription)
-        private val download = view.findViewById<ImageButton>(R.id.download_button)
-        private val share = view.findViewById<ImageButton>(R.id.share_button)
-
         private var exoPlayer: ExoPlayer? = null
 
         fun bind(item: DetailItem.Video) {
-            description.text = item.description
-
             exoPlayer = ExoPlayer.Builder(itemView.context).build().also {
                 playerView.player = it
                 val mediaItem = MediaItem.fromUri(item.videoUrl)
@@ -54,9 +48,6 @@ class VideoDelegate(
                 it.prepare()
                 it.playWhenReady = true
             }
-
-            download.setOnClickListener { onDownloadClick(item.videoUrl) }
-            share.setOnClickListener { onShareClick(item.videoUrl) }
         }
     }
 }
