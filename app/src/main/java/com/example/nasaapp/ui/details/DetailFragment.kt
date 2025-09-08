@@ -32,6 +32,7 @@ import com.example.nasaapp.data.mapper.DetailedDtoToDomainMapper
 import com.example.nasaapp.databinding.DetailFragmentBinding
 import com.example.nasaapp.ui.details.adapter.DetailAdapter
 import com.example.nasaapp.ui.details.adapter.DetailItem
+import com.example.nasaapp.ui.details.adapter.DetailItemDecoration
 import com.example.nasaapp.ui.test.Contract
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -82,10 +83,16 @@ class DetailFragment : Fragment() {
         )
         binding.detailRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.detailRecyclerView.adapter = adapter
+        binding.detailRecyclerView.addItemDecoration(DetailItemDecoration())
 
         return binding.root
     }
 
+    /**
+     * во фрагменте создаю decorarot
+     * в декораторе будет перечисление всех типов viewholderoв и для каждого из них будут устанавливаться
+     * свои отступы
+     * */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val items = mutableListOf<DetailItem>()
