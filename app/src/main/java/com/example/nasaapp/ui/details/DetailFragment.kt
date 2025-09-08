@@ -88,51 +88,27 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val items = listOf(
-            DetailItem.TextItem("Text 1"),
-            DetailItem.TextItem("Text 2"),
-            DetailItem.TextItem("Text 3"),
-            DetailItem.TextItem("Text 4"),
-            DetailItem.TextItem("Text 5"),
-            DetailItem.TextItem("Text 6"),
-            DetailItem.TextItem("Text 7"),
-            DetailItem.TextItem("Text 8"),
-            DetailItem.TextItem("Text 9"),
-            DetailItem.TextItem("Text 1"),
-            DetailItem.TextItem("Text 2"),
-            DetailItem.TextItem("Text 3"),
-            DetailItem.TextItem("Text 4"),
-            DetailItem.TextItem("Text 5"),
-            DetailItem.TextItem("Text 6"),
-            DetailItem.TextItem("Text 7"),
-            DetailItem.TextItem("Text 8"),
-            DetailItem.TextItem("Text 9"),
-            DetailItem.TextItem("Text 1"),
-            DetailItem.TextItem("Text 2"),
-            DetailItem.TextItem("Text 3"),
-            DetailItem.TextItem("Text 4"),
-            DetailItem.TextItem("Text 5"),
-            DetailItem.TextItem("Text 6"),
-            DetailItem.Photo("https://assets.science.nasa.gov/dynamicimage/assets/science/astro/universe/internal_resources/402/Carina_Nebula-1.jpeg?w=1600&h=927&fit=clip&crop=faces%2Cfocalpoint"),
-            DetailItem.TextItem("Text 7"),
-            DetailItem.TextItem("Text 8"),
-            DetailItem.TextItem("Text 9"),
-            DetailItem.Video("https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"),
-            DetailItem.TextItem("Text 1"),
-            DetailItem.TextItem("Text 2"),
-            DetailItem.TextItem("Text 3"),
-            DetailItem.TextItem("Text 4"),
-            DetailItem.TextItem("Text 5"),
-            DetailItem.TextItem("Text 6"),
-            DetailItem.TextItem("Text 7"),
-            DetailItem.TextItem("Text 8"),
-            DetailItem.TextItem("Text 9")
+        val items = mutableListOf<DetailItem>()
+        val isVideo = arguments?.getBoolean("isVideo") ?: false
+        val description = arguments?.getString("description") ?: ""
+        if (isVideo) {
+            arguments?.getString("videoUrl")?.let{ url ->
+                items.add(DetailItem.Video(url))
+                items.add(DetailItem.TextItem(description))
+                items.add(DetailItem.DownloadButtonItem(url))
+                items.add(DetailItem.ShareButtonItem(url))
+            }
+        } else {
+            arguments?.getString("imageUrl")?.let { url ->
+                items.add(DetailItem.Photo(url))
+                items.add(DetailItem.TextItem(description))
+                items.add(DetailItem.DownloadButtonItem(url))
+                items.add(DetailItem.ShareButtonItem(url))
+            }
+        }
 
-            )
         adapter.items = items
-
     }
-
 
     private fun formatVideoUrl(videoLink: String): String {
         return videoLink.replace(" ", "%20")

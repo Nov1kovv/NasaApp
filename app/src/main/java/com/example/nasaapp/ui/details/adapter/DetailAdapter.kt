@@ -12,5 +12,7 @@ class DetailAdapter(
             .addDelegate(PhotoDelegate())
             .addDelegate(VideoDelegate(onDownloadClick, onShareClick))
             .addDelegate(TextDelegate())
+            .addDelegate(DownloadButtonDelegate(onDownloadClick))
+            .addDelegate(ShareButtonDelegate(onShareClick))
     }
 }

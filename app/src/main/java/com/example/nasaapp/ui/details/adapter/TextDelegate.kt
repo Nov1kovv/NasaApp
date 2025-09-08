@@ -33,7 +33,7 @@ class TextDelegate : AdapterDelegate<List<DetailItem>>() {
         private val textView = view.findViewById<TextView>(R.id.textView)
 
         fun bind(item: DetailItem.TextItem) {
-            textView.text = item.text
+            textView.text = item.description
         }
     }
 }

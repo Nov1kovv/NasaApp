@@ -4,21 +4,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.nasaapp.R
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 
-class PhotoDelegate : AdapterDelegate<List<DetailItem>>() {
+class ShareButtonDelegate(
+    private val onShareClick: (String) -> Unit
+) : AdapterDelegate<List<DetailItem>>() {
 
     override fun isForViewType(items: List<DetailItem>, position: Int): Boolean =
-        items[position] is DetailItem.Photo
+        items[position] is DetailItem.ShareButtonItem
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_photo, parent, false)
-        return PhotoViewHolder(view)
+            .inflate(R.layout.item_share_button, parent, false)
+        return ShareButtonViewHolder(view)
     }
 
     override fun onBindViewHolder(
@@ -27,15 +27,15 @@ class PhotoDelegate : AdapterDelegate<List<DetailItem>>() {
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
-        val item = items[position] as DetailItem.Photo
-        (holder as PhotoViewHolder).bind(item)
+        val item = items[position] as DetailItem.ShareButtonItem
+        (holder as ShareButtonViewHolder).bind(item)
     }
 
-    inner class PhotoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val image = view.findViewById<ImageView>(R.id.photoView)
+    inner class ShareButtonViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val shareButton: Button = view.findViewById(R.id.shareButton)
 
-        fun bind(item: DetailItem.Photo) {
-            Glide.with(itemView.context).load(item.imageUrl).into(image)
+        fun bind(item: DetailItem.ShareButtonItem) {
+            shareButton.setOnClickListener { onShareClick(item.url) }
         }
     }
 }
