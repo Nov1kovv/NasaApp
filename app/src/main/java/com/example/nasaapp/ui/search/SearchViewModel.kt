@@ -38,14 +38,18 @@ class SearchViewModel @Inject constructor (private val repository: NasaRepositor
             .distinctUntilChanged() //игнорирую запросы которые одинаковые с прошлым
             .switchMapSingle { (query, mediaType) ->
                 repository.searchImages(query, mediaType)
+                    .subscribeOn(Schedulers.io())
+                    .doOnSubscribe { _searchResult.postValue(UiState(isLoading = true)) }
+                    .onErrorReturn { emptyList() }          // при ошибке возвращаем пустой список
             }
-            .subscribeOn(Schedulers.io())
             .subscribe({ items ->
-                _searchResult.postValue(UiState(items = items, isLoading = false))
+                val hasError = items.isEmpty()
+                _searchResult.postValue(UiState(items = items, isLoading = false, error = hasError))
+                if (hasError) {
+                    _errorToast.postValue(Unit) // toast показываем только если реально пусто
+                }
             }, { error ->
-                Log.e("SearchViewModel", "Error search", error)  // Печатаем подробный лог ошибки
-                _searchResult.postValue(UiState(error = true, isLoading = false))
-                _errorToast.postValue(Unit)
+                Log.e("SearchViewModel", "Unexpected error", error)
             })
         compositeDisposable.add(disposable)
     }
