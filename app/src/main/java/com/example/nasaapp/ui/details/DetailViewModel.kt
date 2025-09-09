@@ -20,6 +20,7 @@ class DetailViewModel (
     private val nasaId : String,
     private val nasaRepository: NasaRepository,
     private val detailedDtoToDomainMapper: DetailedDtoToDomainMapper
+    //Создаю класс UI Factory и сюда делаю inject
 ) : ViewModel(), ViewModelProvider.Factory {
     private val _uiState = MutableLiveData<DetailedUiState>()
     val uiState: LiveData<DetailedUiState> get() = _uiState
