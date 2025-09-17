@@ -58,6 +58,8 @@ class DetailFragment : Fragment() {
 
     private lateinit var mapper1: DetailedDtoToDomainMapper //пример без Inject
 
+    // TODO: На фрагменте не должно быть никаких мапперов , domain маппер или ui mapper должен быть в нужном месте (viewmodel или datasource) repository должен возвращать domain класс всегда
+
     private val detailViewModel: DetailViewModel by viewModels {
         factory.create(nasaId)
     }

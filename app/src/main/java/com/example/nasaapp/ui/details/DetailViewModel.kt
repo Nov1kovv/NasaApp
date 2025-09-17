@@ -19,7 +19,7 @@ import io.reactivex.subjects.PublishSubject
 class DetailViewModel (
     private val nasaId : String,
     private val nasaRepository: NasaRepository,
-    private val detailedDtoToDomainMapper: DetailedDtoToDomainMapper
+    private val detailedDtoToDomainMapper: DetailedDtoToDomainMapper // TODO: Должен лежать в data source
     //Создаю класс UI Factory и сюда делаю inject
 ) : ViewModel(), ViewModelProvider.Factory {
     private val _uiState = MutableLiveData<DetailedUiState>()
@@ -34,6 +34,7 @@ class DetailViewModel (
         initSubscriptions()
     }
 
+    // TODO: Сотри и наши сам посматривая на свой пример
     fun initSubscriptions() { //observable который при получении nasa запрашивает данные
         val detailInfoObservable = nasaIdSubject
             .startWith(nasaId)

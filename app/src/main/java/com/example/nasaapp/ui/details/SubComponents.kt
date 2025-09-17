@@ -5,7 +5,8 @@ package com.example.nasaapp.ui.details
 //Живёт, пока живёт родитель например, активити, фрагмент
 // Нужен чтобы делить зависимости по слоям
 
-
+// TODO: понять почему subcomponent плохо
+// TODO: Реализовать feature api-impl архитектуру с помощью Игоря в самом конце
 //
 //@Component
 //interface AppComponent { - родитель сабкомпонента

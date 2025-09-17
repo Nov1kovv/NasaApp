@@ -10,7 +10,11 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Url
 
+// TODO: ApiSevice без Nasa
 interface NasaApiService {
+
+    // TODO: search это не searchImage.
+
     @GET("search")
     fun searchImages(
         @Query("q") query: String,

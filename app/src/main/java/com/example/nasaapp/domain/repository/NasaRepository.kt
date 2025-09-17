@@ -9,6 +9,6 @@ import io.reactivex.Single
 interface NasaRepository {
     fun searchImages(query: String, mediaType: String? = null, page: Int = 1): Single<List<SearchItem>>
     fun getVideoLink(nasaId: String): Single<String>
-    fun getMetadataUrl(nasaId: String): Single<MetaDataLinkDto>
+    fun getMetadataUrl(nasaId: String): Single<MetaDataLinkDto> // TODO: репозиторий всегда возвращает domain сущности
     fun getResourceInfo(url: String): Single<ItemDetailedInfoDto>
 }

@@ -12,6 +12,7 @@ import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+// TODO: Nasa будет на UseCaseсах. Репозитории остаются, но во вьюмодялях будут юзкейсы которые будут дергать репозиториии в impl
 class SearchViewModel @Inject constructor (private val repository: NasaRepository) : ViewModel() {
     private val _searchResult = MutableLiveData<UiState>()//здесь хранится state
     val searchResult: LiveData<UiState> = _searchResult
