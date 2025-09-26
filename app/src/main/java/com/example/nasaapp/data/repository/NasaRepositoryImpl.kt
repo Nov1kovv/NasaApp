@@ -3,15 +3,17 @@ package com.example.nasaapp.data.repository
 import com.example.nasaapp.data.model.detailed.ItemDetailedInfoDto
 import com.example.nasaapp.data.model.detailed.MetaDataLinkDto
 import com.example.nasaapp.domain.datasourse.DetailNasaRemoteDataSource
+import com.example.nasaapp.domain.datasourse.SearchNasaRemoteDataSource
 import com.example.nasaapp.domain.model.SearchItem
 import com.example.nasaapp.domain.repository.NasaRepository
 import io.reactivex.Single
 
 class NasaRepositoryImpl (
-    private val detailNasaRemoteDataSource: DetailNasaRemoteDataSource
+    private val detailNasaRemoteDataSource: DetailNasaRemoteDataSource,
+    private val searchNasaRemoteDataSource: SearchNasaRemoteDataSource
 ) : NasaRepository {
     override fun searchImages(query: String, mediaType: String?, page: Int): Single<List<SearchItem>> {
-        return detailNasaRemoteDataSource.searchImages(query, mediaType ?: "image,video,audio", page)
+        return searchNasaRemoteDataSource.searchImages(query, mediaType ?: "image,video,audio", page)
     }
 
     override fun getVideoLink(nasaId: String): Single<String> {

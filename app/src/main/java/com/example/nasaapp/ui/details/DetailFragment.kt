@@ -33,7 +33,6 @@ import com.example.nasaapp.databinding.DetailFragmentBinding
 import com.example.nasaapp.ui.details.adapter.DetailAdapter
 import com.example.nasaapp.ui.details.adapter.DetailItem
 import com.example.nasaapp.ui.details.adapter.DetailItemDecoration
-import com.example.nasaapp.ui.test.Contract
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

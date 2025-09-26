@@ -11,7 +11,7 @@ import io.reactivex.Single
 // TODO: Называется Detail, но в нем есть метод для Search
 interface DetailNasaRemoteDataSource {
     // TODO: Как будто search должен быть в отдельном data source, но репозиторий будет один Nasa Repository
-    fun searchImages(query: String, mediaType: String, page: Int): Single<List<SearchItem>>
+//    fun searchImages(query: String, mediaType: String, page: Int): Single<List<SearchItem>>
 
 
     fun getVideoLink(url: String): Single<AssetDto>

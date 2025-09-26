@@ -3,8 +3,10 @@ package com.example.nasaapp.ui.details
 import com.example.nasaapp.data.api.NasaApiService
 import com.example.nasaapp.data.mapper.DtoToDomainMapper
 import com.example.nasaapp.data.remote.DetailNasaRemoteDataSourceImpl
+import com.example.nasaapp.data.remote.SearchNasaRemoteDataSourceImpl
 import com.example.nasaapp.data.repository.NasaRepositoryImpl
 import com.example.nasaapp.domain.datasourse.DetailNasaRemoteDataSource
+import com.example.nasaapp.domain.datasourse.SearchNasaRemoteDataSource
 import com.example.nasaapp.domain.repository.NasaRepository
 import dagger.Binds
 import dagger.Module
@@ -56,15 +58,22 @@ class NetworkModule {
     @Provides // Используется когда нету @Inject constructor и я самостоятельно создаю объект
     @Singleton // Один и тот же экземпляр этого класса будет использоваться везде, где он инжектится
     fun provideDetailNasaRemoteDataSource(
-        apiService: NasaApiService, dtoToDomainMapper: DtoToDomainMapper
-    ): DetailNasaRemoteDataSource = DetailNasaRemoteDataSourceImpl(apiService, dtoToDomainMapper)
+        apiService: NasaApiService
+    ): DetailNasaRemoteDataSource = DetailNasaRemoteDataSourceImpl(apiService)
     //вызываю конструктор, передавая зависимость (apiService, dtoToDomainMapper)и возвращаю экземпляр DetailNasaRemoteDataSourceImpl
 
+    @Provides
+    @Singleton
+    fun provideSearchNasaRemoteDataSource(
+        apiService: NasaApiService,
+        dtoToDomainMapper: DtoToDomainMapper
+    ): SearchNasaRemoteDataSource = SearchNasaRemoteDataSourceImpl(apiService, dtoToDomainMapper)
 
     @Provides // Используется когда нету @Inject constructor и я самостоятельно создаю объект
     @Singleton // Один и тот же экземпляр этого класса будет использоваться везде, где он инжектится
-    fun provideNasaRepository(remoteDataSource: DetailNasaRemoteDataSource): NasaRepository =
-        NasaRepositoryImpl(remoteDataSource) // вызываю конструктор, передавая зависимость (remoteDataSource)и возвращаю экземпляр
+    fun provideNasaRepository(detailDataSource: DetailNasaRemoteDataSource,
+                              searchDataSource: SearchNasaRemoteDataSource): NasaRepository =
+        NasaRepositoryImpl(detailDataSource, searchDataSource) // вызываю конструктор, передавая зависимость (remoteDataSource)и возвращаю экземпляр
 }
 
 //Чтобы использовать @Binds, его нужно создавать в отдельном абстрактном классе.

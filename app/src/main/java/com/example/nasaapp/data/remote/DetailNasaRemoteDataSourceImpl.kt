@@ -9,14 +9,14 @@ import com.example.nasaapp.domain.datasourse.DetailNasaRemoteDataSource
 import com.example.nasaapp.domain.model.SearchItem
 import io.reactivex.Single
 
-class DetailNasaRemoteDataSourceImpl(private val apiService: NasaApiService, private val dtoToDomainMapper: DtoToDomainMapper):
+class DetailNasaRemoteDataSourceImpl(private val apiService: NasaApiService):
     DetailNasaRemoteDataSource {
 
     // TODO: вынести во ViewModel, количество методов datasource должно соответсовать количеству методов ApiService. Dto должны мапиться в domain сущности или в примитивные типы
-    override fun searchImages(query: String, mediaType: String, page: Int): Single<List<SearchItem>> {
-        return apiService.searchImages(query, mediaType,page)
-            .map{dtoToDomainMapper.map(it)}
-    }
+//    override fun searchImages(query: String, mediaType: String, page: Int): Single<List<SearchItem>> {
+//        return apiService.searchImages(query, mediaType,page)
+//            .map{dtoToDomainMapper.map(it)}
+//    }
         override fun getMetadataUrl(nasaId: String): Single<MetaDataLinkDto> =
         apiService.getMetadataUrl(nasaId)
 
