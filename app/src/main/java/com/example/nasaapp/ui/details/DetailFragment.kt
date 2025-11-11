@@ -99,25 +99,28 @@ class DetailFragment : Fragment() {
         val items = mutableListOf<DetailItem>()
         val isVideo = arguments?.getBoolean("isVideo") ?: false
         val description = arguments?.getString("description") ?: ""
-        if (isVideo) {
-            arguments?.getString("videoUrl")?.let{ url ->
-                items.add(DetailItem.Video(url))
-                items.add(DetailItem.TextItem(description))
-                items.add(DetailItem.DownloadButtonItem(url))
-                items.add(DetailItem.ShareButtonItem(url))
+        val imageUrl = arguments?.getString("imageUrl")
+        detailViewModel.uiState.observe(viewLifecycleOwner) { state ->
+            val items = mutableListOf<DetailItem>()
+            if (isVideo) {
+                if (!state.isLoading && state.videoLink.isNotEmpty()) {
+                    items.add(DetailItem.Video(state.videoLink))
+                    items.add(DetailItem.TextItem(description))
+                    items.add(DetailItem.DownloadButtonItem(state.videoLink))
+                    items.add(DetailItem.ShareButtonItem(state.videoLink))
+                }
+            } else {
+                imageUrl?.let { url ->
+                    items.add(DetailItem.Photo(url))
+                    items.add(DetailItem.TextItem(description))
+                    items.add(DetailItem.DownloadButtonItem(url))
+                    items.add(DetailItem.ShareButtonItem(url))
+                }
             }
-        } else {
-            arguments?.getString("imageUrl")?.let { url ->
-                items.add(DetailItem.Photo(url))
-                items.add(DetailItem.TextItem(description))
-                items.add(DetailItem.DownloadButtonItem(url))
-                items.add(DetailItem.ShareButtonItem(url))
-            }
+
+            adapter.items = items
         }
-
-        adapter.items = items
     }
-
     private fun formatVideoUrl(videoLink: String): String {
         return videoLink.replace(" ", "%20")
             .replace("+", "%2B")
@@ -128,18 +131,6 @@ class DetailFragment : Fragment() {
         return imageUrl.replace(" ", "%20")
             .replace("+", "%2B")
             .replace("http://", "https://")
-    }
-
-    private fun updatePlayerWithVideo(videoLink: String) {
-        if (videoLink.isNotEmpty()) {
-            val mediaItem = MediaItem.fromUri(Uri.parse(videoLink))
-            exoPlayer?.setMediaItem(mediaItem)
-            exoPlayer?.prepare()
-            exoPlayer?.playWhenReady = true
-            Log.d("DetailFragment", "Playing video from URL: $videoLink")
-        } else {
-            Log.e("DetailFragment", "No video link available to play")
-        }
     }
 
     private fun downloadContent(url: String) {
@@ -168,23 +159,6 @@ class DetailFragment : Fragment() {
         intent.type = "text/plain"
         intent.putExtra(Intent.EXTRA_TEXT, url)
         startActivity(Intent.createChooser(intent, "Поделиться через"))
-    }
-
-    override fun onStart() {
-        super.onStart()
-        exoPlayer?.play()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        exoPlayer?.pause()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        exoPlayer?.release()
-        exoPlayer = null
-        _binding = null
     }
 
     companion object {
